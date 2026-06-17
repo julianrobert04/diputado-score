@@ -2,13 +2,17 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { PoliticianCard as PoliticianCardType } from "@/types";
+import { PoliticianCard as PoliticianCardType, ScoreSnapshot } from "@/types";
 import { ScoreBadge, ScoreBar } from "./ScoreBadge";
+import { TrendBadge } from "./TrendBadge";
+import { Sparkline } from "./Sparkline";
 import { getScoreColor, SCORE_BORDER_CLASSES } from "@/lib/scoreCalculator";
 
 interface Props {
   politician: PoliticianCardType;
   rank?: number;
+  snapshots?: ScoreSnapshot[]; // últimos snapshots para la sparkline
+  latestDelta?: number | null;  // delta del snapshot más reciente
 }
 
 // Las 5 métricas más visibles en la tarjeta
@@ -20,7 +24,7 @@ const CARD_METRICS: Array<{ key: keyof PoliticianCardType["metrics"]; label: str
   { key: "GAS", label: "Gasto" },
 ];
 
-export function PoliticianCard({ politician, rank }: Props) {
+export function PoliticianCard({ politician, rank, snapshots = [], latestDelta = null }: Props) {
   const color = getScoreColor(politician.overall);
 
   return (
@@ -78,8 +82,13 @@ export function PoliticianCard({ politician, rank }: Props) {
               </div>
             </div>
 
-            {/* Overall score */}
-            <ScoreBadge score={politician.overall} size="lg" />
+            {/* Overall score + tendencia */}
+            <div className="flex flex-col items-center gap-1">
+              <ScoreBadge score={politician.overall} size="lg" />
+              {latestDelta !== null && (
+                <TrendBadge delta={latestDelta} size="xs" />
+              )}
+            </div>
           </div>
         </div>
 
@@ -95,11 +104,14 @@ export function PoliticianCard({ politician, rank }: Props) {
           ))}
         </div>
 
-        {/* Footer — partido chip */}
-        <div className="px-4 pb-3">
-          <span className="inline-block text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full truncate max-w-full">
+        {/* Footer — partido chip + sparkline */}
+        <div className="px-4 pb-3 flex items-center justify-between gap-2">
+          <span className="inline-block text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded-full truncate">
             {politician.party}
           </span>
+          {snapshots.length >= 2 && (
+            <Sparkline snapshots={snapshots} width={72} height={24} />
+          )}
         </div>
       </div>
     </Link>

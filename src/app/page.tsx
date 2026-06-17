@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { PoliticianCard } from "@/components/PoliticianCard";
 import { SearchBar } from "@/components/SearchBar";
 import { FilterBar } from "@/components/FilterBar";
-import { PoliticianCard as PoliticianCardType } from "@/types";
+import { PoliticianCard as PoliticianCardType, ScoreSnapshot } from "@/types";
 
 interface HomeProps {
   searchParams: Promise<{
@@ -17,11 +17,21 @@ interface HomeProps {
   }>;
 }
 
+interface PoliticianWithTrend {
+  card: PoliticianCardType;
+  snapshots: ScoreSnapshot[];
+  latestDelta: number | null;
+}
+
 async function getPoliticians(
   q: string,
   provincia: string,
   sort: string
-): Promise<PoliticianCardType[]> {
+): Promise<PoliticianWithTrend[]> {
+  // Últimos 30 días para sparklines
+  const since = new Date();
+  since.setDate(since.getDate() - 30);
+
   const politicians = await prisma.politician.findMany({
     where: {
       type: "diputado",
@@ -32,40 +42,69 @@ async function getPoliticians(
       periods: {
         orderBy: { startDate: "desc" },
         take: 1,
-        include: { score: true },
+        include: {
+          score: {
+            include: {
+              snapshots: {
+                where: { takenAt: { gte: since } },
+                orderBy: { takenAt: "asc" },
+              },
+            },
+          },
+        },
       },
     },
   });
 
-  const cards: PoliticianCardType[] = politicians
-    .map((p) => {
-      const period = p.periods[0];
-      const score = period?.score;
-      return {
-        id: p.id,
-        fullName: p.fullName,
-        type: p.type as PoliticianCardType["type"],
-        party: p.party,
-        province: p.province,
-        photoUrl: p.photoUrl ?? undefined,
-        active: p.active,
-        overall: score?.overall ?? 0,
-        metrics: score
-          ? { ASI: score.ASI, COM: score.COM, PRO: score.PRO, APR: score.APR, MOC: score.MOC, DEC: score.DEC, GAS: score.GAS, VIA: score.VIA, ASE: score.ASE, VOT: score.VOT, COH: score.COH }
-          : { ASI: 0, COM: 0, PRO: 0, APR: 0, MOC: 0, DEC: 0, GAS: 0, VIA: 0, ASE: 0, VOT: 0, COH: 0 },
-        period: period
-          ? { startDate: period.startDate.toISOString(), endDate: period.endDate.toISOString() }
-          : { startDate: "", endDate: "" },
-      };
-    })
-    .sort((a, b) => {
-      if (sort === "overall_asc") return a.overall - b.overall;
-      if (sort === "name_asc") return a.fullName.localeCompare(b.fullName);
-      if (sort === "name_desc") return b.fullName.localeCompare(a.fullName);
-      return b.overall - a.overall; // overall_desc por defecto
-    });
+  const results: PoliticianWithTrend[] = politicians.map((p) => {
+    const period = p.periods[0];
+    const score = period?.score;
+    const rawSnapshots = score?.snapshots ?? [];
 
-  return cards;
+    const snapshots: ScoreSnapshot[] = rawSnapshots.map((s) => ({
+      id: s.id,
+      takenAt: s.takenAt.toISOString(),
+      source: s.source,
+      overall: s.overall,
+      deltaOverall: s.deltaOverall,
+      metrics: {
+        ASI: s.ASI, COM: s.COM, PRO: s.PRO, APR: s.APR,
+        MOC: s.MOC, DEC: s.DEC, GAS: s.GAS, VIA: s.VIA,
+        ASE: s.ASE, VOT: s.VOT, COH: s.COH,
+      },
+    }));
+
+    // Delta del snapshot más reciente
+    const latestDelta = rawSnapshots.length > 0
+      ? rawSnapshots[rawSnapshots.length - 1].deltaOverall
+      : null;
+
+    const card: PoliticianCardType = {
+      id: p.id,
+      fullName: p.fullName,
+      type: p.type as PoliticianCardType["type"],
+      party: p.party,
+      province: p.province,
+      photoUrl: p.photoUrl ?? undefined,
+      active: p.active,
+      overall: score?.overall ?? 0,
+      metrics: score
+        ? { ASI: score.ASI, COM: score.COM, PRO: score.PRO, APR: score.APR, MOC: score.MOC, DEC: score.DEC, GAS: score.GAS, VIA: score.VIA, ASE: score.ASE, VOT: score.VOT, COH: score.COH }
+        : { ASI: 0, COM: 0, PRO: 0, APR: 0, MOC: 0, DEC: 0, GAS: 0, VIA: 0, ASE: 0, VOT: 0, COH: 0 },
+      period: period
+        ? { startDate: period.startDate.toISOString(), endDate: period.endDate.toISOString() }
+        : { startDate: "", endDate: "" },
+    };
+
+    return { card, snapshots, latestDelta };
+  });
+
+  return results.sort((a, b) => {
+    if (sort === "overall_asc") return a.card.overall - b.card.overall;
+    if (sort === "name_asc") return a.card.fullName.localeCompare(b.card.fullName);
+    if (sort === "name_desc") return b.card.fullName.localeCompare(a.card.fullName);
+    return b.card.overall - a.card.overall;
+  });
 }
 
 export default async function Home({ searchParams }: HomeProps) {
@@ -120,12 +159,21 @@ export default async function Home({ searchParams }: HomeProps) {
           </Suspense>
         </div>
 
-        {/* Contador */}
-        <p className="text-gray-500 text-sm mb-4">
-          {politicians.length} diputados
-          {q && ` · "${q}"`}
-          {provincia && ` · ${provincia}`}
-        </p>
+        {/* Contador + leyenda de tendencias */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-gray-500 text-sm">
+            {politicians.length} diputados
+            {q && ` · "${q}"`}
+            {provincia && ` · ${provincia}`}
+          </p>
+          {politicians.some((p) => p.latestDelta !== null) && (
+            <div className="flex items-center gap-3 text-xs text-gray-500">
+              <span className="flex items-center gap-1 text-emerald-400">▲ subió</span>
+              <span className="flex items-center gap-1 text-red-400">▼ bajó</span>
+              <span className="text-gray-600">vs ayer</span>
+            </div>
+          )}
+        </div>
 
         {/* Grid de tarjetas */}
         {politicians.length === 0 ? (
@@ -135,8 +183,14 @@ export default async function Home({ searchParams }: HomeProps) {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {politicians.map((p, i) => (
-              <PoliticianCard key={p.id} politician={p} rank={sort.startsWith("overall") ? i + 1 : undefined} />
+            {politicians.map(({ card, snapshots, latestDelta }, i) => (
+              <PoliticianCard
+                key={card.id}
+                politician={card}
+                rank={sort.startsWith("overall") ? i + 1 : undefined}
+                snapshots={snapshots}
+                latestDelta={latestDelta}
+              />
             ))}
           </div>
         )}

@@ -5,7 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { ScoreBadge, ScoreBar } from "@/components/ScoreBadge";
-import { METRIC_META, DIMENSION_META } from "@/types";
+import { TrendBadge } from "@/components/TrendBadge";
+import { SparklineCard } from "@/components/Sparkline";
+import { METRIC_META, DIMENSION_META, ScoreSnapshot } from "@/types";
 import { getScoreColor, SCORE_BORDER_CLASSES } from "@/lib/scoreCalculator";
 
 interface Props {
@@ -15,12 +17,25 @@ interface Props {
 export default async function DiputadoPage({ params }: Props) {
   const { id } = await params;
 
+  // Snapshots de los últimos 90 días para el gráfico
+  const since = new Date();
+  since.setDate(since.getDate() - 90);
+
   const politician = await prisma.politician.findUnique({
     where: { id },
     include: {
       periods: {
         orderBy: { startDate: "desc" },
-        include: { score: true },
+        include: {
+          score: {
+            include: {
+              snapshots: {
+                where: { takenAt: { gte: since } },
+                orderBy: { takenAt: "asc" },
+              },
+            },
+          },
+        },
       },
     },
   });
@@ -41,6 +56,22 @@ export default async function DiputadoPage({ params }: Props) {
     : null;
 
   const rawData = score?.rawData as Record<string, unknown> | null;
+
+  // Snapshots para el gráfico de evolución
+  const snapshots: ScoreSnapshot[] = (score?.snapshots ?? []).map((s) => ({
+    id: s.id,
+    takenAt: s.takenAt.toISOString(),
+    source: s.source,
+    overall: s.overall,
+    deltaOverall: s.deltaOverall,
+    metrics: {
+      ASI: s.ASI, COM: s.COM, PRO: s.PRO, APR: s.APR,
+      MOC: s.MOC, DEC: s.DEC, GAS: s.GAS, VIA: s.VIA,
+      ASE: s.ASE, VOT: s.VOT, COH: s.COH,
+    },
+  }));
+
+  const latestSnapshot = snapshots[snapshots.length - 1] ?? null;
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
@@ -93,14 +124,31 @@ export default async function DiputadoPage({ params }: Props) {
                   </div>
                 </div>
 
-                {/* Score grande */}
-                <div className="flex flex-col items-center">
+                {/* Score grande + tendencia */}
+                <div className="flex flex-col items-center gap-1.5">
                   <ScoreBadge score={overall} size="xl" />
-                  <span className="text-xs text-gray-500 mt-1">Overall</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">Overall</span>
+                    {latestSnapshot?.deltaOverall !== undefined && (
+                      <TrendBadge delta={latestSnapshot.deltaOverall} size="sm" />
+                    )}
+                  </div>
+                  {latestSnapshot && (
+                    <span className="text-xs text-gray-600">
+                      {new Date(latestSnapshot.takenAt).toLocaleDateString("es-CR", {
+                        day: "numeric", month: "short",
+                      })}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Gráfico de evolución del score */}
+        <div className="mb-8">
+          <SparklineCard snapshots={snapshots} title="Evolución del score (últimos 90 días)" />
         </div>
 
         {/* Dimensiones */}

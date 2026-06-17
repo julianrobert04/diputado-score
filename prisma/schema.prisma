@@ -69,9 +69,41 @@ model Score {
   rawData   Json     // Datos crudos para auditoría
   updatedAt DateTime @updatedAt
 
-  period Period @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  period    Period          @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  snapshots ScoreSnapshot[]
 
   @@index([overall])
+}
+
+// Snapshot diario — una fila por corrida del ingest
+// Permite ver cómo sube/baja el score con el tiempo
+model ScoreSnapshot {
+  id        String   @id @default(cuid())
+  scoreId   String
+  takenAt   DateTime @default(now()) // Fecha de la corrida
+  source    String   @default("ingest") // "ingest" | "manual" | "cron"
+
+  overall Float
+  ASI     Float
+  COM     Float
+  PRO     Float
+  APR     Float
+  MOC     Float
+  DEC     Float
+  GAS     Float
+  VIA     Float
+  ASE     Float
+  VOT     Float
+  COH     Float
+
+  // Delta vs snapshot anterior (null si es el primero)
+  deltaOverall Float?
+  rawData      Json?
+
+  score Score @relation(fields: [scoreId], references: [id], onDelete: Cascade)
+
+  @@index([scoreId, takenAt])
+  @@index([takenAt])
 }
 
 enum PoliticianType {

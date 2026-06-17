@@ -160,6 +160,23 @@ export const METRIC_META: Record<
   },
 };
 
+export interface ScoreSnapshot {
+  id: string;
+  takenAt: string;       // ISO date
+  source: string;
+  overall: number;
+  deltaOverall: number | null;  // null = primer snapshot
+  metrics: ScoreMetrics;
+}
+
+export interface ScoreTrend {
+  current: number;
+  previous: number | null;
+  delta: number | null;        // positivo = subió, negativo = bajó
+  direction: "up" | "down" | "neutral";
+  snapshots: ScoreSnapshot[];  // últimos N días para la sparkline
+}
+
 export const DIMENSION_META = {
   presencia: { label: "Presencia", metrics: ["ASI", "COM"] as const, weight: 0.15, color: "#3b82f6" },
   productividad: { label: "Productividad", metrics: ["PRO", "APR", "MOC"] as const, weight: 0.25, color: "#10b981" },

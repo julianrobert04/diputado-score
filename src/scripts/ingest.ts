@@ -185,9 +185,11 @@ function calcAverages(rows: DiputadoRow[]): PeriodAverages {
 
 // ─── Ingesta principal ────────────────────────────────────────────────────────
 
-async function ingest() {
+async function ingest(source: string = "ingest") {
+  const runAt = new Date();
   console.log("🏛️  DiputadoScore — Ingesta de datos");
-  console.log("=====================================\n");
+  console.log(`=====================================`);
+  console.log(`🕐 ${runAt.toISOString()}\n`);
 
   // Verificar si hay CSVs reales en /data, si no, usar seed
   const dataDir = path.join(process.cwd(), "data");
@@ -212,6 +214,7 @@ async function ingest() {
 
   let created = 0;
   let updated = 0;
+  let snapshotCount = 0;
 
   for (const row of rows) {
     const rawData: RawData = {
@@ -235,13 +238,11 @@ async function ingest() {
     const overall = calcOverall(metrics);
 
     // Upsert del politician
+    const politicianId = `dep-${row.nombre.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`;
     const politician = await prisma.politician.upsert({
-      where: {
-        // Si ya existe por nombre exacto — en producción usar un ID externo
-        id: `dep-${row.nombre.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`,
-      },
+      where: { id: politicianId },
       create: {
-        id: `dep-${row.nombre.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`,
+        id: politicianId,
         fullName: row.nombre,
         type: "diputado",
         party: row.partido,
@@ -269,8 +270,12 @@ async function ingest() {
       update: { party: row.partido },
     });
 
-    // Upsert del score
-    await prisma.score.upsert({
+    // Upsert del score — guarda el score "actual" (siempre el último)
+    const existingScore = await prisma.score.findUnique({
+      where: { periodId: period.id },
+    });
+
+    const score = await prisma.score.upsert({
       where: { periodId: period.id },
       create: {
         periodId: period.id,
@@ -285,11 +290,54 @@ async function ingest() {
       },
     });
 
-    console.log(`✅ ${row.nombre.padEnd(35)} overall: ${overall.toFixed(1)}`);
-    created++;
+    // ── Snapshot: registrar siempre si el overall cambió o no hay snapshot hoy ──
+    const todayStart = new Date(runAt);
+    todayStart.setHours(0, 0, 0, 0);
+
+    const existingTodaySnapshot = await prisma.scoreSnapshot.findFirst({
+      where: {
+        scoreId: score.id,
+        takenAt: { gte: todayStart },
+      },
+    });
+
+    if (!existingTodaySnapshot) {
+      // Delta vs el snapshot más reciente anterior a hoy
+      const lastSnapshot = await prisma.scoreSnapshot.findFirst({
+        where: { scoreId: score.id },
+        orderBy: { takenAt: "desc" },
+      });
+
+      const deltaOverall = lastSnapshot != null
+        ? Math.round((overall - lastSnapshot.overall) * 10) / 10
+        : null;
+
+      await prisma.scoreSnapshot.create({
+        data: {
+          scoreId: score.id,
+          takenAt: runAt,
+          source,
+          overall,
+          ...metrics,
+          deltaOverall,
+          rawData: rawData as object,
+        },
+      });
+      snapshotCount++;
+    }
+
+    const delta = existingScore ? overall - existingScore.overall : 0;
+    const deltaStr = delta === 0 ? "  —  " : delta > 0 ? `↑ +${delta.toFixed(1)}` : `↓ ${delta.toFixed(1)}`;
+    const isNew = !existingScore;
+
+    console.log(
+      `${isNew ? "🆕" : "🔄"} ${row.nombre.padEnd(35)} ${overall.toFixed(1)}  ${deltaStr}`
+    );
+
+    isNew ? created++ : updated++;
   }
 
-  console.log(`\n🎉 Listo: ${created} diputados procesados`);
+  console.log(`\n✅ Nuevos: ${created}  |  Actualizados: ${updated}  |  Snapshots: ${snapshotCount}`);
   await prisma.$disconnect();
 }
 
