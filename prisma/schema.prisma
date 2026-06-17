@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Politician {
+  id        String         @id @default(cuid())
+  fullName  String
+  type      PoliticianType
+  party     String
+  province  String
+  photoUrl  String?
+  active    Boolean        @default(true)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  periods Period[]
+
+  @@index([type])
+  @@index([province])
+  @@index([active])
+}
+
+model Period {
+  id           String   @id @default(cuid())
+  politicianId String
+  startDate    DateTime
+  endDate      DateTime
+  party        String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  politician Politician @relation(fields: [politicianId], references: [id], onDelete: Cascade)
+  score      Score?
+
+  @@index([politicianId])
+  @@index([startDate, endDate])
+}
+
+model Score {
+  id       String @id @default(cuid())
+  periodId String @unique
+  overall  Float  // 1.0 – 10.0, promedio ponderado
+
+  // Presencia (15%)
+  ASI Float // Asistencia plenario
+  COM Float // Asistencia comisiones
+
+  // Productividad (25%)
+  PRO Float // Proyectos presentados
+  APR Float // Proyectos aprobados
+  MOC Float // Mociones presentadas
+
+  // Transparencia (20%)
+  DEC Float // Declaración de bienes: 10 / 5 / 0
+
+  // Gasto (15%)
+  GAS Float // Gasto representación
+  VIA Float // Viajes oficiales
+  ASE Float // Asesores parlamentarios
+
+  // Consistencia (15%)
+  VOT Float // Participación votaciones
+  COH Float // Coherencia de voto
+
+  rawData   Json     // Datos crudos para auditoría
+  updatedAt DateTime @updatedAt
+
+  period Period @relation(fields: [periodId], references: [id], onDelete: Cascade)
+
+  @@index([overall])
+}
+
+enum PoliticianType {
+  diputado
+  alcalde
+  ejecutivo
+}
