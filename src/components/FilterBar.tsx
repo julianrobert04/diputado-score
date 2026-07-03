@@ -40,7 +40,7 @@ export function FilterBar() {
       <select
         value={searchParams.get("provincia") ?? ""}
         onChange={(e) => updateParam("provincia", e.target.value)}
-        className="px-3 py-2 rounded-xl bg-gray-800 border border-gray-700 text-gray-300 text-sm focus:outline-none focus:border-blue-500"
+        className="px-3 py-2.5 rounded-xl bg-zinc-900 border border-white/[0.07] text-zinc-300 text-sm focus:outline-none focus:border-emerald-500/50 appearance-none cursor-pointer"
       >
         <option value="">Todas las provincias</option>
         {PROVINCIAS.map((p) => (
@@ -52,7 +52,7 @@ export function FilterBar() {
       <select
         value={searchParams.get("sort") ?? "overall_desc"}
         onChange={(e) => updateParam("sort", e.target.value)}
-        className="px-3 py-2 rounded-xl bg-gray-800 border border-gray-700 text-gray-300 text-sm focus:outline-none focus:border-blue-500"
+        className="px-3 py-2.5 rounded-xl bg-zinc-900 border border-white/[0.07] text-zinc-300 text-sm focus:outline-none focus:border-emerald-500/50 appearance-none cursor-pointer"
       >
         {SORT_OPTIONS.map((o) => (
           <option key={o.value} value={o.value}>{o.label}</option>

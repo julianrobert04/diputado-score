@@ -177,6 +177,37 @@ export interface ScoreTrend {
   snapshots: ScoreSnapshot[];  // últimos N días para la sparkline
 }
 
+export type BillStatus = "en_comision" | "aprobado" | "archivado" | "vetado" | "en_plenario" | "en_primer_debate";
+
+export interface LegislativeBill {
+  expediente: string;           // ej. "23.456"
+  title: string;
+  status: BillStatus;
+  submittedAt: string;          // ISO date
+  approvedAt?: string;
+  summary?: string;
+  publicUrl?: string;           // enlace a SINALEVI / Asamblea
+  coauthors?: string[];
+}
+
+export const BILL_STATUS_LABEL: Record<BillStatus, string> = {
+  en_comision:      "En comisión",
+  aprobado:         "Aprobado",
+  archivado:        "Archivado",
+  vetado:           "Vetado",
+  en_plenario:      "En plenario",
+  en_primer_debate: "Primer debate",
+};
+
+export const BILL_STATUS_COLOR: Record<BillStatus, string> = {
+  en_comision:      "text-sky-400 bg-sky-400/10 ring-sky-400/20",
+  aprobado:         "text-emerald-400 bg-emerald-400/10 ring-emerald-400/20",
+  archivado:        "text-zinc-500 bg-zinc-500/10 ring-zinc-500/20",
+  vetado:           "text-rose-400 bg-rose-400/10 ring-rose-400/20",
+  en_plenario:      "text-violet-400 bg-violet-400/10 ring-violet-400/20",
+  en_primer_debate: "text-amber-400 bg-amber-400/10 ring-amber-400/20",
+};
+
 export const DIMENSION_META = {
   presencia: { label: "Presencia", metrics: ["ASI", "COM"] as const, weight: 0.15, color: "#3b82f6" },
   productividad: { label: "Productividad", metrics: ["PRO", "APR", "MOC"] as const, weight: 0.25, color: "#10b981" },

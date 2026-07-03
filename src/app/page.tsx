@@ -7,6 +7,7 @@ import { PoliticianCard } from "@/components/PoliticianCard";
 import { SearchBar } from "@/components/SearchBar";
 import { FilterBar } from "@/components/FilterBar";
 import { PoliticianCard as PoliticianCardType, ScoreSnapshot } from "@/types";
+import { getMockPoliticians, PoliticianWithTrend } from "@/lib/mockData";
 
 interface HomeProps {
   searchParams: Promise<{
@@ -17,94 +18,95 @@ interface HomeProps {
   }>;
 }
 
-interface PoliticianWithTrend {
-  card: PoliticianCardType;
-  snapshots: ScoreSnapshot[];
-  latestDelta: number | null;
-}
-
 async function getPoliticians(
   q: string,
   provincia: string,
   sort: string
 ): Promise<PoliticianWithTrend[]> {
-  // Últimos 30 días para sparklines
-  const since = new Date();
-  since.setDate(since.getDate() - 30);
+  try {
+    // Últimos 30 días para sparklines
+    const since = new Date();
+    since.setDate(since.getDate() - 30);
 
-  const politicians = await prisma.politician.findMany({
-    where: {
-      type: "diputado",
-      ...(q && { fullName: { contains: q, mode: "insensitive" } }),
-      ...(provincia && { province: { contains: provincia, mode: "insensitive" } }),
-    },
-    include: {
-      periods: {
-        orderBy: { startDate: "desc" },
-        take: 1,
-        include: {
-          score: {
-            include: {
-              snapshots: {
-                where: { takenAt: { gte: since } },
-                orderBy: { takenAt: "asc" },
+    const politicians = await prisma.politician.findMany({
+      where: {
+        type: "diputado",
+        ...(q && { fullName: { contains: q, mode: "insensitive" } }),
+        ...(provincia && { province: { contains: provincia, mode: "insensitive" } }),
+      },
+      include: {
+        periods: {
+          orderBy: { startDate: "desc" },
+          take: 1,
+          include: {
+            score: {
+              include: {
+                snapshots: {
+                  where: { takenAt: { gte: since } },
+                  orderBy: { takenAt: "asc" },
+                },
               },
             },
           },
         },
       },
-    },
-  });
+    });
 
-  const results: PoliticianWithTrend[] = politicians.map((p) => {
-    const period = p.periods[0];
-    const score = period?.score;
-    const rawSnapshots = score?.snapshots ?? [];
+    // Si no hay datos en la DB todavía, caer al mock
+    if (politicians.length === 0) return getMockPoliticians(q, provincia, sort);
 
-    const snapshots: ScoreSnapshot[] = rawSnapshots.map((s) => ({
-      id: s.id,
-      takenAt: s.takenAt.toISOString(),
-      source: s.source,
-      overall: s.overall,
-      deltaOverall: s.deltaOverall,
-      metrics: {
-        ASI: s.ASI, COM: s.COM, PRO: s.PRO, APR: s.APR,
-        MOC: s.MOC, DEC: s.DEC, GAS: s.GAS, VIA: s.VIA,
-        ASE: s.ASE, VOT: s.VOT, COH: s.COH,
-      },
-    }));
+    const results: PoliticianWithTrend[] = politicians.map((p) => {
+      const period = p.periods[0];
+      const score = period?.score;
+      const rawSnapshots = score?.snapshots ?? [];
 
-    // Delta del snapshot más reciente
-    const latestDelta = rawSnapshots.length > 0
-      ? rawSnapshots[rawSnapshots.length - 1].deltaOverall
-      : null;
+      const snapshots: ScoreSnapshot[] = rawSnapshots.map((s) => ({
+        id: s.id,
+        takenAt: s.takenAt.toISOString(),
+        source: s.source,
+        overall: s.overall,
+        deltaOverall: s.deltaOverall,
+        metrics: {
+          ASI: s.ASI, COM: s.COM, PRO: s.PRO, APR: s.APR,
+          MOC: s.MOC, DEC: s.DEC, GAS: s.GAS, VIA: s.VIA,
+          ASE: s.ASE, VOT: s.VOT, COH: s.COH,
+        },
+      }));
 
-    const card: PoliticianCardType = {
-      id: p.id,
-      fullName: p.fullName,
-      type: p.type as PoliticianCardType["type"],
-      party: p.party,
-      province: p.province,
-      photoUrl: p.photoUrl ?? undefined,
-      active: p.active,
-      overall: score?.overall ?? 0,
-      metrics: score
-        ? { ASI: score.ASI, COM: score.COM, PRO: score.PRO, APR: score.APR, MOC: score.MOC, DEC: score.DEC, GAS: score.GAS, VIA: score.VIA, ASE: score.ASE, VOT: score.VOT, COH: score.COH }
-        : { ASI: 0, COM: 0, PRO: 0, APR: 0, MOC: 0, DEC: 0, GAS: 0, VIA: 0, ASE: 0, VOT: 0, COH: 0 },
-      period: period
-        ? { startDate: period.startDate.toISOString(), endDate: period.endDate.toISOString() }
-        : { startDate: "", endDate: "" },
-    };
+      const latestDelta = rawSnapshots.length > 0
+        ? rawSnapshots[rawSnapshots.length - 1].deltaOverall
+        : null;
 
-    return { card, snapshots, latestDelta };
-  });
+      const card: PoliticianCardType = {
+        id: p.id,
+        fullName: p.fullName,
+        type: p.type as PoliticianCardType["type"],
+        party: p.party,
+        province: p.province,
+        photoUrl: p.photoUrl ?? undefined,
+        active: p.active,
+        overall: score?.overall ?? 0,
+        metrics: score
+          ? { ASI: score.ASI, COM: score.COM, PRO: score.PRO, APR: score.APR, MOC: score.MOC, DEC: score.DEC, GAS: score.GAS, VIA: score.VIA, ASE: score.ASE, VOT: score.VOT, COH: score.COH }
+          : { ASI: 0, COM: 0, PRO: 0, APR: 0, MOC: 0, DEC: 0, GAS: 0, VIA: 0, ASE: 0, VOT: 0, COH: 0 },
+        period: period
+          ? { startDate: period.startDate.toISOString(), endDate: period.endDate.toISOString() }
+          : { startDate: "", endDate: "" },
+      };
 
-  return results.sort((a, b) => {
-    if (sort === "overall_asc") return a.card.overall - b.card.overall;
-    if (sort === "name_asc") return a.card.fullName.localeCompare(b.card.fullName);
-    if (sort === "name_desc") return b.card.fullName.localeCompare(a.card.fullName);
-    return b.card.overall - a.card.overall;
-  });
+      return { card, snapshots, latestDelta };
+    });
+
+    return results.sort((a, b) => {
+      if (sort === "overall_asc") return a.card.overall - b.card.overall;
+      if (sort === "name_asc") return a.card.fullName.localeCompare(b.card.fullName);
+      if (sort === "name_desc") return b.card.fullName.localeCompare(a.card.fullName);
+      return b.card.overall - a.card.overall;
+    });
+  } catch {
+    // Sin DB (desarrollo local) — usar datos mock
+    return getMockPoliticians(q, provincia, sort);
+  }
 }
 
 export default async function Home({ searchParams }: HomeProps) {
@@ -112,43 +114,50 @@ export default async function Home({ searchParams }: HomeProps) {
   const politicians = await getPoliticians(q, provincia, sort);
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      {/* Header */}
-      <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-xl font-black text-white">
-              Diputado<span className="text-blue-400">Score</span>
+    <div className="min-h-screen bg-[#0c0c0e] text-white">
+
+      {/* Header — minimalista, sin ruido */}
+      <header className="sticky top-0 z-50 bg-[#0c0c0e]/80 backdrop-blur-xl border-b border-white/[0.05]">
+        <div className="max-w-7xl mx-auto px-5 h-14 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <span className="text-[1.05rem] font-black tracking-tight text-white">
+              Diputado<span className="text-emerald-400">Score</span>
             </span>
-            <span className="text-xs text-gray-500 hidden sm:block">Costa Rica</span>
+            <span className="hidden sm:inline-flex items-center text-[0.65rem] font-semibold text-zinc-600 bg-zinc-800/60 px-2 py-0.5 rounded-full border border-white/[0.05] tracking-wide uppercase">
+              Costa Rica
+            </span>
           </Link>
-          <nav className="flex items-center gap-4 text-sm text-gray-400">
-            <Link href="/" className="hover:text-white transition-colors font-medium text-white">
+          <nav className="flex items-center gap-1">
+            <Link href="/" className="px-3 py-1.5 rounded-lg text-sm font-medium text-white bg-white/[0.07] transition-colors">
               Diputados
             </Link>
-            <Link href="/rankings" className="hover:text-white transition-colors">
+            <Link href="/rankings" className="px-3 py-1.5 rounded-lg text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors">
               Rankings
             </Link>
           </nav>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-5 py-12">
+
         {/* Hero */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl sm:text-4xl font-black mb-3">
-            ¿Cuánto trabaja tu{" "}
-            <span className="text-blue-400">diputado</span>?
+        <div className="mb-12">
+          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 py-1 mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-400 text-[0.7rem] font-semibold tracking-wide uppercase">Datos públicos · Asamblea Legislativa</span>
+          </div>
+          <h1 className="text-4xl sm:text-[3.25rem] font-black tracking-tight leading-[1.05] mb-4">
+            ¿Cuánto trabaja<br className="hidden sm:block" />
+            {" "}tu <span className="text-emerald-400">diputado</span>?
           </h1>
-          <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">
-            Calificaciones basadas en datos públicos reales — asistencia, proyectos, gasto y más.
-            <br className="hidden sm:block" />
-            Si entendés el 7.8 de Keylor, entendés el score de tu diputado.
+          <p className="text-zinc-500 text-base max-w-lg leading-relaxed">
+            Scores del 1 al 10 basados en asistencia, proyectos de ley, gasto y transparencia.
+            Como el rating de Keylor — pero para la Asamblea.
           </p>
         </div>
 
-        {/* Búsqueda y filtros */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-8">
+        {/* Search + filters */}
+        <div className="flex flex-col sm:flex-row gap-2.5 mb-8">
           <div className="flex-1">
             <Suspense>
               <SearchBar />
@@ -159,30 +168,32 @@ export default async function Home({ searchParams }: HomeProps) {
           </Suspense>
         </div>
 
-        {/* Contador + leyenda de tendencias */}
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-gray-500 text-sm">
+        {/* Count + legend */}
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-zinc-600 text-xs font-medium tracking-widest uppercase">
             {politicians.length} diputados
-            {q && ` · "${q}"`}
-            {provincia && ` · ${provincia}`}
+            {q && <span className="text-zinc-500 normal-case ml-1.5">· &ldquo;{q}&rdquo;</span>}
+            {provincia && <span className="text-zinc-500 normal-case ml-1.5">· {provincia}</span>}
           </p>
           {politicians.some((p) => p.latestDelta !== null) && (
-            <div className="flex items-center gap-3 text-xs text-gray-500">
-              <span className="flex items-center gap-1 text-emerald-400">▲ subió</span>
-              <span className="flex items-center gap-1 text-red-400">▼ bajó</span>
-              <span className="text-gray-600">vs ayer</span>
+            <div className="flex items-center gap-3 text-[0.68rem] text-zinc-600">
+              <span className="flex items-center gap-1"><span className="text-emerald-400">▲</span> subió</span>
+              <span className="flex items-center gap-1"><span className="text-rose-400">▼</span> bajó</span>
+              <span className="text-zinc-700">vs ayer</span>
             </div>
           )}
         </div>
 
-        {/* Grid de tarjetas */}
+        {/* Grid */}
         {politicians.length === 0 ? (
-          <div className="text-center py-24 text-gray-600">
-            <p className="text-lg">No se encontraron diputados</p>
-            <p className="text-sm mt-2">Ejecutá <code className="bg-gray-800 px-1.5 py-0.5 rounded">npx tsx src/scripts/ingest.ts</code> para cargar datos</p>
+          <div className="text-center py-32 text-zinc-700">
+            <p className="text-base font-medium">No se encontraron diputados</p>
+            <p className="text-sm mt-2 text-zinc-800">
+              Corré <code className="bg-zinc-900 px-1.5 py-0.5 rounded text-zinc-500">npm run ingest</code> para cargar datos
+            </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
             {politicians.map(({ card, snapshots, latestDelta }, i) => (
               <PoliticianCard
                 key={card.id}
@@ -196,10 +207,10 @@ export default async function Home({ searchParams }: HomeProps) {
         )}
       </main>
 
-      <footer className="mt-16 border-t border-gray-800 py-8">
-        <div className="max-w-7xl mx-auto px-4 text-center text-gray-600 text-sm">
+      <footer className="mt-20 border-t border-white/[0.04] py-8">
+        <div className="max-w-7xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-zinc-700 text-xs">
           <p>Datos: Asamblea Legislativa Open Data · CGR · Delfino.cr</p>
-          <p className="mt-1">DiputadoScore no es afiliado a ningún partido político.</p>
+          <p>DiputadoScore no es afiliado a ningún partido político.</p>
         </div>
       </footer>
     </div>

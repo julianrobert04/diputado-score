@@ -49,9 +49,9 @@ export function SearchBar() {
         placeholder="Buscar diputado..."
         className="
           w-full pl-9 pr-4 py-2.5 rounded-xl
-          bg-gray-800 border border-gray-700
-          text-white placeholder-gray-500
-          focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+          bg-zinc-900 border border-white/[0.07]
+          text-white placeholder-zinc-600
+          focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30
           text-sm transition-colors
         "
       />
