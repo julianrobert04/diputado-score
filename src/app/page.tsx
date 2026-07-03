@@ -142,6 +142,14 @@ export default async function Home({ searchParams }: HomeProps) {
 
         {/* Hero */}
         <div className="mb-12">
+          {/* Cita apertura */}
+          <div className="mb-7 border-l-2 border-zinc-700 pl-4">
+            <p className="text-zinc-400 text-sm italic leading-relaxed">
+              "Un país que le exige más a un futbolista que a un político<br className="hidden sm:block" /> está condenado a la mediocridad."
+            </p>
+            <span className="text-zinc-600 text-xs mt-1 block">— Anónimo</span>
+          </div>
+
           <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 py-1 mb-5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-emerald-400 text-[0.7rem] font-semibold tracking-wide uppercase">Datos públicos · Asamblea Legislativa</span>
