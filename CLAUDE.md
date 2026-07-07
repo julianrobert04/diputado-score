@@ -114,16 +114,29 @@ El script de ingesta usa `https.Agent({ rejectUnauthorized: false })`.
 
 | Fuente | Qué trae | Estado |
 |--------|----------|--------|
+| `asamblea.go.cr/pa/datosabiertos` | **Asistencia real mensual (xlsx)** — PL + comisiones, 57 diputados desde 2026-05 | ✅ **Integrado** (`npm run ingest:opendata`) |
+| `asamblea.go.cr/pa/datosabiertos` GastosViajes | Viajes institucionales (xlsx mensual) | ✅ Parser listo — aún sin archivos de la legislatura nueva |
 | `asamblea.go.cr` SharePoint | Fotos de 52/57 diputados | ✅ Funcionando |
 | `cgrfiles.cgr.go.cr` | CSV aggregate de DJB (no por diputado) | ⚠ Aggregate only |
 | `cgr.go.cr/morosos` | Lista HTML de incumplidores DJB | ⚠ Necesita adaptar parser |
+
+Los datos reales viven en `data/real-data.json` (versionado). `mockData.ts` los mezcla
+sobre las métricas simuladas vía `mergeRealData()` y expone `getRealMetrics(id)` +
+`REAL_DATA_INFO` para que la UI marque qué es real vs estimado.
+
+**Actualización automática:** `.github/workflows/update-data.yml` corre cada lunes,
+re-ingesta y commitea si hay datos nuevos → Vercel redespliega solo.
+
+**Ojo:** los xlsx oficiales usan formato "Apellidos Nombre" y tienen typos
+(ej. "Chavaría"); el matcher usa Jaccard con tolerancia de 1 edición por token.
+Los nombres de mockData se corrigieron contra el xlsx oficial (Esmeralda Britton,
+Gerald Bogantes, Roberth Barrantes, Kattya Mora, Kattia Calvo, Joselyn Sáenz Blanco).
 
 ### ❌ Lo que NO funciona (y por qué)
 
 | Fuente | Problema |
 |--------|----------|
 | `delfino.cr/asamblea/...` | App React CSR — no hay datos en el HTML, API privada |
-| `asamblea.go.cr/opendata/...` | URLs 404 — el portal de datos no existe aún para 2026 |
 | `sil.go.cr` | No responde desde fuera de Costa Rica |
 
 ### 🔮 Cómo conseguir datos reales cuando estén disponibles

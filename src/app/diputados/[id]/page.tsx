@@ -11,7 +11,7 @@ import { SparklineCard } from "@/components/Sparkline";
 import { RadarChart } from "@/components/RadarChart";
 import { METRIC_META, DIMENSION_META, ScoreSnapshot, LegislativeBill, BILL_STATUS_LABEL, BILL_STATUS_COLOR, ScoreMetrics } from "@/types";
 import { getScoreColor } from "@/lib/scoreCalculator";
-import { getMockPoliticianById, getMockPoliticians } from "@/lib/mockData";
+import { getMockPoliticianById, getMockPoliticians, getRealMetrics, RealMetric } from "@/lib/mockData";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -170,6 +170,7 @@ export default async function DiputadoPage({ params }: Props) {
   // Ranking entre los 57 diputados
   const allPoliticians = getMockPoliticians("", "", "overall_desc");
   const rankIndex = allPoliticians.findIndex((p) => p.card.id === id);
+  const realMetrics = getRealMetrics(id);
   const rankPosition = rankIndex >= 0 ? rankIndex + 1 : null;
   const totalDiputados = allPoliticians.length;
 
@@ -325,6 +326,15 @@ export default async function DiputadoPage({ params }: Props) {
                           {value.toFixed(1)}
                         </span>
                         <span className="text-sm font-semibold text-white truncate">{meta.label}</span>
+                        {realMetrics.includes(code as RealMetric) ? (
+                          <span className="text-[0.6rem] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded-md uppercase tracking-wide flex-shrink-0">
+                            Dato real
+                          </span>
+                        ) : (
+                          <span className="text-[0.6rem] text-zinc-600 bg-zinc-800/60 px-1.5 py-0.5 rounded-md uppercase tracking-wide flex-shrink-0">
+                            Estimado
+                          </span>
+                        )}
                       </div>
                       <span className="text-[0.65rem] text-zinc-600 bg-zinc-800 px-1.5 py-0.5 rounded-md tabular-nums flex-shrink-0 ml-2">
                         {(meta.weight * 100).toFixed(0)}%

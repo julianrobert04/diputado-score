@@ -1,0 +1,580 @@
+{
+  "updatedAt": "2026-07-07T17:52:28.307Z",
+  "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
+  "attendanceMonths": [
+    "2026-05"
+  ],
+  "tripMonths": [],
+  "deputies": {
+    "dep-nogui-acosta": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 12,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Acosta Jaén Nogui"
+    },
+    "dep-angela-aguilar": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 7,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Aguilar Vargas Ángela"
+    },
+    "dep-iztaru-alfaro": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 7,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Alfaro Guerrero Iztarú"
+    },
+    "dep-karen-alfaro": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Alfaro Jiménez Karen"
+    },
+    "dep-edgardo-araya": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 7,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Araya Sibaja Edgardo"
+    },
+    "dep-reynaldo-arias": {
+      "asisPL": 15,
+      "ausPL": 3,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Arias Mora Reynaldo"
+    },
+    "dep-osvaldo-artavia": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Artavia Carballo Osvaldo"
+    },
+    "dep-grethel-avila": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 10,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Ávila Vargas Gréthel María"
+    },
+    "dep-marco-badilla": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Badilla Chavaría Marco"
+    },
+    "dep-robert-barrantes": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Barrantes Camacho Roberth Junior"
+    },
+    "dep-antonio-barzuna": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Barzuna Thompson Antonio"
+    },
+    "dep-cindy-blanco": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Blanco González Cindy María"
+    },
+    "dep-gerardo-bogantes": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 8,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Bogantes Rivera Gerald"
+    },
+    "dep-sadie-britton": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Britton González Esmeralda"
+    },
+    "dep-stephan-brunner": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Brunner Neibig Stephan"
+    },
+    "dep-jesus-calderon": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 4,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Calderón Calderón Jesús"
+    },
+    "dep-kathia-calvo": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Calvo Cruz Kattia"
+    },
+    "dep-maria-camareno": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Camareno Camareno María Isabel"
+    },
+    "dep-ronald-campos": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 4,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Campos Villegas Ronald"
+    },
+    "dep-claudia-dobles": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 4,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Dobles Camargo Claudia"
+    },
+    "dep-anaruth-esquivel": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Esquivel Medrano Ana Ruth"
+    },
+    "dep-marta-esquivel": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Esquivel Rodríguez Marta Eugenia"
+    },
+    "dep-abril-gordienko": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Gordienko López Abril"
+    },
+    "dep-nayuribe-guadamuz": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Guadamuz Rosales Nayuribe"
+    },
+    "dep-eder-hernandez": {
+      "asisPL": 17,
+      "ausPL": 1,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Hernández Ulloa Eder"
+    },
+    "dep-victor-hidalgo": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Hidalgo Solís Víctor"
+    },
+    "dep-wilson-jimenez": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Jiménez Cordero Wilson Alfredo"
+    },
+    "dep-yara-jimenez": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Jiménez Fallas Yara"
+    },
+    "dep-norjelens-lobo": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Lobo Vargas Norjelens María"
+    },
+    "dep-karol-matamoros": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Matamoros Montoya Karol Vanessa"
+    },
+    "dep-mangell-mclean": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 4,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Mc Lean Villalobos Mangell"
+    },
+    "dep-ariel-mora": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Mora Fallas Ariel"
+    },
+    "dep-kattia-mora": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 7,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Mora Montoya Kattya"
+    },
+    "dep-royner-mora": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Mora Ruiz Royner G."
+    },
+    "dep-vianey-mora": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 4,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Mora Vega Vianey"
+    },
+    "dep-anna-muller": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Müller Castro Anna Katharina"
+    },
+    "dep-cindy-murillo": {
+      "asisPL": 17,
+      "ausPL": 1,
+      "permPL": 0,
+      "asisCom": 8,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Murillo Artavia Cindy"
+    },
+    "dep-zaira-murillo": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Murillo Marín Zaira"
+    },
+    "dep-diana-murillo": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Murillo Murillo Diana"
+    },
+    "dep-fernando-obaldia": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Obaldía Álvarez Fernando"
+    },
+    "dep-mayuli-ortega": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Ortega Guzmán Mayuli"
+    },
+    "dep-salvador-padilla": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 7,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Padilla Villanueva Salvador"
+    },
+    "dep-juan-quesada": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Quesada Espinoza Juan Manuel"
+    },
+    "dep-alvaro-ramirez": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 8,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Ramírez Bogantes Álvaro"
+    },
+    "dep-gonzalo-ramirez": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 7,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Ramírez Zamora Gonzalo"
+    },
+    "dep-maria-roman": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Román Mora María Eugenia"
+    },
+    "dep-joselyn-saenz": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 7,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Sáenz Blanco Joselyn"
+    },
+    "dep-janice-sandi": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Sandí Morales Janice"
+    },
+    "dep-sigrid-segura": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Segura Artavia Sigrid"
+    },
+    "dep-daniel-siezar": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 8,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Siézar Cárdenas Daniel"
+    },
+    "dep-antonio-trejos": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 7,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Trejos Mazariegos Antonio"
+    },
+    "dep-kattia-ulate": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 8,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Ulate Alvarado Kattia María"
+    },
+    "dep-andrea-valverde": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 5,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Valverde Palavicini Andrea"
+    },
+    "dep-rafael-vargas": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 4,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Vargas Brenes Rafael"
+    },
+    "dep-jose-villalobos": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 6,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Villalobos Umaña José Miguel"
+    },
+    "dep-jose-villalta": {
+      "asisPL": 18,
+      "ausPL": 0,
+      "permPL": 0,
+      "asisCom": 8,
+      "ausCom": 0,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Villalta Flórez-Estrada José María"
+    },
+    "dep-kristel-ward": {
+      "asisPL": 6,
+      "ausPL": 12,
+      "permPL": 0,
+      "asisCom": 2,
+      "ausCom": 3,
+      "permCom": 0,
+      "viajes": 0,
+      "nombreXlsx": "Ward Hudson Kristel"
+    }
+  }
+}

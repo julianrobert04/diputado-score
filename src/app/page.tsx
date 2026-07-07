@@ -7,7 +7,7 @@ import { PoliticianCard } from "@/components/PoliticianCard";
 import { SearchBar } from "@/components/SearchBar";
 import { FilterBar } from "@/components/FilterBar";
 import { PoliticianCard as PoliticianCardType, ScoreSnapshot } from "@/types";
-import { getMockPoliticians, PoliticianWithTrend } from "@/lib/mockData";
+import { getMockPoliticians, PoliticianWithTrend, REAL_DATA_INFO } from "@/lib/mockData";
 import { getScoreColor } from "@/lib/scoreCalculator";
 
 const PARTIDO_SHORT: Record<string, string> = {
@@ -17,6 +17,17 @@ const PARTIDO_SHORT: Record<string, string> = {
   "Coalición Agenda Ciudadana": "CAC",
   "Partido Unidad Social Cristiana": "PUSC",
 };
+
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
+
+function formatMonths(months: string[]): string {
+  if (!months.length) return "sin datos aún";
+  const fmt = (m: string) => {
+    const [y, mm] = m.split("-");
+    return `${MESES[parseInt(mm, 10) - 1]} ${y}`;
+  };
+  return months.length === 1 ? fmt(months[0]) : `${fmt(months[0])} – ${fmt(months[months.length - 1])}`;
+}
 
 // Nombres ticos: nombres de pila + dos apellidos → mostrar primer nombre + primer apellido
 function shortName(fullName: string): string {
@@ -195,9 +206,16 @@ export default async function Home({ searchParams }: HomeProps) {
             <span className="text-zinc-600 text-xs mt-1 block">— Anónimo</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 py-1 mb-5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-emerald-400 text-[0.7rem] font-semibold tracking-wide uppercase">Datos públicos · Asamblea Legislativa</span>
+          <div className="flex flex-wrap items-center gap-2 mb-5">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 py-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-emerald-400 text-[0.7rem] font-semibold tracking-wide uppercase">
+                Asistencia oficial · {formatMonths(REAL_DATA_INFO.attendanceMonths)}
+              </span>
+            </div>
+            <span className="text-zinc-600 text-[0.7rem]">
+              Actualizado {new Date(REAL_DATA_INFO.updatedAt).toLocaleDateString("es-CR", { day: "numeric", month: "long", year: "numeric" })} · datos abiertos de la Asamblea
+            </span>
           </div>
           <h1 className="text-4xl sm:text-[3.25rem] font-black tracking-tight leading-[1.05] mb-4">
             ¿Cuánto trabaja<br className="hidden sm:block" />
@@ -205,7 +223,8 @@ export default async function Home({ searchParams }: HomeProps) {
           </h1>
           <p className="text-zinc-500 text-base max-w-lg leading-relaxed">
             Scores del 1 al 10 basados en asistencia, proyectos de ley, gasto y transparencia.
-            Como el rating de Keylor — pero para la Asamblea.
+            Como el rating de Keylor — pero para la Asamblea. La asistencia usa datos oficiales;
+            las demás métricas son estimadas mientras la Asamblea publica sus fuentes.
           </p>
         </div>
 

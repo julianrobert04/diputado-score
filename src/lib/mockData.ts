@@ -6,6 +6,7 @@
 import { PoliticianCard, ScoreSnapshot, LegislativeBill } from "@/types";
 import { calcMetrics, calcOverall } from "./scoreCalculator";
 import { RawData } from "@/types";
+import realData from "../../data/real-data.json";
 
 const PERIOD_AVGS = {
   avgProyectos: 12.25,
@@ -58,22 +59,22 @@ const BASE_PHOTO = "https://www.asamblea.go.cr/Diputados/SiteAssets/2026-2030";
 const PHOTO_OVERRIDES: Record<string, string> = {
   // PPSO
   "Nogui Acosta Jaén":                  "ps_acosta_jaen",
-  "Kattia Mora Montoya":                "ps_mora_montoya",
+  "Kattya Mora Montoya":                "ps_mora_montoya",
   "Stephan Brunner Neibig":             "ps_brunner_neibig",
   "Mayuli Ortega Guzmán":               "ps_ortega_guzman",
   "Gonzalo Ramírez Zamora":             "ps_ramirez_zamora",
   "Anna Katharina Müller Castro":       "ps_muller_castro",
   "Antonio Barzuna Thompson":           "ps_barzuna_thompson",
-  "Sadie Britton González":             "ps_britton_gonzalez",
+  "Esmeralda Britton González":             "ps_britton_gonzalez",
   "José Miguel Villalobos Umaña":       "ps_villalobos_umana",
   "Zaira Murillo Marín":                "ps_murillo_marin",
-  "Gerardo Bogantes Rivera":            "ps_bogantes_rivera",
+  "Gerald Bogantes Rivera":            "ps_bogantes_rivera",
   "Grethel María Ávila Vargas":         "ps_avila_vargas",
   "Wilson Jiménez Cordero":             "ps_jimenez_cordero",
   "Kattia Ulate Alvarado":              "ps_ulate_alvarado",
   "Fernando Obaldía Álvarez":           "ps_obaldia_alvarez",
   "Cindy Blanco González":              "ps_blanco_gonzalez",
-  "Robert Barrantes Camacho":           "ps_barrantes_camacho",
+  "Roberth Barrantes Camacho":           "ps_barrantes_camacho",
   "Marta Esquivel Rodríguez":           "ps_esquivel_rodriguez",
   "Juan Manuel Quesada Espinoza":       "ps_quesada_espinoza",
   "Daniel Siezar Cárdenas":             "ps_siezar_cardenas",
@@ -83,7 +84,7 @@ const PHOTO_OVERRIDES: Record<string, string> = {
   "Ana Ruth Esquivel Medrano":          "ps_esquivel_medrano",
   "Osvaldo Artavia Carballo":           "ps_artavia_carballo",
   "Kristel Ward Hudson":                "ps_ward_hudson",
-  "Kathia Calvo Cruz":                  "ps_calvo_cruz",
+  "Kattia Calvo Cruz":                  "ps_calvo_cruz",
   "Reynaldo Arias Mora":                "ps_arias_mora",
   // PLN
   "Álvaro Ramírez Bogantes":            "ln_ramirez_bogantes",
@@ -122,6 +123,62 @@ function photoUrl(fullName: string, _partido: string): string {
   return ""; // sin foto — mostrará inicial
 }
 
+// ── Datos reales (portal de datos abiertos de la Asamblea) ──────────────
+
+interface RealDeputy {
+  asisPL: number;
+  ausPL: number;
+  permPL: number;
+  asisCom: number;
+  ausCom: number;
+  permCom: number;
+  viajes: number;
+  nombreXlsx: string;
+}
+
+const REAL_DEPUTIES = realData.deputies as Record<string, RealDeputy>;
+
+export type RealMetric = "ASI" | "COM" | "VIA";
+
+export const REAL_DATA_INFO = {
+  updatedAt: realData.updatedAt,
+  source: realData.source,
+  attendanceMonths: realData.attendanceMonths as string[],
+  tripMonths: realData.tripMonths as string[],
+  deputiesCount: Object.keys(REAL_DEPUTIES).length,
+};
+
+/** Reemplaza métricas simuladas por las reales disponibles para este diputado */
+function mergeRealData(id: string, raw: RawData): { raw: RawData; realMetrics: RealMetric[] } {
+  const r = REAL_DEPUTIES[id];
+  if (!r) return { raw, realMetrics: [] };
+  const merged = { ...raw };
+  const realMetrics: RealMetric[] = [];
+
+  const totalPL = r.asisPL + r.ausPL + r.permPL;
+  if (totalPL > 0) {
+    merged.sesionesAsistidas = r.asisPL;
+    merged.sesionesTotales = totalPL;
+    realMetrics.push("ASI");
+  }
+  const totalCom = r.asisCom + r.ausCom + r.permCom;
+  if (totalCom > 0) {
+    merged.comisionesAsistidas = r.asisCom;
+    merged.comisionesTotales = totalCom;
+    realMetrics.push("COM");
+  }
+  if (REAL_DATA_INFO.tripMonths.length > 0) {
+    merged.viajesOficiales = r.viajes;
+    realMetrics.push("VIA");
+  }
+  return { raw: merged, realMetrics };
+}
+
+/** Métricas de este diputado que vienen de datos oficiales, no simuladas */
+export function getRealMetrics(id: string): RealMetric[] {
+  return SEED.find((r) => r.id === id)?.realMetrics ?? [];
+}
+
 // ── Tipos ────────────────────────────────────────────────────────────────
 
 interface SeedRow {
@@ -130,6 +187,7 @@ interface SeedRow {
   partido: string;
   provincia: string;
   raw: RawData;
+  realMetrics: RealMetric[];
   history?: number[];
   bills?: LegislativeBill[];
   photoUrl?: string;
@@ -148,22 +206,22 @@ const USC  = "Partido Unidad Social Cristiana";
 const DIPUTADOS: DepTuple[] = [
   // ── Partido Pueblo Soberano — 31 escaños ────────────────────────────
   ["dep-nogui-acosta",        "Nogui Acosta Jaén",                  PPSO, "San José",   7.2],
-  ["dep-kattia-mora",         "Kattia Mora Montoya",                PPSO, "San José",   6.5],
+  ["dep-kattia-mora",         "Kattya Mora Montoya",                PPSO, "San José",   6.5],
   ["dep-stephan-brunner",     "Stephan Brunner Neibig",             PPSO, "San José",   6.8],
   ["dep-mayuli-ortega",       "Mayuli Ortega Guzmán",               PPSO, "San José",   6.1],
   ["dep-gonzalo-ramirez",     "Gonzalo Ramírez Zamora",             PPSO, "San José",   5.9],
   ["dep-anna-muller",         "Anna Katharina Müller Castro",       PPSO, "San José",   6.3],
   ["dep-antonio-barzuna",     "Antonio Barzuna Thompson",           PPSO, "San José",   5.7],
-  ["dep-sadie-britton",       "Sadie Britton González",             PPSO, "San José",   5.4],
+  ["dep-sadie-britton",       "Esmeralda Britton González",             PPSO, "San José",   5.4],
   ["dep-jose-villalobos",     "José Miguel Villalobos Umaña",       PPSO, "Alajuela",   6.6],
   ["dep-zaira-murillo",       "Zaira Murillo Marín",                PPSO, "Alajuela",   6.2],
-  ["dep-gerardo-bogantes",    "Gerardo Bogantes Rivera",            PPSO, "Alajuela",   5.8],
+  ["dep-gerardo-bogantes",    "Gerald Bogantes Rivera",            PPSO, "Alajuela",   5.8],
   ["dep-grethel-avila",       "Grethel María Ávila Vargas",         PPSO, "Alajuela",   6.0],
   ["dep-wilson-jimenez",      "Wilson Jiménez Cordero",             PPSO, "Alajuela",   5.5],
   ["dep-kattia-ulate",        "Kattia Ulate Alvarado",              PPSO, "Alajuela",   5.9],
   ["dep-fernando-obaldia",    "Fernando Obaldía Álvarez",           PPSO, "Alajuela",   6.4],
   ["dep-cindy-blanco",        "Cindy Blanco González",              PPSO, "Cartago",    5.6],
-  ["dep-robert-barrantes",    "Robert Barrantes Camacho",           PPSO, "Cartago",    5.3],
+  ["dep-robert-barrantes",    "Roberth Barrantes Camacho",           PPSO, "Cartago",    5.3],
   ["dep-yara-jimenez",        "Yara Jiménez Fallas",                PPSO, "Cartago",    5.8],
   ["dep-marta-esquivel",      "Marta Esquivel Rodríguez",           PPSO, "Heredia",    6.1],
   ["dep-juan-quesada",        "Juan Manuel Quesada Espinoza",       PPSO, "Heredia",    6.4],
@@ -176,7 +234,7 @@ const DIPUTADOS: DepTuple[] = [
   ["dep-anaruth-esquivel",    "Ana Ruth Esquivel Medrano",          PPSO, "Puntarenas", 5.4],
   ["dep-osvaldo-artavia",     "Osvaldo Artavia Carballo",           PPSO, "Limón",      5.8],
   ["dep-kristel-ward",        "Kristel Ward Hudson",                PPSO, "Limón",      5.3],
-  ["dep-kathia-calvo",        "Kathia Calvo Cruz",                  PPSO, "Limón",      5.6],
+  ["dep-kathia-calvo",        "Kattia Calvo Cruz",                  PPSO, "Limón",      5.6],
   ["dep-reynaldo-arias",      "Reynaldo Arias Mora",                PPSO, "Limón",      5.0],
 
   // ── Partido Liberación Nacional — 17 escaños ────────────────────────
@@ -204,7 +262,7 @@ const DIPUTADOS: DepTuple[] = [
   ["dep-antonio-trejos",      "Antonio Trejos Mazariegos",          FA,   "San José",   7.5],
   ["dep-edgardo-araya",       "Edgardo Araya Sibaja",               FA,   "Alajuela",   7.9],
   ["dep-sigrid-segura",       "Sigrid Segura Artavia",              FA,   "Alajuela",   7.4],
-  ["dep-joselyn-saenz",       "Joselyn Sáenz Núñez",                FA,   "Cartago",    7.6],
+  ["dep-joselyn-saenz",       "Joselyn Sáenz Blanco",                FA,   "Cartago",    7.6],
   ["dep-maria-roman",         "María Eugenia Román Mora",           FA,   "Heredia",    7.3],
 
   // ── Coalición Agenda Ciudadana — 1 escaño ───────────────────────────
@@ -248,16 +306,20 @@ const BILLS_BY_ID: Record<string, LegislativeBill[]> = {
 
 // ── Construcción del SEED ─────────────────────────────────────────────────
 
-const SEED: SeedRow[] = DIPUTADOS.map(([id, nombre, partido, provincia, quality], idx) => ({
-  id,
-  nombre,
-  partido,
-  provincia,
-  raw:     makeRaw(quality, idx + 1),
-  history: makeHistoryFromQ(quality, idx + 1),
-  bills:   BILLS_BY_ID[id] ?? [],
-  photoUrl: photoUrl(nombre, partido),
-}));
+const SEED: SeedRow[] = DIPUTADOS.map(([id, nombre, partido, provincia, quality], idx) => {
+  const { raw, realMetrics } = mergeRealData(id, makeRaw(quality, idx + 1));
+  return {
+    id,
+    nombre,
+    partido,
+    provincia,
+    raw,
+    realMetrics,
+    history: makeHistoryFromQ(quality, idx + 1),
+    bills:   BILLS_BY_ID[id] ?? [],
+    photoUrl: photoUrl(nombre, partido),
+  };
+});
 
 // ── Snapshots ────────────────────────────────────────────────────────────
 

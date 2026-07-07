@@ -1,0 +1,40 @@
+name: Actualización semanal de datos
+
+on:
+  schedule:
+    # Lunes 12:00 UTC (6:00 am Costa Rica)
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Descargar datos abiertos de la Asamblea
+        run: npm run ingest:opendata
+
+      - name: Commit y push si hay datos nuevos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Contar cambios reales, ignorando el timestamp updatedAt
+          REAL_CHANGES=$(git diff -U0 -- data/real-data.json | grep -E '^[+-]\s*"' | grep -vc updatedAt || true)
+          if [ "$REAL_CHANGES" -eq 0 ]; then
+            echo "Sin datos nuevos esta semana"
+            exit 0
+          fi
+          git add data/real-data.json
+          git commit -m "data: actualización semanal de datos abiertos de la Asamblea"
+          git push
