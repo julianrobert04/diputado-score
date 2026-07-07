@@ -547,7 +547,7 @@ async function main() {
 
   console.log("\n📊 Calculando scores reales...\n");
 
-  const results: { nombre: string; overall: number; metrics: Record<string, number>; raw: Record<string, unknown> }[] = [];
+  const results: { nombre: string; overall: number; metrics: ReturnType<typeof calcMetrics>; raw: Record<string, unknown> }[] = [];
 
   for (const dep of DIPUTADOS_2026) {
     const normNombre = normName(dep.nombre);
@@ -662,7 +662,7 @@ async function main() {
         });
 
         // Upsert score
-        const m = result.metrics as Record<string, number>;
+        const m = result.metrics as unknown as Record<string, number>;
         await (prisma.score as { upsert: Function }).upsert({
           where: { periodId: period.id },
           create: {

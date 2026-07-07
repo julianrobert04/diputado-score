@@ -8,6 +8,14 @@ const PROVINCIAS = [
   "Guanacaste", "Puntarenas", "Limón",
 ];
 
+const PARTIDOS = [
+  "Partido Pueblo Soberano",
+  "Partido Liberación Nacional",
+  "Frente Amplio",
+  "Coalición Agenda Ciudadana",
+  "Partido Unidad Social Cristiana",
+];
+
 const SORT_OPTIONS = [
   { value: "overall_desc", label: "Mejor score" },
   { value: "overall_asc", label: "Peor score" },
@@ -44,6 +52,18 @@ export function FilterBar() {
       >
         <option value="">Todas las provincias</option>
         {PROVINCIAS.map((p) => (
+          <option key={p} value={p}>{p}</option>
+        ))}
+      </select>
+
+      {/* Partido */}
+      <select
+        value={searchParams.get("partido") ?? ""}
+        onChange={(e) => updateParam("partido", e.target.value)}
+        className="px-3 py-2.5 rounded-xl bg-zinc-900 border border-white/[0.07] text-zinc-300 text-sm focus:outline-none focus:border-emerald-500/50 appearance-none cursor-pointer"
+      >
+        <option value="">Todos los partidos</option>
+        {PARTIDOS.map((p) => (
           <option key={p} value={p}>{p}</option>
         ))}
       </select>

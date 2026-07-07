@@ -3,13 +3,15 @@ export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { ScoreBar } from "@/components/ScoreBadge";
 import { TrendBadge } from "@/components/TrendBadge";
 import { SparklineCard } from "@/components/Sparkline";
-import { METRIC_META, DIMENSION_META, ScoreSnapshot, LegislativeBill, BILL_STATUS_LABEL, BILL_STATUS_COLOR } from "@/types";
+import { RadarChart } from "@/components/RadarChart";
+import { METRIC_META, DIMENSION_META, ScoreSnapshot, LegislativeBill, BILL_STATUS_LABEL, BILL_STATUS_COLOR, ScoreMetrics } from "@/types";
 import { getScoreColor } from "@/lib/scoreCalculator";
-import { getMockPoliticianById } from "@/lib/mockData";
+import { getMockPoliticianById, getMockPoliticians } from "@/lib/mockData";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -42,14 +44,33 @@ const ACCENT_GRADIENT: Record<string, string> = {
   gray:   "from-zinc-500/10 to-transparent",
 };
 
-const DIM_COLORS: Record<string, string> = {
-  presencia:      "text-sky-400",
-  productividad:  "text-emerald-400",
-  transparencia:  "text-violet-400",
-  gasto:          "text-orange-400",
-  consistencia:   "text-rose-400",
-  ciudadania:     "text-amber-400",
+const SCORE_BAR_COLOR: Record<string, string> = {
+  gold:   "bg-amber-400",
+  green:  "bg-emerald-400",
+  yellow: "bg-yellow-400",
+  orange: "bg-orange-400",
+  red:    "bg-rose-500",
+  gray:   "bg-zinc-600",
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const mock = getMockPoliticianById(id);
+    if (mock) {
+      return {
+        title: `${mock.row.nombre} — ${mock.overall.toFixed(1)}/10 · DiputadoScore`,
+        description: `Perfil de ${mock.row.nombre} (${mock.row.partido}), provincia ${mock.row.provincia}. Score general: ${mock.overall.toFixed(1)} de 10.`,
+      };
+    }
+  } catch {
+    // noop
+  }
+  return {
+    title: "Diputado · DiputadoScore",
+    description: "Perfil de diputado en DiputadoScore Costa Rica.",
+  };
+}
 
 export default async function DiputadoPage({ params }: Props) {
   const { id } = await params;
@@ -59,7 +80,6 @@ export default async function DiputadoPage({ params }: Props) {
 
   let snapshots: ScoreSnapshot[] = [];
   let overall = 0;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let metrics: Record<string, number> | null = null;
   let rawData: Record<string, unknown> | null = null;
   let politicianName = "";
@@ -147,6 +167,12 @@ export default async function DiputadoPage({ params }: Props) {
   const color = getScoreColor(overall);
   const latestSnapshot = snapshots[snapshots.length - 1] ?? null;
 
+  // Ranking entre los 57 diputados
+  const allPoliticians = getMockPoliticians("", "", "overall_desc");
+  const rankIndex = allPoliticians.findIndex((p) => p.card.id === id);
+  const rankPosition = rankIndex >= 0 ? rankIndex + 1 : null;
+  const totalDiputados = allPoliticians.length;
+
   return (
     <div className="min-h-screen bg-[#0c0c0e] text-white">
       {/* Header */}
@@ -171,10 +197,8 @@ export default async function DiputadoPage({ params }: Props) {
         {/* ── HERO ── */}
         <div className="relative bg-zinc-900 rounded-3xl overflow-hidden ring-1 ring-white/[0.06] mb-5">
 
-          {/* Gradient background from score color */}
           <div className={`absolute inset-0 bg-gradient-to-br ${ACCENT_GRADIENT[color]} pointer-events-none`} />
 
-          {/* Watermark letter */}
           <span className="absolute right-0 top-0 text-[12rem] font-black leading-none text-white/[0.025] select-none pointer-events-none translate-x-8 -translate-y-4">
             {politicianName.charAt(0)}
           </span>
@@ -182,9 +206,8 @@ export default async function DiputadoPage({ params }: Props) {
           <div className="relative p-7 sm:p-10">
             <div className="flex flex-col sm:flex-row items-start gap-8">
 
-              {/* Left: photo + name stack */}
+              {/* Left: photo + party */}
               <div className="flex items-center gap-5 sm:flex-col sm:items-center sm:gap-3 sm:w-36">
-                {/* Photo */}
                 <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden ring-2 ${RING_COLOR[color]} bg-zinc-800 flex-shrink-0 shadow-2xl shadow-black/50`}>
                   {politicianPhoto ? (
                     <Image src={politicianPhoto} alt={politicianName} fill className="object-cover" sizes="96px" />
@@ -194,13 +217,12 @@ export default async function DiputadoPage({ params }: Props) {
                     </div>
                   )}
                 </div>
-                {/* Party chip */}
                 <div className="hidden sm:block text-center">
                   <p className="text-zinc-500 text-[0.65rem] leading-snug line-clamp-2 text-center">{politicianParty}</p>
                 </div>
               </div>
 
-              {/* Center: name + meta */}
+              {/* Center: name + meta + ranking */}
               <div className="flex-1 min-w-0">
                 <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight mb-1">
                   {politicianName}
@@ -225,9 +247,19 @@ export default async function DiputadoPage({ params }: Props) {
                   )}
                 </div>
 
+                {/* Ranking badge */}
+                {rankPosition !== null && (
+                  <div className="mt-4 inline-flex items-center gap-2 bg-zinc-800/70 rounded-xl px-3 py-2 ring-1 ring-white/[0.05]">
+                    <span className={`${SCORE_TEXT[color]} text-lg font-black tabular-nums leading-none`}>
+                      #{rankPosition}
+                    </span>
+                    <span className="text-zinc-500 text-xs">de {totalDiputados} diputados</span>
+                  </div>
+                )}
+
                 {/* Dimension pills */}
                 {metrics && (
-                  <div className="flex flex-wrap gap-2 mt-5">
+                  <div className="flex flex-wrap gap-2 mt-4">
                     {Object.entries(DIMENSION_META).map(([key, dim]) => {
                       const dimScore = dim.metrics.reduce((sum, m) => sum + (metrics[m] ?? 0), 0) / dim.metrics.length;
                       const dimColor = getScoreColor(dimScore);
@@ -263,38 +295,49 @@ export default async function DiputadoPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Score evolution chart */}
-        <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-5">
-          <SparklineCard snapshots={snapshots} title="Evolución del score (últimos 90 días)" />
+        {/* Radar + Sparkline row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+          {metrics && (
+            <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 flex flex-col items-center justify-center">
+              <h2 className="text-sm font-semibold text-zinc-400 mb-4 self-start">Perfil por dimensión</h2>
+              <RadarChart metrics={metrics as unknown as ScoreMetrics} size={220} />
+            </div>
+          )}
+          <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6">
+            <SparklineCard snapshots={snapshots} title="Evolución (últimos 90 días)" />
+          </div>
         </div>
 
-        {/* 11 metrics */}
+        {/* 11 metrics — animated progress bars */}
         {metrics && (
-          <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-6">
-            <h2 className="text-base font-bold mb-5 text-white">Las 11 métricas</h2>
-            <div className="space-y-5">
+          <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-5">
+            <h2 className="text-base font-bold mb-6 text-white">Las 11 métricas</h2>
+            <div className="space-y-4">
               {Object.entries(METRIC_META).map(([code, meta]) => {
-                const value = metrics[code as keyof typeof metrics];
+                const value = metrics[code as keyof typeof metrics] ?? 0;
                 const mColor = getScoreColor(value);
+                const pct = Math.max(0, Math.min(100, (value / 10) * 100));
                 return (
-                  <div key={code} className="flex gap-4 items-start">
-                    {/* Score */}
-                    <div className={`${SCORE_TEXT[mColor]} text-lg font-black tabular-nums w-8 flex-shrink-0 text-center mt-0.5`}>
-                      {value?.toFixed(1)}
-                    </div>
-
-                    {/* Info + bar */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-sm font-semibold text-white">{meta.label}</span>
-                        <span className="text-[0.65rem] text-zinc-600 bg-zinc-800 px-1.5 py-0.5 rounded-md tabular-nums">
-                          {(meta.weight * 100).toFixed(0)}%
+                  <div key={code}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className={`${SCORE_TEXT[mColor]} text-sm font-black tabular-nums w-7 flex-shrink-0`}>
+                          {value.toFixed(1)}
                         </span>
+                        <span className="text-sm font-semibold text-white truncate">{meta.label}</span>
                       </div>
-                      <ScoreBar score={value} label="" size="sm" />
-                      <p className="text-xs text-zinc-600 mt-1.5">{meta.description}</p>
-                      <p className="text-[0.65rem] text-zinc-700 mt-0.5">Fuente: {meta.source}</p>
+                      <span className="text-[0.65rem] text-zinc-600 bg-zinc-800 px-1.5 py-0.5 rounded-md tabular-nums flex-shrink-0 ml-2">
+                        {(meta.weight * 100).toFixed(0)}%
+                      </span>
                     </div>
+                    {/* Animated progress bar via CSS transition */}
+                    <div className="relative h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                      <div
+                        className={`absolute left-0 top-0 h-full rounded-full ${SCORE_BAR_COLOR[mColor]} transition-all duration-700 ease-out`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                    <p className="text-[0.65rem] text-zinc-600 mt-1">{meta.description}</p>
                   </div>
                 );
               })}
@@ -304,35 +347,42 @@ export default async function DiputadoPage({ params }: Props) {
 
         {/* Legislative bills */}
         {bills.length > 0 && (
-          <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-6">
+          <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-5">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-base font-bold text-white">Proyectos de ley</h2>
-              <span className="text-[0.7rem] text-zinc-600 bg-zinc-800 px-2 py-1 rounded-lg">
-                {bills.length} proyectos · datos públicos Asamblea
+              <span className="text-[0.7rem] text-zinc-500 bg-zinc-800 px-2.5 py-1 rounded-lg tabular-nums">
+                {bills.length} proyectos
               </span>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {bills.map((bill) => (
-                <div key={bill.expediente} className="bg-zinc-800/50 rounded-xl p-4 ring-1 ring-white/[0.04] group">
+                <div
+                  key={bill.expediente}
+                  className="bg-zinc-800/40 rounded-xl p-4 ring-1 ring-white/[0.04] hover:bg-zinc-800/70 transition-colors"
+                >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                        <span className="text-[0.65rem] font-mono text-zinc-600">Exp. {bill.expediente}</span>
+                      {/* Meta row */}
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <span className={`text-[0.65rem] font-semibold px-2 py-0.5 rounded-full ring-1 ${BILL_STATUS_COLOR[bill.status]}`}>
                           {BILL_STATUS_LABEL[bill.status]}
                         </span>
+                        <span className="text-[0.65rem] font-mono text-zinc-600">Exp. {bill.expediente}</span>
                         {bill.approvedAt && (
                           <span className="text-[0.65rem] text-zinc-600">
-                            Aprobado {new Date(bill.approvedAt).toLocaleDateString("es-CR", { month: "short", year: "numeric" })}
+                            {new Date(bill.approvedAt).toLocaleDateString("es-CR", { month: "short", year: "numeric" })}
                           </span>
                         )}
                       </div>
-                      <p className="text-sm font-semibold text-white leading-snug mb-1.5">
+                      {/* Title */}
+                      <p className="text-sm font-semibold text-white leading-snug">
                         {bill.title}
                       </p>
+                      {/* Summary */}
                       {bill.summary && (
-                        <p className="text-xs text-zinc-500 leading-relaxed">{bill.summary}</p>
+                        <p className="text-xs text-zinc-500 leading-relaxed mt-1.5">{bill.summary}</p>
                       )}
+                      {/* Coauthors */}
                       {bill.coauthors && bill.coauthors.length > 0 && (
                         <p className="text-[0.65rem] text-zinc-600 mt-2">
                           Co-autores: {bill.coauthors.join(", ")}
@@ -361,7 +411,7 @@ export default async function DiputadoPage({ params }: Props) {
 
         {/* Raw data audit */}
         {rawData && (
-          <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-6">
+          <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-5">
             <h2 className="text-base font-bold mb-4 text-white">Datos crudos de auditoría</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
               {[

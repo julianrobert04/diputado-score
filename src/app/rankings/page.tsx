@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { RankingAvatar } from "@/components/RankingAvatar";
 import { getScoreColor } from "@/lib/scoreCalculator";
 import { getMockPoliticians } from "@/lib/mockData";
 
@@ -14,6 +15,7 @@ interface RankingRow {
   ASI: number;
   PRO: number;
   DEC: number;
+  photoUrl: string;
 }
 
 async function getRankings(): Promise<RankingRow[]> {
@@ -32,6 +34,7 @@ async function getRankings(): Promise<RankingRow[]> {
       ASI: s.ASI,
       PRO: s.PRO,
       DEC: s.DEC,
+      photoUrl: (s.period.politician as { photoUrl?: string }).photoUrl ?? "",
     }));
   } catch {
     return getMockPoliticians().map(({ card }) => ({
@@ -43,6 +46,7 @@ async function getRankings(): Promise<RankingRow[]> {
       ASI: card.metrics.ASI,
       PRO: card.metrics.PRO,
       DEC: card.metrics.DEC,
+      photoUrl: card.photoUrl ?? "",
     }));
   }
 }
@@ -62,8 +66,93 @@ const RANK_STYLES = [
   "bg-orange-400/10 text-orange-400 ring-1 ring-orange-400/20",
 ];
 
+const PARTY_ABBR: Record<string, string> = {
+  "Partido Pueblo Soberano":             "PPSO",
+  "Partido Liberación Nacional":         "PLN",
+  "Frente Amplio":                       "FA",
+  "Coalición Agenda Ciudadana":          "CAC",
+  "Partido Unidad Social Cristiana":     "PUSC",
+};
+
+function partyAbbr(full: string): string {
+  return PARTY_ABBR[full] ?? full.slice(0, 4).toUpperCase();
+}
+
+function computePartyStats(scores: RankingRow[]) {
+  const map = new Map<string, { sum: number; count: number }>();
+  for (const s of scores) {
+    const existing = map.get(s.party) ?? { sum: 0, count: 0 };
+    map.set(s.party, { sum: existing.sum + s.overall, count: existing.count + 1 });
+  }
+  return Array.from(map.entries())
+    .map(([party, { sum, count }]) => ({
+      party,
+      abbr: partyAbbr(party),
+      avg: sum / count,
+      count,
+    }))
+    .sort((a, b) => b.avg - a.avg);
+}
+
+interface PodiumCardProps {
+  rank: 1 | 2 | 3;
+  row: RankingRow;
+}
+
+const MEDAL_RING = {
+  1: "ring-[3px] ring-amber-400/70",
+  2: "ring-[2.5px] ring-zinc-400/50",
+  3: "ring-[2.5px] ring-orange-400/50",
+};
+
+const MEDAL_LABEL: Record<number, string> = { 1: "1°", 2: "2°", 3: "3°" };
+
+const MEDAL_LABEL_COLOR: Record<number, string> = {
+  1: "text-amber-400",
+  2: "text-zinc-300",
+  3: "text-orange-400",
+};
+
+const PODIUM_HEIGHT: Record<number, string> = {
+  1: "pt-0",
+  2: "pt-8",
+  3: "pt-14",
+};
+
+function PodiumCard({ rank, row }: PodiumCardProps) {
+  const color = getScoreColor(row.overall);
+  return (
+    <Link
+      href={`/diputados/${row.id}`}
+      className={`flex flex-col items-center gap-2 ${PODIUM_HEIGHT[rank]} group`}
+    >
+      <span className={`text-xs font-black tabular-nums ${MEDAL_LABEL_COLOR[rank]}`}>
+        {MEDAL_LABEL[rank]}
+      </span>
+      <RankingAvatar
+        photoUrl={row.photoUrl}
+        fullName={row.fullName}
+        size={rank === 1 ? 80 : 64}
+        ringClass={MEDAL_RING[rank]}
+      />
+      <div className="text-center max-w-[110px]">
+        <p className="text-white font-bold text-[0.75rem] leading-tight line-clamp-2 group-hover:text-emerald-400 transition-colors">
+          {row.fullName}
+        </p>
+        <p className="text-zinc-600 text-[0.6rem] mt-0.5 truncate">{partyAbbr(row.party)}</p>
+        <p className={`${SCORE_TEXT[color]} text-xl font-black tabular-nums mt-0.5`}>
+          {row.overall.toFixed(1)}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
 export default async function RankingsPage() {
   const scores = await getRankings();
+  const partyStats = computePartyStats(scores);
+
+  const [first, second, third, ...rest] = scores;
 
   return (
     <div className="min-h-screen bg-[#0c0c0e] text-white">
@@ -97,21 +186,73 @@ export default async function RankingsPage() {
           <p className="text-zinc-500 text-sm">Diputados ordenados de mejor a peor score general</p>
         </div>
 
+        {/* Podio top 3 */}
+        {first && second && third && (
+          <div className="mb-8 bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] px-6 pt-6 pb-8">
+            {/* Desktop: 2-1-3 | Mobile: 1-2-3 */}
+            <div className="hidden sm:flex justify-center items-end gap-10">
+              <PodiumCard rank={2} row={second} />
+              <PodiumCard rank={1} row={first} />
+              <PodiumCard rank={3} row={third} />
+            </div>
+            <div className="flex sm:hidden flex-col items-center gap-6">
+              <PodiumCard rank={1} row={first} />
+              <PodiumCard rank={2} row={second} />
+              <PodiumCard rank={3} row={third} />
+            </div>
+          </div>
+        )}
+
+        {/* Stats por partido */}
+        <div className="mb-8 bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] px-5 py-4">
+          <p className="text-[0.65rem] font-semibold text-zinc-600 uppercase tracking-wider mb-3">
+            Promedio por partido
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {partyStats.map(({ party, abbr, avg, count }) => {
+              const color = getScoreColor(avg);
+              return (
+                <div
+                  key={party}
+                  className="flex items-center gap-2 bg-zinc-800/60 rounded-lg px-3 py-2 ring-1 ring-white/[0.04]"
+                >
+                  <span className="text-[0.7rem] font-bold text-zinc-300">{abbr}</span>
+                  <span className={`${SCORE_TEXT[color]} text-sm font-black tabular-nums`}>
+                    {avg.toFixed(1)}
+                  </span>
+                  <span className="text-zinc-700 text-[0.6rem] tabular-nums">{count} dip.</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Lista desde puesto 4 */}
         <div className="space-y-1.5">
-          {scores.map((s, i) => {
+          {rest.map((s, i) => {
+            const rank = i + 4;
             const color = getScoreColor(s.overall);
+            const barWidth = Math.round((s.overall / 10) * 100);
             return (
               <Link
                 key={s.id}
                 href={`/diputados/${s.id}`}
-                className="flex items-center gap-4 bg-zinc-900 rounded-xl px-4 py-3 ring-1 ring-white/[0.05] hover:ring-white/[0.10] hover:-translate-y-px transition-all duration-150 group"
+                className="flex items-center gap-3 bg-zinc-900 rounded-xl px-4 py-3 ring-1 ring-white/[0.05] hover:ring-white/[0.10] hover:-translate-y-px transition-all duration-150 group"
               >
                 {/* Rank */}
-                <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 ${RANK_STYLES[i] ?? "bg-zinc-800/60 text-zinc-500"}`}>
-                  {i + 1}
+                <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 ${RANK_STYLES[rank - 1] ?? "bg-zinc-800/60 text-zinc-500"}`}>
+                  {rank}
                 </span>
 
-                {/* Info */}
+                {/* Foto miniatura */}
+                <RankingAvatar
+                  photoUrl={s.photoUrl}
+                  fullName={s.fullName}
+                  size={28}
+                  ringClass="ring-1 ring-white/10"
+                />
+
+                {/* Info con barra */}
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-white text-sm group-hover:text-emerald-400 transition-colors truncate">
                     {s.fullName}
@@ -119,6 +260,20 @@ export default async function RankingsPage() {
                   <p className="text-[0.7rem] text-zinc-600 truncate mt-0.5">
                     {s.party} · {s.province}
                   </p>
+                  {/* Barra de score */}
+                  <div className="mt-1.5 h-[3px] bg-zinc-800 rounded-full overflow-hidden w-full max-w-[180px]">
+                    <div
+                      className={`h-full rounded-full ${
+                        color === "gold"   ? "bg-amber-400"   :
+                        color === "green"  ? "bg-emerald-400" :
+                        color === "yellow" ? "bg-yellow-400"  :
+                        color === "orange" ? "bg-orange-400"  :
+                        color === "red"    ? "bg-rose-400"    :
+                        "bg-zinc-500"
+                      }`}
+                      style={{ width: `${barWidth}%` }}
+                    />
+                  </div>
                 </div>
 
                 {/* Mini stats */}

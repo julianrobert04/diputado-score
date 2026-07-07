@@ -8,12 +8,29 @@ import { SearchBar } from "@/components/SearchBar";
 import { FilterBar } from "@/components/FilterBar";
 import { PoliticianCard as PoliticianCardType, ScoreSnapshot } from "@/types";
 import { getMockPoliticians, PoliticianWithTrend } from "@/lib/mockData";
+import { getScoreColor } from "@/lib/scoreCalculator";
+
+const PARTIDO_SHORT: Record<string, string> = {
+  "Partido Pueblo Soberano": "PPSO",
+  "Partido Liberación Nacional": "PLN",
+  "Frente Amplio": "FA",
+  "Coalición Agenda Ciudadana": "CAC",
+  "Partido Unidad Social Cristiana": "PUSC",
+};
+
+// Nombres ticos: nombres de pila + dos apellidos → mostrar primer nombre + primer apellido
+function shortName(fullName: string): string {
+  const parts = fullName.split(" ");
+  if (parts.length <= 2) return fullName;
+  return `${parts[0]} ${parts[parts.length - 2]}`;
+}
 
 interface HomeProps {
   searchParams: Promise<{
     q?: string;
     provincia?: string;
     sort?: string;
+    partido?: string;
     page?: string;
   }>;
 }
@@ -110,8 +127,36 @@ async function getPoliticians(
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { q = "", provincia = "", sort = "overall_desc" } = await searchParams;
-  const politicians = await getPoliticians(q, provincia, sort);
+  const { q = "", provincia = "", sort = "overall_desc", partido = "" } = await searchParams;
+  const allPoliticians = await getPoliticians(q, provincia, sort);
+  const politicians = partido
+    ? allPoliticians.filter((p) => p.card.party === partido)
+    : allPoliticians;
+
+  const avgScore = politicians.length
+    ? politicians.reduce((sum, p) => sum + p.card.overall, 0) / politicians.length
+    : 0;
+  const best = politicians.reduce<PoliticianWithTrend | null>(
+    (top, p) => (!top || p.card.overall > top.card.overall ? p : top),
+    null
+  );
+  const partyAvgs = Object.entries(
+    politicians.reduce<Record<string, { sum: number; count: number }>>((acc, p) => {
+      const party = p.card.party ?? "";
+      if (!acc[party]) acc[party] = { sum: 0, count: 0 };
+      acc[party].sum += p.card.overall;
+      acc[party].count += 1;
+      return acc;
+    }, {})
+  ).map(([name, { sum, count }]) => ({ name, avg: sum / count }));
+  const bestParty = partyAvgs.reduce<{ name: string; avg: number } | null>(
+    (top, p) => (!top || p.avg > top.avg ? p : top),
+    null
+  );
+  const transparenciaAlDia = politicians.filter((p) => p.card.metrics.DEC >= 9.5).length;
+  const transparenciaPct = politicians.length
+    ? Math.round((transparenciaAlDia / politicians.length) * 100)
+    : 0;
 
   return (
     <div className="min-h-screen bg-[#0c0c0e] text-white">
@@ -164,6 +209,38 @@ export default async function Home({ searchParams }: HomeProps) {
           </p>
         </div>
 
+        {/* Stats strip */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
+          <div className="bg-zinc-900 ring-1 ring-white/[0.06] rounded-xl px-4 py-3">
+            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Score promedio</p>
+            <p className={`text-xl font-black ${getScoreColor(avgScore).replace("bg-", "text-").replace(/bg-\S+/, "")}`} style={{ color: avgScore >= 8.5 ? "#fbbf24" : avgScore >= 7 ? "#34d399" : avgScore >= 5.5 ? "#facc15" : avgScore >= 4 ? "#fb923c" : "#f87171" }}>
+              {avgScore.toFixed(1)}
+            </p>
+          </div>
+          <div className="bg-zinc-900 ring-1 ring-white/[0.06] rounded-xl px-4 py-3">
+            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Mejor diputado</p>
+            {best ? (
+              <>
+                <p className="text-white text-sm font-bold leading-tight truncate">{shortName(best.card.fullName)}</p>
+                <p className="text-zinc-500 text-xs">{best.card.overall.toFixed(1)}</p>
+              </>
+            ) : <p className="text-zinc-700 text-sm">—</p>}
+          </div>
+          <div className="bg-zinc-900 ring-1 ring-white/[0.06] rounded-xl px-4 py-3">
+            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Mejor partido</p>
+            {bestParty ? (
+              <>
+                <p className="text-white text-sm font-bold">{PARTIDO_SHORT[bestParty.name] ?? bestParty.name}</p>
+                <p className="text-zinc-500 text-xs">{bestParty.avg.toFixed(1)} prom.</p>
+              </>
+            ) : <p className="text-zinc-700 text-sm">—</p>}
+          </div>
+          <div className="bg-zinc-900 ring-1 ring-white/[0.06] rounded-xl px-4 py-3">
+            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Transparencia al día</p>
+            <p className="text-xl font-black text-emerald-400">{transparenciaPct}%</p>
+          </div>
+        </div>
+
         {/* Search + filters */}
         <div className="flex flex-col sm:flex-row gap-2.5 mb-8">
           <div className="flex-1">
@@ -182,6 +259,7 @@ export default async function Home({ searchParams }: HomeProps) {
             {politicians.length} diputados
             {q && <span className="text-zinc-500 normal-case ml-1.5">· &ldquo;{q}&rdquo;</span>}
             {provincia && <span className="text-zinc-500 normal-case ml-1.5">· {provincia}</span>}
+            {partido && <span className="text-zinc-500 normal-case ml-1.5">· {PARTIDO_SHORT[partido] ?? partido}</span>}
           </p>
           {politicians.some((p) => p.latestDelta !== null) && (
             <div className="flex items-center gap-3 text-[0.68rem] text-zinc-600">
@@ -203,13 +281,20 @@ export default async function Home({ searchParams }: HomeProps) {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
             {politicians.map(({ card, snapshots, latestDelta }, i) => (
-              <PoliticianCard
+              <div
                 key={card.id}
-                politician={card}
-                rank={sort.startsWith("overall") ? i + 1 : undefined}
-                snapshots={snapshots}
-                latestDelta={latestDelta}
-              />
+                style={{
+                  animation: "fadeInUp 0.35s ease both",
+                  animationDelay: `${Math.min(i * 25, 400)}ms`,
+                }}
+              >
+                <PoliticianCard
+                  politician={card}
+                  rank={sort.startsWith("overall") ? i + 1 : undefined}
+                  snapshots={snapshots}
+                  latestDelta={latestDelta}
+                />
+              </div>
             ))}
           </div>
         )}
