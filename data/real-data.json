@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-07-07T17:52:28.307Z",
+  "updatedAt": "2026-07-07T18:14:30.188Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [
     "2026-05"
   ],
   "tripMonths": [],
+  "advisorsMonth": "2026-05",
+  "avgAsesores": 4.315789473684211,
   "deputies": {
     "dep-nogui-acosta": {
       "asisPL": 18,
@@ -14,6 +16,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 1,
       "nombreXlsx": "Acosta Jaén Nogui"
     },
     "dep-angela-aguilar": {
@@ -24,6 +27,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Aguilar Vargas Ángela"
     },
     "dep-iztaru-alfaro": {
@@ -34,6 +38,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Alfaro Guerrero Iztarú"
     },
     "dep-karen-alfaro": {
@@ -44,6 +49,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Alfaro Jiménez Karen"
     },
     "dep-edgardo-araya": {
@@ -54,6 +60,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 1,
       "nombreXlsx": "Araya Sibaja Edgardo"
     },
     "dep-reynaldo-arias": {
@@ -64,6 +71,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 3,
       "nombreXlsx": "Arias Mora Reynaldo"
     },
     "dep-osvaldo-artavia": {
@@ -74,6 +82,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Artavia Carballo Osvaldo"
     },
     "dep-grethel-avila": {
@@ -84,6 +93,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Ávila Vargas Gréthel María"
     },
     "dep-marco-badilla": {
@@ -94,6 +104,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Badilla Chavaría Marco"
     },
     "dep-robert-barrantes": {
@@ -104,6 +115,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Barrantes Camacho Roberth Junior"
     },
     "dep-antonio-barzuna": {
@@ -114,6 +126,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Barzuna Thompson Antonio"
     },
     "dep-cindy-blanco": {
@@ -124,6 +137,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Blanco González Cindy María"
     },
     "dep-gerardo-bogantes": {
@@ -134,6 +148,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Bogantes Rivera Gerald"
     },
     "dep-sadie-britton": {
@@ -144,6 +159,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Britton González Esmeralda"
     },
     "dep-stephan-brunner": {
@@ -154,6 +170,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Brunner Neibig Stephan"
     },
     "dep-jesus-calderon": {
@@ -164,6 +181,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Calderón Calderón Jesús"
     },
     "dep-kathia-calvo": {
@@ -174,6 +192,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Calvo Cruz Kattia"
     },
     "dep-maria-camareno": {
@@ -184,6 +203,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Camareno Camareno María Isabel"
     },
     "dep-ronald-campos": {
@@ -194,6 +214,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Campos Villegas Ronald"
     },
     "dep-claudia-dobles": {
@@ -204,6 +225,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Dobles Camargo Claudia"
     },
     "dep-anaruth-esquivel": {
@@ -214,6 +236,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Esquivel Medrano Ana Ruth"
     },
     "dep-marta-esquivel": {
@@ -224,6 +247,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Esquivel Rodríguez Marta Eugenia"
     },
     "dep-abril-gordienko": {
@@ -234,6 +258,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 6,
       "nombreXlsx": "Gordienko López Abril"
     },
     "dep-nayuribe-guadamuz": {
@@ -244,6 +269,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Guadamuz Rosales Nayuribe"
     },
     "dep-eder-hernandez": {
@@ -254,6 +280,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Hernández Ulloa Eder"
     },
     "dep-victor-hidalgo": {
@@ -264,6 +291,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Hidalgo Solís Víctor"
     },
     "dep-wilson-jimenez": {
@@ -274,6 +302,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Jiménez Cordero Wilson Alfredo"
     },
     "dep-yara-jimenez": {
@@ -284,6 +313,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Jiménez Fallas Yara"
     },
     "dep-norjelens-lobo": {
@@ -294,6 +324,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 3,
       "nombreXlsx": "Lobo Vargas Norjelens María"
     },
     "dep-karol-matamoros": {
@@ -304,6 +335,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Matamoros Montoya Karol Vanessa"
     },
     "dep-mangell-mclean": {
@@ -314,6 +346,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Mc Lean Villalobos Mangell"
     },
     "dep-ariel-mora": {
@@ -324,6 +357,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Mora Fallas Ariel"
     },
     "dep-kattia-mora": {
@@ -334,6 +368,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Mora Montoya Kattya"
     },
     "dep-royner-mora": {
@@ -344,6 +379,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Mora Ruiz Royner G."
     },
     "dep-vianey-mora": {
@@ -354,6 +390,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 3,
       "nombreXlsx": "Mora Vega Vianey"
     },
     "dep-anna-muller": {
@@ -364,6 +401,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Müller Castro Anna Katharina"
     },
     "dep-cindy-murillo": {
@@ -374,6 +412,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 3,
       "nombreXlsx": "Murillo Artavia Cindy"
     },
     "dep-zaira-murillo": {
@@ -384,6 +423,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Murillo Marín Zaira"
     },
     "dep-diana-murillo": {
@@ -394,6 +434,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 3,
       "nombreXlsx": "Murillo Murillo Diana"
     },
     "dep-fernando-obaldia": {
@@ -404,6 +445,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Obaldía Álvarez Fernando"
     },
     "dep-mayuli-ortega": {
@@ -414,6 +456,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Ortega Guzmán Mayuli"
     },
     "dep-salvador-padilla": {
@@ -424,6 +467,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Padilla Villanueva Salvador"
     },
     "dep-juan-quesada": {
@@ -434,6 +478,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Quesada Espinoza Juan Manuel"
     },
     "dep-alvaro-ramirez": {
@@ -444,6 +489,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Ramírez Bogantes Álvaro"
     },
     "dep-gonzalo-ramirez": {
@@ -454,6 +500,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Ramírez Zamora Gonzalo"
     },
     "dep-maria-roman": {
@@ -464,6 +511,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Román Mora María Eugenia"
     },
     "dep-joselyn-saenz": {
@@ -474,6 +522,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 3,
       "nombreXlsx": "Sáenz Blanco Joselyn"
     },
     "dep-janice-sandi": {
@@ -484,6 +533,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Sandí Morales Janice"
     },
     "dep-sigrid-segura": {
@@ -494,6 +544,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Segura Artavia Sigrid"
     },
     "dep-daniel-siezar": {
@@ -504,6 +555,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Siézar Cárdenas Daniel"
     },
     "dep-antonio-trejos": {
@@ -514,6 +566,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Trejos Mazariegos Antonio"
     },
     "dep-kattia-ulate": {
@@ -524,6 +577,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Ulate Alvarado Kattia María"
     },
     "dep-andrea-valverde": {
@@ -534,6 +588,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 4,
       "nombreXlsx": "Valverde Palavicini Andrea"
     },
     "dep-rafael-vargas": {
@@ -544,6 +599,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Vargas Brenes Rafael"
     },
     "dep-jose-villalobos": {
@@ -554,6 +610,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Villalobos Umaña José Miguel"
     },
     "dep-jose-villalta": {
@@ -564,6 +621,7 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Villalta Flórez-Estrada José María"
     },
     "dep-kristel-ward": {
@@ -574,6 +632,7 @@
       "ausCom": 3,
       "permCom": 0,
       "viajes": 0,
+      "asesores": 5,
       "nombreXlsx": "Ward Hudson Kristel"
     }
   }

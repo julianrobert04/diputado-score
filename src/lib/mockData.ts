@@ -133,19 +133,27 @@ interface RealDeputy {
   ausCom: number;
   permCom: number;
   viajes: number;
+  asesores: number | null;
   nombreXlsx: string;
 }
 
 const REAL_DEPUTIES = realData.deputies as Record<string, RealDeputy>;
 
-export type RealMetric = "ASI" | "COM" | "VIA";
+export type RealMetric = "ASI" | "COM" | "VIA" | "ASE";
 
 export const REAL_DATA_INFO = {
   updatedAt: realData.updatedAt,
   source: realData.source,
   attendanceMonths: realData.attendanceMonths as string[],
   tripMonths: realData.tripMonths as string[],
+  advisorsMonth: realData.advisorsMonth as string | null,
   deputiesCount: Object.keys(REAL_DEPUTIES).length,
+};
+
+// Promedios reales cuando existen — mantienen la escala relativa justa
+const AVGS = {
+  ...PERIOD_AVGS,
+  avgAsesores: (realData.avgAsesores as number | null) ?? PERIOD_AVGS.avgAsesores,
 };
 
 /** Reemplaza métricas simuladas por las reales disponibles para este diputado */
@@ -170,6 +178,10 @@ function mergeRealData(id: string, raw: RawData): { raw: RawData; realMetrics: R
   if (REAL_DATA_INFO.tripMonths.length > 0) {
     merged.viajesOficiales = r.viajes;
     realMetrics.push("VIA");
+  }
+  if (r.asesores !== null) {
+    merged.asesoresCount = r.asesores;
+    realMetrics.push("ASE");
   }
   return { raw: merged, realMetrics };
 }
@@ -262,7 +274,7 @@ const DIPUTADOS: DepTuple[] = [
   ["dep-antonio-trejos",      "Antonio Trejos Mazariegos",          FA,   "San José",   7.5],
   ["dep-edgardo-araya",       "Edgardo Araya Sibaja",               FA,   "Alajuela",   7.9],
   ["dep-sigrid-segura",       "Sigrid Segura Artavia",              FA,   "Alajuela",   7.4],
-  ["dep-joselyn-saenz",       "Joselyn Sáenz Blanco",                FA,   "Cartago",    7.6],
+  ["dep-joselyn-saenz",       "Joselyn Sáenz Núñez",                FA,   "Cartago",    7.6],
   ["dep-maria-roman",         "María Eugenia Román Mora",           FA,   "Heredia",    7.3],
 
   // ── Coalición Agenda Ciudadana — 1 escaño ───────────────────────────
@@ -355,7 +367,7 @@ export function getMockPoliticians(q = "", provincia = "", sort = "overall_desc"
     .filter((r) => !q || r.nombre.toLowerCase().includes(q.toLowerCase()))
     .filter((r) => !provincia || r.provincia.toLowerCase().includes(provincia.toLowerCase()))
     .map((r) => {
-      const metrics   = calcMetrics(r.raw, PERIOD_AVGS);
+      const metrics   = calcMetrics(r.raw, AVGS);
       const overall   = calcOverall(metrics);
       const history   = r.history ?? [overall];
       const snapshots = makeSnapshots(history, r.id);
@@ -387,7 +399,7 @@ export function getMockPoliticians(q = "", provincia = "", sort = "overall_desc"
 export function getMockPoliticianById(id: string) {
   const row = SEED.find((r) => r.id === id);
   if (!row) return null;
-  const metrics = calcMetrics(row.raw, PERIOD_AVGS);
+  const metrics = calcMetrics(row.raw, AVGS);
   const overall = calcOverall(metrics);
   const history = row.history ?? [overall];
   const snapshots = makeSnapshots(history, row.id);

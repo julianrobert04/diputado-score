@@ -116,6 +116,7 @@ El script de ingesta usa `https.Agent({ rejectUnauthorized: false })`.
 |--------|----------|--------|
 | `asamblea.go.cr/pa/datosabiertos` | **Asistencia real mensual (xlsx)** — PL + comisiones, 57 diputados desde 2026-05 | ✅ **Integrado** (`npm run ingest:opendata`) |
 | `asamblea.go.cr/pa/datosabiertos` GastosViajes | Viajes institucionales (xlsx mensual) | ✅ Parser listo — aún sin archivos de la legislatura nueva |
+| `asamblea.go.cr/pa/datosabiertos` SalarioFuncionarios | **Asesores reales por diputado (ASE)** — filas "DIP. NOMBRE (PARTIDO)" en DEPENDENCIA FUNCIONAL | ✅ **Integrado** (mismo `ingest:opendata`) |
 | `asamblea.go.cr` SharePoint | Fotos de 52/57 diputados | ✅ Funcionando |
 | `cgrfiles.cgr.go.cr` | CSV aggregate de DJB (no por diputado) | ⚠ Aggregate only |
 | `cgr.go.cr/morosos` | Lista HTML de incumplidores DJB | ⚠ Necesita adaptar parser |
@@ -137,7 +138,13 @@ Gerald Bogantes, Roberth Barrantes, Kattya Mora, Kattia Calvo, Joselyn Sáenz Bl
 | Fuente | Problema |
 |--------|----------|
 | `delfino.cr/asamblea/...` | App React CSR — no hay datos en el HTML, API privada |
-| `sil.go.cr` | No responde desde fuera de Costa Rica |
+| `sil.go.cr` / `sil.asamblea.go.cr` | No responde desde fuera de Costa Rica |
+| Proyectos de ley por diputado (PRO/APR) | Páginas SharePoint de Consultas_SIL dan 404; `datosabiertos.asamblea.go.cr` responde 403/404; el portal de datos abiertos no tiene carpeta de proyectos ni votaciones |
+| DJB por diputado (DEC) | Las declaraciones son confidenciales; CGR solo publica aggregate |
+
+**Métricas reales hoy: ASI, COM, ASE** (VIA se activa solo cuando la Asamblea suba
+xlsx de viajes de la legislatura 2026-2030). PRO, APR, MOC, VOT, COH, DEC y GAS
+siguen estimadas por falta de fuente pública machine-readable.
 
 ### 🔮 Cómo conseguir datos reales cuando estén disponibles
 

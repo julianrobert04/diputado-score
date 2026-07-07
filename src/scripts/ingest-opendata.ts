@@ -80,10 +80,20 @@ function loadDeputies(): { id: string; nombre: string; tokens: string[] }[] {
   return matches.map((m) => ({ id: m[1], nombre: m[2], tokens: normalize(m[2]) }));
 }
 
+// La Asamblea publica apellidos inconsistentes para algunos diputados
+const NAME_ALIASES: Record<string, string> = {
+  "saenz blanco joselyn": "dep-joselyn-saenz",
+  "saenz nuñez joselyn fabiola": "dep-joselyn-saenz",
+};
+
 function matchDeputy(
   xlsxName: string,
   deputies: ReturnType<typeof loadDeputies>
 ): string | null {
+  const aliasKey = normalize(xlsxName).sort().join(" ");
+  for (const [alias, id] of Object.entries(NAME_ALIASES)) {
+    if (normalize(alias).sort().join(" ") === aliasKey) return id;
+  }
   const tokens = normalize(xlsxName);
   let best: { id: string; score: number } | null = null;
   for (const dep of deputies) {
@@ -190,6 +200,28 @@ async function fetchTrips(key: string): Promise<Map<string, number> | null> {
   return out;
 }
 
+/** Asesores por diputado según el archivo de salarios (snapshot del mes más reciente) */
+async function fetchAdvisors(key: string): Promise<Map<string, number> | null> {
+  const buf = await fetchBuffer(
+    `${BASE}/SalarioFuncionarios/${key}-salarios%20funcionarios.xlsx`
+  );
+  if (!buf) return null;
+  const wb = XLSX.read(buf, { type: "buffer" });
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const rows = XLSX.utils.sheet_to_json<(string | number | null)[]>(ws, { header: 1 });
+  const header = (rows[0] ?? []).map((h) => String(h ?? "").trim().toLowerCase());
+  const depIdx = header.findIndex((h) => h.startsWith("dependencia"));
+  const out = new Map<string, number>();
+  for (const row of rows.slice(1)) {
+    const dep = String(row[depIdx] ?? "").trim();
+    const m = dep.match(/^DIP\.?\s+(.+?)\s*\(/);
+    if (!m) continue;
+    const name = m[1].trim();
+    out.set(name, (out.get(name) ?? 0) + 1);
+  }
+  return out;
+}
+
 async function main() {
   console.log("📥 DiputadoScore — ingesta de datos abiertos de la Asamblea\n");
   const deputies = loadDeputies();
@@ -198,7 +230,10 @@ async function main() {
   const months = monthsSinceLegislatureStart();
   const attendanceMonths: string[] = [];
   const tripMonths: string[] = [];
-  const totals = new Map<string, Attendance & { viajes: number; nombreXlsx: string }>();
+  const totals = new Map<
+    string,
+    Attendance & { viajes: number; asesores: number | null; nombreXlsx: string }
+  >();
   const unmatched: string[] = [];
 
   for (const { key } of months) {
@@ -218,7 +253,7 @@ async function main() {
       }
       const prev = totals.get(id) ?? {
         asisPL: 0, ausPL: 0, permPL: 0, asisCom: 0, ausCom: 0, permCom: 0,
-        viajes: 0, nombreXlsx: xlsxName,
+        viajes: 0, asesores: null, nombreXlsx: xlsxName,
       };
       totals.set(id, {
         ...prev,
@@ -251,16 +286,44 @@ async function main() {
     }
   }
 
+  // Asesores: snapshot del mes más reciente disponible
+  let advisorsMonth: string | null = null;
+  for (const { key } of [...months].reverse()) {
+    const advisors = await fetchAdvisors(key);
+    if (!advisors) continue;
+    advisorsMonth = key;
+    console.log(`   asesores   ${key}: ✓ ${advisors.size} diputados con asesores`);
+    for (const [xlsxName, count] of advisors) {
+      const id = matchDeputy(xlsxName, deputies);
+      if (!id) {
+        unmatched.push(`asesores ${key}: ${xlsxName}`);
+        continue;
+      }
+      const prev = totals.get(id);
+      if (prev) prev.asesores = count;
+    }
+    break;
+  }
+
   if (unmatched.length) {
     console.log(`\n⚠ Nombres sin match (${unmatched.length}):`);
     unmatched.forEach((n) => console.log(`   • ${n}`));
   }
+
+  const advisorCounts = [...totals.values()]
+    .map((t) => t.asesores)
+    .filter((n): n is number => n !== null);
+  const avgAsesores = advisorCounts.length
+    ? advisorCounts.reduce((a, b) => a + b, 0) / advisorCounts.length
+    : null;
 
   const output = {
     updatedAt: new Date().toISOString(),
     source: "https://www.asamblea.go.cr/pa/datosabiertos/",
     attendanceMonths,
     tripMonths,
+    advisorsMonth,
+    avgAsesores,
     deputies: Object.fromEntries(totals),
   };
 
@@ -270,6 +333,7 @@ async function main() {
   console.log(`\n💾 ${totals.size} diputados con datos reales → data/real-data.json`);
   console.log(`   Meses de asistencia: ${attendanceMonths.join(", ") || "ninguno"}`);
   console.log(`   Meses de viajes: ${tripMonths.join(", ") || "ninguno"}`);
+  console.log(`   Asesores: ${advisorsMonth ?? "sin datos"} (promedio ${avgAsesores?.toFixed(1) ?? "—"})`);
 }
 
 main().catch((err) => {
