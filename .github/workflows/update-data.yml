@@ -22,8 +22,10 @@ jobs:
 
       - run: npm ci
 
-      - name: Descargar datos abiertos de la Asamblea
+      - name: Descargar datos abiertos y clasificar noticias
         run: npm run ingest:opendata
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
       - name: Commit y push si hay datos nuevos
         run: |

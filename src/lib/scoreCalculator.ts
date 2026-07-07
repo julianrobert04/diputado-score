@@ -1,83 +1,43 @@
 /**
  * DiputadoScore — Calculador de métricas y score general
  *
- * Pesos por dimensión:
- *   Presencia     (ASI + COM):         15%
- *   Productividad (PRO + APR + MOC):   25%
- *   Transparencia (DEC):               20%
- *   Gasto         (GAS + VIA + ASE):   15%
- *   Consistencia  (VOT + COH):         15%
- *   Ciudadanía:                        10% → fallback a promedio del resto por ahora
+ * 7 métricas, todas de fuentes reales:
+ *   Presencia      (ASI + COM + PER):  45%
+ *   Austeridad     (COS + ASE + VIA):  30%  (VIA se excluye mientras no haya datos)
+ *   Imagen pública (MED):              25%
  */
 
 import { RawData, ScoreMetrics } from "@/types";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Clamp a value between 0 and 10 */
-const clamp = (v: number): number => Math.max(0, Math.min(10, v));
-
-/** Score logarítmico relativo al promedio del período.
- *  Si el diputado está en el promedio → 5.0
- *  Si dobla el promedio → ~8.3
- *  Si está en cero → 0
- */
-function logRelativeScore(value: number, avg: number): number {
-  if (avg <= 0) return value > 0 ? 8 : 0;
-  if (value <= 0) return 0;
-  // log ratio: ln(x/avg) normalizado a [-5, +5] → escala 0-10
-  const ratio = Math.log(value / avg + 1) / Math.log(2); // base-2 log
-  return clamp(5 + ratio * 2.5);
-}
+const clamp = (v: number, min = 0, max = 10): number => Math.max(min, Math.min(max, v));
 
 /** Score inversamente proporcional.
- *  Si está en el promedio → 5.0
- *  Menos que el promedio → sube hacia 10
- *  Más que el promedio → baja hacia 0
+ *  En el promedio → 5.0 · en cero → 10 · al doble del promedio → 0
  */
 function inverseRelativeScore(value: number, avg: number): number {
   if (avg <= 0) return value === 0 ? 10 : 5;
   const ratio = value / avg;
-  // ratio=0 → 10, ratio=1 → 5, ratio=2 → 0
   return clamp(10 - ratio * 5);
 }
 
 // ─── Cálculo de métricas individuales ─────────────────────────────────────────
 
 export interface PeriodAverages {
-  avgProyectos: number;
-  avgMociones: number;
-  avgViajes: number;
+  avgPermRatio: number;  // permisos / sesiones, promedio del período
+  avgCosto: number;      // costo mensual del despacho (colones)
   avgAsesores: number;
-  avgGastoPct: number; // % del presupuesto usado, promedio
+  avgViajes: number;
 }
 
 export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
-  // ASI: Asistencia plenario
+  // ASI: Asistencia plenario (asistencias / sesiones realizadas)
   const ASI = clamp(
     raw.sesionesTotales && raw.sesionesTotales > 0
       ? ((raw.sesionesAsistidas ?? 0) / raw.sesionesTotales) * 10
       : 5
   );
-
-  // VOT: Participación en votaciones
-  const VOT = clamp(
-    raw.votacionesTotales && raw.votacionesTotales > 0
-      ? ((raw.votacionesParticipadas ?? 0) / raw.votacionesTotales) * 10
-      : 5
-  );
-
-  // PRO: Proyectos presentados (relativo al promedio, escala log)
-  const PRO = logRelativeScore(raw.proyectosPresentados ?? 0, avgs.avgProyectos);
-
-  // APR: Proyectos aprobados
-  const APR =
-    raw.proyectosPresentados && raw.proyectosPresentados > 0
-      ? clamp(((raw.proyectosAprobados ?? 0) / raw.proyectosPresentados) * 10)
-      : 0;
-
-  // MOC: Mociones (relativo al promedio, escala log)
-  const MOC = logRelativeScore(raw.mociones ?? 0, avgs.avgMociones);
 
   // COM: Asistencia comisiones
   const COM = clamp(
@@ -86,69 +46,59 @@ export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
       : 5
   );
 
-  // DEC: Declaración de bienes
-  let DEC: number;
-  switch (raw.declaracionEstado) {
-    case "al_dia":
-      DEC = 10;
-      break;
-    case "atrasada":
-      DEC = 5;
-      break;
-    case "no_presento":
-    default:
-      DEC = 0;
-  }
-
-  // GAS: Gasto de representación (inversamente proporcional)
-  const gastoPct =
-    raw.gastoPresupuesto && raw.gastoPresupuesto > 0
-      ? ((raw.gastoRepresentacion ?? 0) / raw.gastoPresupuesto) * 100
+  // PER: Permisos — proporción de sesiones justificadas con permiso, relativo al promedio
+  const permRatio =
+    raw.permisosTotales && raw.permisosTotales > 0
+      ? (raw.permisos ?? 0) / raw.permisosTotales
       : 0;
-  const GAS = inverseRelativeScore(gastoPct, avgs.avgGastoPct);
+  const PER = inverseRelativeScore(permRatio, avgs.avgPermRatio);
 
-  // VIA: Viajes oficiales (inversamente proporcional)
-  const VIA = inverseRelativeScore(raw.viajesOficiales ?? 0, avgs.avgViajes);
+  // COS: Costo del despacho (suma de salarios de asesores)
+  const COS =
+    typeof raw.costoDespacho === "number"
+      ? inverseRelativeScore(raw.costoDespacho, avgs.avgCosto)
+      : 5;
 
-  // ASE: Asesores (inversamente proporcional)
-  const ASE = inverseRelativeScore(raw.asesoresCount ?? 0, avgs.avgAsesores);
+  // ASE: Cantidad de asesores
+  const ASE =
+    typeof raw.asesoresCount === "number"
+      ? inverseRelativeScore(raw.asesoresCount, avgs.avgAsesores)
+      : 5;
 
-  // COH: Coherencia de voto (editado manualmente o datos Delfino — por ahora = 5 si no hay dato)
-  const COH = typeof raw.coherenciaVoto === "number" ? clamp(raw.coherenciaVoto) : 5;
+  // MED: Cobertura mediática — positivas suman, negativas restan, sin noticias = neutro
+  const medPos = raw.medPos ?? 0;
+  const medNeg = raw.medNeg ?? 0;
+  const medTotal = medPos + medNeg + (raw.medNeu ?? 0);
+  const MED =
+    medTotal > 0
+      ? clamp(5.5 + 4.5 * ((medPos - medNeg) / Math.max(medTotal, 5)), 1, 10)
+      : 5.5;
 
-  return { ASI, VOT, PRO, APR, MOC, COM, DEC, GAS, VIA, ASE, COH };
+  // VIA: Viajes oficiales
+  const VIA =
+    typeof raw.viajesOficiales === "number"
+      ? inverseRelativeScore(raw.viajesOficiales, avgs.avgViajes)
+      : 5;
+
+  return { ASI, COM, PER, COS, ASE, MED, VIA };
 }
 
 // ─── Cálculo del score general (overall) ──────────────────────────────────────
 
-export function calcOverall(m: ScoreMetrics): number {
-  // Presencia 15%
-  const presencia = (m.ASI + m.COM) / 2;
+export interface OverallOptions {
+  /** Sin xlsx de viajes de esta legislatura, VIA se excluye de Austeridad */
+  includeVIA?: boolean;
+}
 
-  // Productividad 25%
-  const productividad = (m.PRO + m.APR + m.MOC) / 3;
+export function calcOverall(m: ScoreMetrics, opts: OverallOptions = {}): number {
+  const presencia = (m.ASI + m.COM + m.PER) / 3;
+  const austeridad = opts.includeVIA
+    ? (m.COS + m.ASE + m.VIA) / 3
+    : (m.COS + m.ASE) / 2;
+  const imagen = m.MED;
 
-  // Transparencia 20%
-  const transparencia = m.DEC;
-
-  // Gasto 15%
-  const gasto = (m.GAS + m.VIA + m.ASE) / 3;
-
-  // Consistencia 15%
-  const consistencia = (m.VOT + m.COH) / 2;
-
-  // Ciudadanía 10% — promedio de las demás dimensiones mientras se define
-  const ciudadania = (presencia + productividad + transparencia + gasto + consistencia) / 5;
-
-  const overall =
-    presencia * 0.15 +
-    productividad * 0.25 +
-    transparencia * 0.2 +
-    gasto * 0.15 +
-    consistencia * 0.15 +
-    ciudadania * 0.1;
-
-  return Math.round(overall * 10) / 10; // 1 decimal
+  const overall = presencia * 0.45 + austeridad * 0.3 + imagen * 0.25;
+  return Math.round(clamp(overall, 1, 10) * 10) / 10;
 }
 
 // ─── Score de color (igual que SofaScore) ────────────────────────────────────

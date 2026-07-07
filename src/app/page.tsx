@@ -2,11 +2,9 @@ export const dynamic = "force-dynamic";
 
 import { Suspense } from "react";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
 import { PoliticianCard } from "@/components/PoliticianCard";
 import { SearchBar } from "@/components/SearchBar";
 import { FilterBar } from "@/components/FilterBar";
-import { PoliticianCard as PoliticianCardType, ScoreSnapshot } from "@/types";
 import { getMockPoliticians, PoliticianWithTrend, REAL_DATA_INFO } from "@/lib/mockData";
 import { getScoreColor } from "@/lib/scoreCalculator";
 
@@ -51,90 +49,7 @@ async function getPoliticians(
   provincia: string,
   sort: string
 ): Promise<PoliticianWithTrend[]> {
-  try {
-    // Últimos 30 días para sparklines
-    const since = new Date();
-    since.setDate(since.getDate() - 30);
-
-    const politicians = await prisma.politician.findMany({
-      where: {
-        type: "diputado",
-        ...(q && { fullName: { contains: q, mode: "insensitive" } }),
-        ...(provincia && { province: { contains: provincia, mode: "insensitive" } }),
-      },
-      include: {
-        periods: {
-          orderBy: { startDate: "desc" },
-          take: 1,
-          include: {
-            score: {
-              include: {
-                snapshots: {
-                  where: { takenAt: { gte: since } },
-                  orderBy: { takenAt: "asc" },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-
-    // Si no hay datos en la DB todavía, caer al mock
-    if (politicians.length === 0) return getMockPoliticians(q, provincia, sort);
-
-    const results: PoliticianWithTrend[] = politicians.map((p) => {
-      const period = p.periods[0];
-      const score = period?.score;
-      const rawSnapshots = score?.snapshots ?? [];
-
-      const snapshots: ScoreSnapshot[] = rawSnapshots.map((s) => ({
-        id: s.id,
-        takenAt: s.takenAt.toISOString(),
-        source: s.source,
-        overall: s.overall,
-        deltaOverall: s.deltaOverall,
-        metrics: {
-          ASI: s.ASI, COM: s.COM, PRO: s.PRO, APR: s.APR,
-          MOC: s.MOC, DEC: s.DEC, GAS: s.GAS, VIA: s.VIA,
-          ASE: s.ASE, VOT: s.VOT, COH: s.COH,
-        },
-      }));
-
-      const latestDelta = rawSnapshots.length > 0
-        ? rawSnapshots[rawSnapshots.length - 1].deltaOverall
-        : null;
-
-      const card: PoliticianCardType = {
-        id: p.id,
-        fullName: p.fullName,
-        type: p.type as PoliticianCardType["type"],
-        party: p.party,
-        province: p.province,
-        photoUrl: p.photoUrl ?? undefined,
-        active: p.active,
-        overall: score?.overall ?? 0,
-        metrics: score
-          ? { ASI: score.ASI, COM: score.COM, PRO: score.PRO, APR: score.APR, MOC: score.MOC, DEC: score.DEC, GAS: score.GAS, VIA: score.VIA, ASE: score.ASE, VOT: score.VOT, COH: score.COH }
-          : { ASI: 0, COM: 0, PRO: 0, APR: 0, MOC: 0, DEC: 0, GAS: 0, VIA: 0, ASE: 0, VOT: 0, COH: 0 },
-        period: period
-          ? { startDate: period.startDate.toISOString(), endDate: period.endDate.toISOString() }
-          : { startDate: "", endDate: "" },
-      };
-
-      return { card, snapshots, latestDelta };
-    });
-
-    return results.sort((a, b) => {
-      if (sort === "overall_asc") return a.card.overall - b.card.overall;
-      if (sort === "name_asc") return a.card.fullName.localeCompare(b.card.fullName);
-      if (sort === "name_desc") return b.card.fullName.localeCompare(a.card.fullName);
-      return b.card.overall - a.card.overall;
-    });
-  } catch {
-    // Sin DB (desarrollo local) — usar datos mock
-    return getMockPoliticians(q, provincia, sort);
-  }
+  return getMockPoliticians(q, provincia, sort);
 }
 
 export default async function Home({ searchParams }: HomeProps) {
@@ -164,9 +79,9 @@ export default async function Home({ searchParams }: HomeProps) {
     (top, p) => (!top || p.avg > top.avg ? p : top),
     null
   );
-  const transparenciaAlDia = politicians.filter((p) => p.card.metrics.DEC >= 9.5).length;
-  const transparenciaPct = politicians.length
-    ? Math.round((transparenciaAlDia / politicians.length) * 100)
+  const asistenciaPerfecta = politicians.filter((p) => p.card.metrics.ASI >= 9.95).length;
+  const asistenciaPct = politicians.length
+    ? Math.round((asistenciaPerfecta / politicians.length) * 100)
     : 0;
 
   return (
@@ -222,9 +137,9 @@ export default async function Home({ searchParams }: HomeProps) {
             {" "}tu <span className="text-emerald-400">diputado</span>?
           </h1>
           <p className="text-zinc-500 text-base max-w-lg leading-relaxed">
-            Scores del 1 al 10 basados en asistencia, proyectos de ley, gasto y transparencia.
-            Como el rating de Keylor — pero para la Asamblea. La asistencia usa datos oficiales;
-            las demás métricas son estimadas mientras la Asamblea publica sus fuentes.
+            Scores del 1 al 10 con datos 100% reales: asistencia oficial, costo del despacho,
+            asesores y cobertura mediática. Como el rating de Keylor — pero para la Asamblea.
+            Sin estimaciones: si no hay dato público, la métrica queda neutra.
           </p>
         </div>
 
@@ -255,8 +170,8 @@ export default async function Home({ searchParams }: HomeProps) {
             ) : <p className="text-zinc-700 text-sm">—</p>}
           </div>
           <div className="bg-zinc-900 ring-1 ring-white/[0.06] rounded-xl px-4 py-3">
-            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Transparencia al día</p>
-            <p className="text-xl font-black text-emerald-400">{transparenciaPct}%</p>
+            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Asistencia perfecta</p>
+            <p className="text-xl font-black text-emerald-400">{asistenciaPct}%</p>
           </div>
         </div>
 
@@ -294,7 +209,7 @@ export default async function Home({ searchParams }: HomeProps) {
           <div className="text-center py-32 text-zinc-700">
             <p className="text-base font-medium">No se encontraron diputados</p>
             <p className="text-sm mt-2 text-zinc-800">
-              Corré <code className="bg-zinc-900 px-1.5 py-0.5 rounded text-zinc-500">npm run ingest</code> para cargar datos
+              Corré <code className="bg-zinc-900 px-1.5 py-0.5 rounded text-zinc-500">npm run ingest:opendata</code> para cargar datos
             </p>
           </div>
         ) : (
@@ -321,7 +236,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
       <footer className="mt-20 border-t border-white/[0.04] py-8">
         <div className="max-w-7xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-zinc-700 text-xs">
-          <p>Datos: Asamblea Legislativa Open Data · CGR · Delfino.cr</p>
+          <p>Datos: Asamblea Legislativa Open Data · Google News</p>
           <p>DiputadoScore no es afiliado a ningún partido político.</p>
         </div>
       </footer>

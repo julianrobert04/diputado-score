@@ -17,9 +17,9 @@ interface Props {
 
 const CARD_METRICS: Array<{ key: keyof PoliticianCardType["metrics"]; label: string }> = [
   { key: "ASI", label: "Asistencia" },
-  { key: "PRO", label: "Proyectos" },
-  { key: "DEC", label: "Transparencia" },
-  { key: "GAS", label: "Gasto" },
+  { key: "MED", label: "Medios" },
+  { key: "COS", label: "Costo" },
+  { key: "PER", label: "Permisos" },
 ];
 
 const HERO_GRADIENT: Record<string, string> = {

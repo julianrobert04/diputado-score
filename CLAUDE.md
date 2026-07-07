@@ -6,7 +6,8 @@
 
 Plataforma de transparencia política para Costa Rica estilo SofaScore/365Scores.
 Muestra a los 57 diputados de la Asamblea Legislativa 2026–2030 con scores del 1 al 10
-basados en asistencia, proyectos de ley, gasto y declaración de bienes.
+basados en asistencia, permisos, costo del despacho, asesores y cobertura mediática —
+**todas las métricas usan datos reales**, sin simulación.
 
 **URL en producción:** pendiente de desplegar  
 **Stack:** Next.js 16 · Tailwind v4 · Prisma 7 · PostgreSQL (opcional)
@@ -20,13 +21,11 @@ npm install
 npm run dev          # → http://localhost:3000
 ```
 
-Sin base de datos funciona igual — todo cae en mock data automáticamente.
-
-Si tenés PostgreSQL:
+No necesita base de datos — los datos reales vienen versionados en `data/real-data.json`.
+Para regenerarlos:
 ```bash
-cp .env.example .env   # crear si no existe, añadir DATABASE_URL
-npx prisma db push
-npm run ingest:real    # descarga datos reales de la Asamblea
+npm run ingest:opendata                        # asistencia + salarios + viajes
+ANTHROPIC_API_KEY=sk-... npm run ingest:opendata  # + clasificación de noticias (MED)
 ```
 
 > **Node:** Si `npm` falla, usar el binario descargado:
@@ -48,33 +47,43 @@ src/
 │   ├── Sparkline.tsx             ← Mini gráfico de historial
 │   └── FilterBar.tsx / SearchBar.tsx
 ├── lib/
-│   ├── mockData.ts               ← 57 diputados reales con fotos + datos simulados
-│   ├── scoreCalculator.ts        ← Fórmulas de scoring (11 métricas → 5 dimensiones)
-│   └── prisma.ts                 ← Cliente Prisma con adapter-pg
+│   ├── mockData.ts               ← 57 diputados reales con fotos + datos de data/real-data.json
+│   ├── scoreCalculator.ts        ← Fórmulas de scoring (7 métricas → 3 dimensiones)
+│   └── prisma.ts                 ← Cliente Prisma con adapter-pg (no usado por las páginas)
 ├── scripts/
-│   └── ingest-real.ts            ← Ingesta de datos reales (Asamblea + CGR)
+│   └── ingest-opendata.ts        ← Ingesta semanal (Asamblea Open Data + Google News + Claude)
 └── types/index.ts                ← Tipos TypeScript + LegislativeBill
 ```
 
-**Patrón de datos:** Cada página hace `try { DB } catch { mockData }`.
-Si no hay `DATABASE_URL`, el sitio funciona 100% con mock data.
+**Patrón de datos:** Las páginas leen directamente de `src/lib/mockData.ts`, que a su vez
+importa `data/real-data.json` (versionado en git, regenerado semanalmente por GitHub Actions).
+No se necesita base de datos; Prisma quedó opcional/inactivo.
 
 ---
 
 ## El sistema de scores
 
-### 11 métricas → 5 dimensiones → 1 score overall
+### 7 métricas reales → 3 dimensiones → 1 score overall
 
 | Dimensión | Peso | Métricas |
 |-----------|------|----------|
-| Presencia | 15% | ASI (asistencia plenario), COM (asistencia comisiones) |
-| Productividad | 25% | PRO (proyectos), APR (aprobados), MOC (mociones) |
-| Transparencia | 20% | DEC (declaración de bienes CGR) |
-| Gasto | 15% | GAS (gasto representación), VIA (viajes), ASE (asesores) |
-| Participación | 25% | VOT (participación en votaciones), COH (coherencia) |
+| Presencia | 45% | ASI (asistencia plenario), COM (comisiones), PER (permisos) |
+| Austeridad | 30% | COS (costo del despacho), ASE (asesores), VIA (viajes)* |
+| Imagen pública | 25% | MED (cobertura mediática: Google News + Claude) |
+
+\* VIA se excluye de Austeridad (queda `(COS+ASE)/2`) hasta que la Asamblea publique
+xlsx de viajes de la legislatura 2026-2030 — se activa solo (`includeVIA` en `calcOverall`).
+
+**MED:** noticia positiva suma, negativa resta, sin noticias = 5.5 neutro.
+Fórmula: `clamp(5.5 + 4.5·(pos−neg)/max(total,5), 1, 10)`. Clasificación con
+Claude Haiku en la ingesta semanal (requiere secret `ANTHROPIC_API_KEY` en GitHub).
+Sin API key la ingesta preserva la clasificación anterior de `real-data.json`.
+
+**COS/ASE/PER/VIA** usan `inverseRelativeScore` vs el promedio del período:
+en el promedio → 5.0, en cero → 10, al doble del promedio → 0.
 
 Scores van de 1.0 a 10.0. Color por score:
-- **gold** ≥ 8.5 · **green** ≥ 7.0 · **yellow** ≥ 5.5 · **orange** ≥ 4.0 · **red** < 4.0
+- **gold** ≥ 9.0 · **green** ≥ 7.0 · **yellow** ≥ 5.5 · **orange** ≥ 4.0 · **red** < 4.0
 
 Ver `src/lib/scoreCalculator.ts` para las fórmulas exactas.
 
@@ -142,20 +151,19 @@ Gerald Bogantes, Roberth Barrantes, Kattya Mora, Kattia Calvo, Joselyn Sáenz Bl
 | Proyectos de ley por diputado (PRO/APR) | Páginas SharePoint de Consultas_SIL dan 404; `datosabiertos.asamblea.go.cr` responde 403/404; el portal de datos abiertos no tiene carpeta de proyectos ni votaciones |
 | DJB por diputado (DEC) | Las declaraciones son confidenciales; CGR solo publica aggregate |
 
-**Métricas reales hoy: ASI, COM, ASE** (VIA se activa solo cuando la Asamblea suba
-xlsx de viajes de la legislatura 2026-2030). PRO, APR, MOC, VOT, COH, DEC y GAS
-siguen estimadas por falta de fuente pública machine-readable.
+**Todas las 7 métricas son reales: ASI, COM, PER, COS, ASE, MED** (+ VIA que se
+activa solo cuando la Asamblea suba xlsx de viajes de la legislatura 2026-2030).
+Las métricas viejas PRO, APR, MOC, VOT, COH, DEC y GAS se eliminaron del sistema
+por falta de fuente pública machine-readable.
 
-### 🔮 Cómo conseguir datos reales cuando estén disponibles
+### MED — cobertura mediática
 
-La Asamblea publica CSVs de asistencia en períodos. Buscar:
-```
-https://www.asamblea.go.cr/pa/datosabiertos/
-```
-
-El script `npm run ingest:real` está listo — solo necesita que las URLs de descarga existan.
-Cuando corras el script, guarda `data/real-scores.json` localmente y si hay `DATABASE_URL`,
-hace upsert en Prisma automáticamente.
+- Fuente: Google News RSS por diputado (`"{nombre}" when:30d`, es-419/CR)
+- Clasificación: Claude Haiku (`claude-haiku-4-5-20251001`) en `ingest:opendata`
+- Requiere `ANTHROPIC_API_KEY`; sin key preserva la clasificación previa
+- `DUMP_HEADLINES=1` vuelca los titulares a `/tmp/headlines.json` para revisión manual
+- Ojo con homónimos (cantantes, futbolistas extranjeros) — el prompt le pide a Claude
+  marcar como X lo que no sea del diputado costarricense
 
 ---
 
@@ -200,7 +208,5 @@ Sin `DATABASE_URL` el sitio funciona igual con mock data.
 ```bash
 npm run dev              # Servidor de desarrollo
 npm run build            # Build de producción
-npm run ingest:real      # Descargar datos reales (requiere internet + opcionalmente DB)
-npm run db:studio        # Abrir Prisma Studio (requiere DATABASE_URL)
-npm run db:push          # Aplicar schema a la DB sin migraciones
+npm run ingest:opendata  # Re-generar data/real-data.json (ANTHROPIC_API_KEY opcional para MED)
 ```

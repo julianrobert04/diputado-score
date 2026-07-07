@@ -1,12 +1,16 @@
 {
-  "updatedAt": "2026-07-07T18:14:30.188Z",
+  "updatedAt": "2026-07-07T22:03:01.443Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [
     "2026-05"
   ],
   "tripMonths": [],
   "advisorsMonth": "2026-05",
+  "medUpdatedAt": "2026-07-07T22:06:40.749Z",
   "avgAsesores": 4.315789473684211,
+  "avgCosto": 4404692.285438596,
+  "avgViajes": null,
+  "avgPermRatio": 0,
   "deputies": {
     "dep-nogui-acosta": {
       "asisPL": 18,
@@ -17,6 +21,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 1,
+      "costoDespacho": 608134,
+      "med": {
+        "pos": 0,
+        "neg": 6,
+        "neu": 19,
+        "total": 25
+      },
       "nombreXlsx": "Acosta Jaén Nogui"
     },
     "dep-angela-aguilar": {
@@ -28,6 +39,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5139717,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 0,
+        "total": 0
+      },
       "nombreXlsx": "Aguilar Vargas Ángela"
     },
     "dep-iztaru-alfaro": {
@@ -39,6 +57,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 3818030,
+      "med": {
+        "pos": 5,
+        "neg": 0,
+        "neu": 3,
+        "total": 8
+      },
       "nombreXlsx": "Alfaro Guerrero Iztarú"
     },
     "dep-karen-alfaro": {
@@ -50,6 +75,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5236534,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 6,
+        "total": 6
+      },
       "nombreXlsx": "Alfaro Jiménez Karen"
     },
     "dep-edgardo-araya": {
@@ -61,6 +93,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 1,
+      "costoDespacho": 1377336,
+      "med": {
+        "pos": 3,
+        "neg": 1,
+        "neu": 7,
+        "total": 11
+      },
       "nombreXlsx": "Araya Sibaja Edgardo"
     },
     "dep-reynaldo-arias": {
@@ -72,6 +111,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 3,
+      "costoDespacho": 3271096,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 5,
+        "total": 5
+      },
       "nombreXlsx": "Arias Mora Reynaldo"
     },
     "dep-osvaldo-artavia": {
@@ -83,6 +129,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4095503,
+      "med": {
+        "pos": 0,
+        "neg": 2,
+        "neu": 5,
+        "total": 7
+      },
       "nombreXlsx": "Artavia Carballo Osvaldo"
     },
     "dep-grethel-avila": {
@@ -94,6 +147,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4573126,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 0,
+        "total": 0
+      },
       "nombreXlsx": "Ávila Vargas Gréthel María"
     },
     "dep-marco-badilla": {
@@ -105,6 +165,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4599812,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 9,
+        "total": 9
+      },
       "nombreXlsx": "Badilla Chavaría Marco"
     },
     "dep-robert-barrantes": {
@@ -116,6 +183,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4920902,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 1,
+        "total": 1
+      },
       "nombreXlsx": "Barrantes Camacho Roberth Junior"
     },
     "dep-antonio-barzuna": {
@@ -127,6 +201,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 3829492,
+      "med": {
+        "pos": 3,
+        "neg": 0,
+        "neu": 5,
+        "total": 8
+      },
       "nombreXlsx": "Barzuna Thompson Antonio"
     },
     "dep-cindy-blanco": {
@@ -138,6 +219,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5617842,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 0,
+        "total": 0
+      },
       "nombreXlsx": "Blanco González Cindy María"
     },
     "dep-gerardo-bogantes": {
@@ -149,6 +237,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 3963056,
+      "med": {
+        "pos": 0,
+        "neg": 3,
+        "neu": 6,
+        "total": 9
+      },
       "nombreXlsx": "Bogantes Rivera Gerald"
     },
     "dep-sadie-britton": {
@@ -160,6 +255,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4870093,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 3,
+        "total": 3
+      },
       "nombreXlsx": "Britton González Esmeralda"
     },
     "dep-stephan-brunner": {
@@ -171,6 +273,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4500515,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 6,
+        "total": 6
+      },
       "nombreXlsx": "Brunner Neibig Stephan"
     },
     "dep-jesus-calderon": {
@@ -182,6 +291,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5850122,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 7,
+        "total": 7
+      },
       "nombreXlsx": "Calderón Calderón Jesús"
     },
     "dep-kathia-calvo": {
@@ -193,6 +309,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5318945.77,
+      "med": {
+        "pos": 1,
+        "neg": 2,
+        "neu": 6,
+        "total": 9
+      },
       "nombreXlsx": "Calvo Cruz Kattia"
     },
     "dep-maria-camareno": {
@@ -204,6 +327,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5725235,
+      "med": {
+        "pos": 3,
+        "neg": 0,
+        "neu": 4,
+        "total": 7
+      },
       "nombreXlsx": "Camareno Camareno María Isabel"
     },
     "dep-ronald-campos": {
@@ -215,6 +345,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4150011,
+      "med": {
+        "pos": 1,
+        "neg": 0,
+        "neu": 8,
+        "total": 9
+      },
       "nombreXlsx": "Campos Villegas Ronald"
     },
     "dep-claudia-dobles": {
@@ -226,6 +363,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4599812,
+      "med": {
+        "pos": 6,
+        "neg": 0,
+        "neu": 19,
+        "total": 25
+      },
       "nombreXlsx": "Dobles Camargo Claudia"
     },
     "dep-anaruth-esquivel": {
@@ -237,6 +381,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 3883308,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 7,
+        "total": 7
+      },
       "nombreXlsx": "Esquivel Medrano Ana Ruth"
     },
     "dep-marta-esquivel": {
@@ -248,6 +399,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4715099.15,
+      "med": {
+        "pos": 0,
+        "neg": 4,
+        "neu": 3,
+        "total": 7
+      },
       "nombreXlsx": "Esquivel Rodríguez Marta Eugenia"
     },
     "dep-abril-gordienko": {
@@ -259,6 +417,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 6,
+      "costoDespacho": 6970301,
+      "med": {
+        "pos": 1,
+        "neg": 0,
+        "neu": 19,
+        "total": 20
+      },
       "nombreXlsx": "Gordienko López Abril"
     },
     "dep-nayuribe-guadamuz": {
@@ -270,6 +435,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 3826411.9699999997,
+      "med": {
+        "pos": 1,
+        "neg": 0,
+        "neu": 6,
+        "total": 7
+      },
       "nombreXlsx": "Guadamuz Rosales Nayuribe"
     },
     "dep-eder-hernandez": {
@@ -281,6 +453,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 3962426,
+      "med": {
+        "pos": 1,
+        "neg": 0,
+        "neu": 7,
+        "total": 8
+      },
       "nombreXlsx": "Hernández Ulloa Eder"
     },
     "dep-victor-hidalgo": {
@@ -292,6 +471,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4648980,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 4,
+        "total": 4
+      },
       "nombreXlsx": "Hidalgo Solís Víctor"
     },
     "dep-wilson-jimenez": {
@@ -303,6 +489,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4558546,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 0,
+        "total": 0
+      },
       "nombreXlsx": "Jiménez Cordero Wilson Alfredo"
     },
     "dep-yara-jimenez": {
@@ -314,6 +507,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4040389,
+      "med": {
+        "pos": 3,
+        "neg": 4,
+        "neu": 18,
+        "total": 25
+      },
       "nombreXlsx": "Jiménez Fallas Yara"
     },
     "dep-norjelens-lobo": {
@@ -325,6 +525,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 3,
+      "costoDespacho": 2505972,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 0,
+        "total": 0
+      },
       "nombreXlsx": "Lobo Vargas Norjelens María"
     },
     "dep-karol-matamoros": {
@@ -336,6 +543,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4599812,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 3,
+        "total": 3
+      },
       "nombreXlsx": "Matamoros Montoya Karol Vanessa"
     },
     "dep-mangell-mclean": {
@@ -347,6 +561,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 3636763,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 0,
+        "total": 0
+      },
       "nombreXlsx": "Mc Lean Villalobos Mangell"
     },
     "dep-ariel-mora": {
@@ -358,6 +579,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4899576,
+      "med": {
+        "pos": 0,
+        "neg": 2,
+        "neu": 6,
+        "total": 8
+      },
       "nombreXlsx": "Mora Fallas Ariel"
     },
     "dep-kattia-mora": {
@@ -369,6 +597,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5248308,
+      "med": {
+        "pos": 1,
+        "neg": 0,
+        "neu": 3,
+        "total": 4
+      },
       "nombreXlsx": "Mora Montoya Kattya"
     },
     "dep-royner-mora": {
@@ -380,6 +615,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4392591.4,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 0,
+        "total": 0
+      },
       "nombreXlsx": "Mora Ruiz Royner G."
     },
     "dep-vianey-mora": {
@@ -391,6 +633,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 3,
+      "costoDespacho": 3873308,
+      "med": {
+        "pos": 1,
+        "neg": 1,
+        "neu": 4,
+        "total": 6
+      },
       "nombreXlsx": "Mora Vega Vianey"
     },
     "dep-anna-muller": {
@@ -402,6 +651,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5882655,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 2,
+        "total": 2
+      },
       "nombreXlsx": "Müller Castro Anna Katharina"
     },
     "dep-cindy-murillo": {
@@ -413,6 +669,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 3,
+      "costoDespacho": 2646696,
+      "med": {
+        "pos": 0,
+        "neg": 9,
+        "neu": 3,
+        "total": 12
+      },
       "nombreXlsx": "Murillo Artavia Cindy"
     },
     "dep-zaira-murillo": {
@@ -424,6 +687,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5771146,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 6,
+        "total": 6
+      },
       "nombreXlsx": "Murillo Marín Zaira"
     },
     "dep-diana-murillo": {
@@ -435,6 +705,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 3,
+      "costoDespacho": 3519710,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 10,
+        "total": 10
+      },
       "nombreXlsx": "Murillo Murillo Diana"
     },
     "dep-fernando-obaldia": {
@@ -446,6 +723,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5725235,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 7,
+        "total": 7
+      },
       "nombreXlsx": "Obaldía Álvarez Fernando"
     },
     "dep-mayuli-ortega": {
@@ -457,6 +741,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 3448791,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 8,
+        "total": 8
+      },
       "nombreXlsx": "Ortega Guzmán Mayuli"
     },
     "dep-salvador-padilla": {
@@ -468,6 +759,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4468404,
+      "med": {
+        "pos": 6,
+        "neg": 0,
+        "neu": 4,
+        "total": 10
+      },
       "nombreXlsx": "Padilla Villanueva Salvador"
     },
     "dep-juan-quesada": {
@@ -479,6 +777,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5771146,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 9,
+        "total": 9
+      },
       "nombreXlsx": "Quesada Espinoza Juan Manuel"
     },
     "dep-alvaro-ramirez": {
@@ -490,6 +795,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4053263.45,
+      "med": {
+        "pos": 3,
+        "neg": 1,
+        "neu": 12,
+        "total": 16
+      },
       "nombreXlsx": "Ramírez Bogantes Álvaro"
     },
     "dep-gonzalo-ramirez": {
@@ -501,6 +813,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4393810,
+      "med": {
+        "pos": 1,
+        "neg": 2,
+        "neu": 1,
+        "total": 4
+      },
       "nombreXlsx": "Ramírez Zamora Gonzalo"
     },
     "dep-maria-roman": {
@@ -512,6 +831,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 3848529.5,
+      "med": {
+        "pos": 1,
+        "neg": 0,
+        "neu": 7,
+        "total": 8
+      },
       "nombreXlsx": "Román Mora María Eugenia"
     },
     "dep-joselyn-saenz": {
@@ -523,6 +849,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 3,
+      "costoDespacho": 3199044,
+      "med": {
+        "pos": 0,
+        "neg": 1,
+        "neu": 6,
+        "total": 7
+      },
       "nombreXlsx": "Sáenz Blanco Joselyn"
     },
     "dep-janice-sandi": {
@@ -534,6 +867,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5852306,
+      "med": {
+        "pos": 0,
+        "neg": 1,
+        "neu": 8,
+        "total": 9
+      },
       "nombreXlsx": "Sandí Morales Janice"
     },
     "dep-sigrid-segura": {
@@ -545,6 +885,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4452978,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 10,
+        "total": 10
+      },
       "nombreXlsx": "Segura Artavia Sigrid"
     },
     "dep-daniel-siezar": {
@@ -556,6 +903,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 2418415.77,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 7,
+        "total": 7
+      },
       "nombreXlsx": "Siézar Cárdenas Daniel"
     },
     "dep-antonio-trejos": {
@@ -567,6 +921,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4453083.26,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 11,
+        "total": 11
+      },
       "nombreXlsx": "Trejos Mazariegos Antonio"
     },
     "dep-kattia-ulate": {
@@ -578,6 +939,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5342699,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 1,
+        "total": 1
+      },
       "nombreXlsx": "Ulate Alvarado Kattia María"
     },
     "dep-andrea-valverde": {
@@ -589,6 +957,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 4,
+      "costoDespacho": 4142158,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 4,
+        "total": 4
+      },
       "nombreXlsx": "Valverde Palavicini Andrea"
     },
     "dep-rafael-vargas": {
@@ -600,6 +975,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4651132,
+      "med": {
+        "pos": 0,
+        "neg": 0,
+        "neu": 0,
+        "total": 0
+      },
       "nombreXlsx": "Vargas Brenes Rafael"
     },
     "dep-jose-villalobos": {
@@ -611,6 +993,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5169482,
+      "med": {
+        "pos": 0,
+        "neg": 17,
+        "neu": 8,
+        "total": 25
+      },
       "nombreXlsx": "Villalobos Umaña José Miguel"
     },
     "dep-jose-villalta": {
@@ -622,6 +1011,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 5682837,
+      "med": {
+        "pos": 7,
+        "neg": 1,
+        "neu": 11,
+        "total": 19
+      },
       "nombreXlsx": "Villalta Flórez-Estrada José María"
     },
     "dep-kristel-ward": {
@@ -633,6 +1029,13 @@
       "permCom": 0,
       "viajes": 0,
       "asesores": 5,
+      "costoDespacho": 4346834,
+      "med": {
+        "pos": 1,
+        "neg": 0,
+        "neu": 8,
+        "total": 9
+      },
       "nombreXlsx": "Ward Hudson Kristel"
     }
   }

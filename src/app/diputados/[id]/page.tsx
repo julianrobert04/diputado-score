@@ -4,12 +4,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
-import { ScoreBar } from "@/components/ScoreBadge";
 import { TrendBadge } from "@/components/TrendBadge";
 import { SparklineCard } from "@/components/Sparkline";
 import { RadarChart } from "@/components/RadarChart";
-import { METRIC_META, DIMENSION_META, ScoreSnapshot, LegislativeBill, BILL_STATUS_LABEL, BILL_STATUS_COLOR, ScoreMetrics } from "@/types";
+import { METRIC_META, DIMENSION_META, BILL_STATUS_LABEL, BILL_STATUS_COLOR, ScoreMetrics } from "@/types";
 import { getScoreColor } from "@/lib/scoreCalculator";
 import { getMockPoliticianById, getMockPoliticians, getRealMetrics, RealMetric } from "@/lib/mockData";
 
@@ -75,94 +73,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function DiputadoPage({ params }: Props) {
   const { id } = await params;
 
-  const since = new Date();
-  since.setDate(since.getDate() - 90);
+  const mock = getMockPoliticianById(id);
+  if (!mock) notFound();
 
-  let snapshots: ScoreSnapshot[] = [];
-  let overall = 0;
-  let metrics: Record<string, number> | null = null;
-  let rawData: Record<string, unknown> | null = null;
-  let politicianName = "";
-  let politicianParty = "";
-  let politicianProvince = "";
-  let politicianPhoto: string | null = null;
-  let politicianActive = true;
-  let periodStart = "";
-  let periodEnd = "";
-  let allPeriods: { id: string; startDate: Date; endDate: Date; party: string; score: { overall: number } | null }[] = [];
-  let bills: LegislativeBill[] = [];
-
-  try {
-    const politician = await prisma.politician.findUnique({
-      where: { id },
-      include: {
-        periods: {
-          orderBy: { startDate: "desc" },
-          include: {
-            score: {
-              include: {
-                snapshots: {
-                  where: { takenAt: { gte: since } },
-                  orderBy: { takenAt: "asc" },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (!politician) {
-      const mock = getMockPoliticianById(id);
-      if (!mock) notFound();
-      politicianName = mock.row.nombre;
-      politicianParty = mock.row.partido;
-      politicianProvince = mock.row.provincia;
-      metrics = mock.metrics as unknown as Record<string, number>;
-      overall = mock.overall;
-      snapshots = mock.snapshots;
-      rawData = mock.rawData as Record<string, unknown>;
-      bills = mock.bills;
-    } else {
-      const latestPeriod = politician.periods[0];
-      const score = latestPeriod?.score;
-      overall = score?.overall ?? 0;
-      politicianName = politician.fullName;
-      politicianParty = politician.party;
-      politicianProvince = politician.province;
-      politicianPhoto = politician.photoUrl ?? null;
-      politicianActive = politician.active;
-      periodStart = latestPeriod?.startDate.toISOString() ?? "";
-      periodEnd = latestPeriod?.endDate.toISOString() ?? "";
-      allPeriods = politician.periods.map((p) => ({
-        id: p.id,
-        startDate: p.startDate,
-        endDate: p.endDate,
-        party: p.party,
-        score: p.score ? { overall: p.score.overall } : null,
-      }));
-      metrics = score
-        ? { ASI: score.ASI, COM: score.COM, PRO: score.PRO, APR: score.APR, MOC: score.MOC, DEC: score.DEC, GAS: score.GAS, VIA: score.VIA, ASE: score.ASE, VOT: score.VOT, COH: score.COH }
-        : null;
-      rawData = score?.rawData as Record<string, unknown> | null;
-      snapshots = (score?.snapshots ?? []).map((s) => ({
-        id: s.id, takenAt: s.takenAt.toISOString(), source: s.source,
-        overall: s.overall, deltaOverall: s.deltaOverall,
-        metrics: { ASI: s.ASI, COM: s.COM, PRO: s.PRO, APR: s.APR, MOC: s.MOC, DEC: s.DEC, GAS: s.GAS, VIA: s.VIA, ASE: s.ASE, VOT: s.VOT, COH: s.COH },
-      }));
-    }
-  } catch {
-    const mock = getMockPoliticianById(id);
-    if (!mock) notFound();
-    politicianName = mock.row.nombre;
-    politicianParty = mock.row.partido;
-    politicianProvince = mock.row.provincia;
-    metrics = mock.metrics as unknown as Record<string, number>;
-    overall = mock.overall;
-    snapshots = mock.snapshots;
-    rawData = mock.rawData as Record<string, unknown>;
-    bills = mock.bills;
-  }
+  const politicianName = mock.row.nombre;
+  const politicianParty = mock.row.partido;
+  const politicianProvince = mock.row.provincia;
+  const politicianPhoto = mock.row.photoUrl ?? null;
+  const politicianActive = true;
+  const metrics: Record<string, number> = mock.metrics as unknown as Record<string, number>;
+  const overall = mock.overall;
+  const snapshots = mock.snapshots;
+  const rawData = mock.rawData as Record<string, unknown>;
+  const bills = mock.bills;
+  const periodStart = "2026-05-01T00:00:00.000Z";
+  const periodEnd = "2030-04-30T00:00:00.000Z";
+  const allPeriods: { id: string; startDate: Date; endDate: Date; party: string; score: { overall: number } | null }[] = [];
 
   const color = getScoreColor(overall);
   const latestSnapshot = snapshots[snapshots.length - 1] ?? null;
@@ -312,7 +238,7 @@ export default async function DiputadoPage({ params }: Props) {
         {/* 11 metrics — animated progress bars */}
         {metrics && (
           <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-5">
-            <h2 className="text-base font-bold mb-6 text-white">Las 11 métricas</h2>
+            <h2 className="text-base font-bold mb-6 text-white">Las 7 métricas</h2>
             <div className="space-y-4">
               {Object.entries(METRIC_META).map(([code, meta]) => {
                 const value = metrics[code as keyof typeof metrics] ?? 0;
@@ -332,7 +258,7 @@ export default async function DiputadoPage({ params }: Props) {
                           </span>
                         ) : (
                           <span className="text-[0.6rem] text-zinc-600 bg-zinc-800/60 px-1.5 py-0.5 rounded-md uppercase tracking-wide flex-shrink-0">
-                            Estimado
+                            Sin datos aún
                           </span>
                         )}
                       </div>
@@ -425,16 +351,15 @@ export default async function DiputadoPage({ params }: Props) {
             <h2 className="text-base font-bold mb-4 text-white">Datos crudos de auditoría</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
               {[
-                { label: "Sesiones asistidas", value: `${rawData.sesionesAsistidas ?? "—"} / ${rawData.sesionesTotales ?? "—"}` },
-                { label: "Votaciones", value: `${rawData.votacionesParticipadas ?? "—"} / ${rawData.votacionesTotales ?? "—"}` },
-                { label: "Proyectos presentados", value: String(rawData.proyectosPresentados ?? "—") },
-                { label: "Proyectos aprobados", value: String(rawData.proyectosAprobados ?? "—") },
-                { label: "Mociones", value: String(rawData.mociones ?? "—") },
-                { label: "Comisiones", value: `${rawData.comisionesAsistidas ?? "—"} / ${rawData.comisionesTotales ?? "—"}` },
-                { label: "Declaración bienes", value: String(rawData.declaracionEstado ?? "—").replace("_", " ") },
-                { label: "Gasto representación", value: rawData.gastoRepresentacion ? `₡${Number(rawData.gastoRepresentacion).toLocaleString("es-CR")}` : "—" },
-                { label: "Viajes oficiales", value: String(rawData.viajesOficiales ?? "—") },
+                { label: "Sesiones plenario", value: `${rawData.sesionesAsistidas ?? "—"} / ${rawData.sesionesTotales ?? "—"}` },
+                { label: "Sesiones comisión", value: `${rawData.comisionesAsistidas ?? "—"} / ${rawData.comisionesTotales ?? "—"}` },
+                { label: "Permisos", value: `${rawData.permisos ?? "—"} / ${rawData.permisosTotales ?? "—"}` },
+                { label: "Costo del despacho", value: typeof rawData.costoDespacho === "number" ? `₡${Number(rawData.costoDespacho).toLocaleString("es-CR")}/mes` : "—" },
                 { label: "Asesores", value: String(rawData.asesoresCount ?? "—") },
+                { label: "Viajes oficiales", value: String(rawData.viajesOficiales ?? "—") },
+                { label: "Noticias positivas", value: String(rawData.medPos ?? "—") },
+                { label: "Noticias negativas", value: String(rawData.medNeg ?? "—") },
+                { label: "Noticias neutras", value: String(rawData.medNeu ?? "—") },
               ].map(({ label, value }) => (
                 <div key={label} className="bg-zinc-800/60 rounded-xl p-3 ring-1 ring-white/[0.04]">
                   <p className="text-[0.65rem] text-zinc-600 mb-1">{label}</p>
@@ -473,7 +398,7 @@ export default async function DiputadoPage({ params }: Props) {
 
       <footer className="mt-20 border-t border-white/[0.04] py-8">
         <div className="max-w-5xl mx-auto px-5 text-zinc-700 text-xs">
-          <p>Datos: Asamblea Legislativa Open Data · CGR · Delfino.cr</p>
+          <p>Datos: Asamblea Legislativa Open Data · Google News</p>
         </div>
       </footer>
     </div>

@@ -3,32 +3,26 @@ export type PoliticianType = "diputado" | "alcalde" | "ejecutivo";
 export interface ScoreMetrics {
   ASI: number; // Asistencia plenario
   COM: number; // Asistencia comisiones
-  PRO: number; // Proyectos presentados
-  APR: number; // Proyectos aprobados
-  MOC: number; // Mociones presentadas
-  DEC: number; // Declaración de bienes
-  GAS: number; // Gasto representación
+  PER: number; // Permisos / ausencias justificadas
+  COS: number; // Costo del despacho (salarios de asesores)
+  ASE: number; // Cantidad de asesores
+  MED: number; // Cobertura mediática (sentimiento)
   VIA: number; // Viajes oficiales
-  ASE: number; // Asesores parlamentarios
-  VOT: number; // Participación votaciones
-  COH: number; // Coherencia de voto
 }
 
 export interface RawData {
   sesionesAsistidas?: number;
   sesionesTotales?: number;
-  votacionesParticipadas?: number;
-  votacionesTotales?: number;
-  proyectosPresentados?: number;
-  proyectosAprobados?: number;
-  mociones?: number;
   comisionesAsistidas?: number;
   comisionesTotales?: number;
-  declaracionEstado?: "al_dia" | "atrasada" | "no_presento";
-  gastoRepresentacion?: number;
-  gastoPresupuesto?: number;
-  viajesOficiales?: number;
+  permisos?: number;
+  permisosTotales?: number;
+  costoDespacho?: number;
   asesoresCount?: number;
+  viajesOficiales?: number;
+  medPos?: number;
+  medNeg?: number;
+  medNeu?: number;
   [key: string]: unknown;
 }
 
@@ -85,78 +79,50 @@ export const METRIC_META: Record<
     label: "Asistencia Plenario",
     description: "Sesiones del plenario a las que asistió",
     source: "Asamblea Open Data",
-    weight: 0.075, // 7.5% de 15% presencia
+    weight: 0.15,
     higherIsBetter: true,
   },
   COM: {
     label: "Asistencia Comisiones",
     description: "Sesiones de comisión a las que asistió",
     source: "Asamblea Open Data",
-    weight: 0.075,
+    weight: 0.15,
     higherIsBetter: true,
   },
-  PRO: {
-    label: "Proyectos de Ley",
-    description: "Proyectos de ley presentados (relativo al promedio)",
+  PER: {
+    label: "Permisos",
+    description: "Ausencias justificadas con permiso vs promedio del período",
     source: "Asamblea Open Data",
-    weight: 0.083,
-    higherIsBetter: true,
-  },
-  APR: {
-    label: "Proyectos Aprobados",
-    description: "Proporción de proyectos que lograron aprobarse",
-    source: "Asamblea Open Data",
-    weight: 0.083,
-    higherIsBetter: true,
-  },
-  MOC: {
-    label: "Mociones",
-    description: "Mociones presentadas (relativo al promedio)",
-    source: "Asamblea Open Data",
-    weight: 0.084,
-    higherIsBetter: true,
-  },
-  DEC: {
-    label: "Declaración de Bienes",
-    description: "Presentó declaración jurada de bienes ante la CGR",
-    source: "CGR",
-    weight: 0.2,
-    higherIsBetter: true,
-  },
-  GAS: {
-    label: "Gasto de Representación",
-    description: "Uso del presupuesto de representación vs promedio",
-    source: "Asamblea Open Data",
-    weight: 0.05,
+    weight: 0.15,
     higherIsBetter: false,
   },
-  VIA: {
-    label: "Viajes Oficiales",
-    description: "Viajes oficiales realizados vs promedio del período",
-    source: "Asamblea Open Data",
-    weight: 0.05,
+  COS: {
+    label: "Costo del Despacho",
+    description: "Suma de salarios de sus asesores vs promedio",
+    source: "Asamblea Open Data (salarios)",
+    weight: 0.12,
     higherIsBetter: false,
   },
   ASE: {
-    label: "Asesores Parlamentarios",
-    description: "Número de asesores vs promedio del período",
-    source: "Asamblea Open Data",
-    weight: 0.05,
+    label: "Asesores",
+    description: "Cantidad de asesores vs promedio del período",
+    source: "Asamblea Open Data (salarios)",
+    weight: 0.09,
     higherIsBetter: false,
   },
-  VOT: {
-    label: "Participación en Votaciones",
-    description: "Votaciones en las que participó del total",
-    source: "Asamblea Open Data",
-    weight: 0.075,
+  MED: {
+    label: "Cobertura Mediática",
+    description: "Noticias positivas suman, negativas restan; sin noticias es neutro",
+    source: "Google News + Claude",
+    weight: 0.25,
     higherIsBetter: true,
   },
-  COH: {
-    label: "Coherencia de Voto",
-    description: "Consistencia de voto con posición pública declarada",
-    source: "Delfino.cr",
-    weight: 0.075,
-    higherIsBetter: true,
+  VIA: {
+    label: "Viajes Oficiales",
+    description: "Viajes oficiales al exterior vs promedio del período",
+    source: "Asamblea Open Data",
+    weight: 0.09,
+    higherIsBetter: false,
   },
 };
 
@@ -209,9 +175,7 @@ export const BILL_STATUS_COLOR: Record<BillStatus, string> = {
 };
 
 export const DIMENSION_META = {
-  presencia: { label: "Presencia", metrics: ["ASI", "COM"] as const, weight: 0.15, color: "#3b82f6" },
-  productividad: { label: "Productividad", metrics: ["PRO", "APR", "MOC"] as const, weight: 0.25, color: "#10b981" },
-  transparencia: { label: "Transparencia", metrics: ["DEC"] as const, weight: 0.20, color: "#f59e0b" },
-  gasto: { label: "Gasto", metrics: ["GAS", "VIA", "ASE"] as const, weight: 0.15, color: "#ef4444" },
-  consistencia: { label: "Consistencia", metrics: ["VOT", "COH"] as const, weight: 0.15, color: "#8b5cf6" },
+  presencia:  { label: "Presencia",       metrics: ["ASI", "COM", "PER"] as const, weight: 0.45, color: "#3b82f6" },
+  austeridad: { label: "Austeridad",      metrics: ["COS", "ASE", "VIA"] as const, weight: 0.30, color: "#ef4444" },
+  imagen:     { label: "Imagen Pública",  metrics: ["MED"] as const,               weight: 0.25, color: "#10b981" },
 };

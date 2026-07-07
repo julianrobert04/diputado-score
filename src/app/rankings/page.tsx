@@ -1,7 +1,6 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
 import { RankingAvatar } from "@/components/RankingAvatar";
 import { getScoreColor } from "@/lib/scoreCalculator";
 import { getMockPoliticians } from "@/lib/mockData";
@@ -13,42 +12,23 @@ interface RankingRow {
   province: string;
   overall: number;
   ASI: number;
-  PRO: number;
-  DEC: number;
+  MED: number;
+  COS: number;
   photoUrl: string;
 }
 
 async function getRankings(): Promise<RankingRow[]> {
-  try {
-    const scores = await prisma.score.findMany({
-      include: { period: { include: { politician: true } } },
-      orderBy: { overall: "desc" },
-    });
-    if (scores.length === 0) throw new Error("empty");
-    return scores.map((s) => ({
-      id: s.period.politician.id,
-      fullName: s.period.politician.fullName,
-      party: s.period.politician.party,
-      province: s.period.politician.province,
-      overall: s.overall,
-      ASI: s.ASI,
-      PRO: s.PRO,
-      DEC: s.DEC,
-      photoUrl: (s.period.politician as { photoUrl?: string }).photoUrl ?? "",
-    }));
-  } catch {
-    return getMockPoliticians().map(({ card }) => ({
-      id: card.id,
-      fullName: card.fullName,
-      party: card.party,
-      province: card.province,
-      overall: card.overall,
-      ASI: card.metrics.ASI,
-      PRO: card.metrics.PRO,
-      DEC: card.metrics.DEC,
-      photoUrl: card.photoUrl ?? "",
-    }));
-  }
+  return getMockPoliticians().map(({ card }) => ({
+    id: card.id,
+    fullName: card.fullName,
+    party: card.party,
+    province: card.province,
+    overall: card.overall,
+    ASI: card.metrics.ASI,
+    MED: card.metrics.MED,
+    COS: card.metrics.COS,
+    photoUrl: card.photoUrl ?? "",
+  }));
 }
 
 const SCORE_TEXT: Record<string, string> = {
@@ -283,12 +263,12 @@ export default async function RankingsPage() {
                     <div>ASI</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-zinc-400 font-medium tabular-nums">{s.PRO.toFixed(1)}</div>
-                    <div>PRO</div>
+                    <div className="text-zinc-400 font-medium tabular-nums">{s.MED.toFixed(1)}</div>
+                    <div>MED</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-zinc-400 font-medium tabular-nums">{s.DEC.toFixed(0)}</div>
-                    <div>DEC</div>
+                    <div className="text-zinc-400 font-medium tabular-nums">{s.COS.toFixed(1)}</div>
+                    <div>COS</div>
                   </div>
                 </div>
 
@@ -304,7 +284,7 @@ export default async function RankingsPage() {
 
       <footer className="mt-20 border-t border-white/[0.04] py-8">
         <div className="max-w-4xl mx-auto px-5 text-zinc-700 text-xs">
-          <p>Datos: Asamblea Legislativa Open Data · CGR · Delfino.cr</p>
+          <p>Datos: Asamblea Legislativa Open Data · Google News</p>
         </div>
       </footer>
     </div>
