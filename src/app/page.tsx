@@ -17,8 +17,6 @@ const PARTIDO_SHORT: Record<string, string> = {
   "Partido Unidad Social Cristiana": "PUSC",
 };
 
-const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
-
 const SCORE_TEXT: Record<string, string> = {
   gold:   "text-amber-400",
   green:  "text-emerald-400",
@@ -29,15 +27,6 @@ const SCORE_TEXT: Record<string, string> = {
 };
 
 const STAT_TILE = "bg-zinc-900 ring-1 ring-white/[0.06] rounded-xl px-4 py-3 hover:ring-white/[0.12] transition-all duration-200";
-
-function formatMonths(months: string[]): string {
-  if (!months.length) return "sin datos aún";
-  const fmt = (m: string) => {
-    const [y, mm] = m.split("-");
-    return `${MESES[parseInt(mm, 10) - 1]} ${y}`;
-  };
-  return months.length === 1 ? fmt(months[0]) : `${fmt(months[0])} – ${fmt(months[months.length - 1])}`;
-}
 
 // Nombres ticos: nombres de pila + dos apellidos → mostrar primer nombre + primer apellido
 function shortName(fullName: string): string {
@@ -121,6 +110,9 @@ export default async function Home({ searchParams }: HomeProps) {
             <Link href="/rankings" className="px-3 py-1.5 rounded-lg text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors">
               Rankings
             </Link>
+            <Link href="/metricas" className="px-3 py-1.5 rounded-lg text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors">
+              Métricas
+            </Link>
           </nav>
         </div>
       </header>
@@ -146,25 +138,17 @@ export default async function Home({ searchParams }: HomeProps) {
               </div>
 
               <div className="flex flex-wrap items-center gap-2 mb-5">
-                <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 py-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-emerald-400 text-[0.7rem] font-semibold tracking-wide uppercase">
-                    Asistencia oficial · {formatMonths(REAL_DATA_INFO.attendanceMonths)}
-                  </span>
-                </div>
                 <span className="text-zinc-600 text-[0.7rem]">
                   Actualizado {new Date(REAL_DATA_INFO.updatedAt).toLocaleDateString("es-CR", { day: "numeric", month: "long", year: "numeric" })} · datos abiertos de la Asamblea
                 </span>
               </div>
-              <h1 className="text-4xl sm:text-[3.25rem] font-black tracking-tight leading-[1.05] mb-4">
-                ¿Cuánto trabaja<br className="hidden sm:block" />
-                {" "}tu <span className="text-emerald-400">diputado</span>?
+              <h1 className="text-3xl sm:text-[2.75rem] font-black tracking-tight leading-[1.1] mb-4">
+                Si la Asamblea Legislativa fuera un partido,{" "}
+                <span className="text-emerald-400">así rendirían nuestros diputados.</span>
               </h1>
               <p className="text-zinc-500 text-base max-w-lg leading-relaxed">
-                Scores del 1 al 10 con datos 100% reales: asistencia oficial al plenario,
-                votaciones y comisiones, permisos, proyectos de ley presentados y aprobados,
-                y cobertura mediática. Como el rating de Keylor — pero para la Asamblea.
-                Sin estimaciones: si no hay dato público, la métrica queda neutra.
+                Inspirado en las métricas con las que calificamos el rendimiento de los
+                jugadores de fútbol en cada partido.
               </p>
             </div>
 

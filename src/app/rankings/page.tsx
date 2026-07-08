@@ -154,6 +154,9 @@ export default async function RankingsPage() {
             <Link href="/rankings" className="px-3 py-1.5 rounded-lg text-sm font-medium text-white bg-white/[0.07] transition-colors">
               Rankings
             </Link>
+            <Link href="/metricas" className="px-3 py-1.5 rounded-lg text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors">
+              Métricas
+            </Link>
           </nav>
         </div>
       </header>
