@@ -87,13 +87,16 @@ export function SparklineCard({
 }) {
   if (snapshots.length < 2) {
     return (
-      <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
-        <h2 className="text-lg font-bold mb-3">{title}</h2>
-        <p className="text-gray-500 text-sm">
-          {snapshots.length === 0
-            ? "Todavía no hay historial. Volvé a correr el ingest en días distintos para ver la evolución."
-            : "Se necesitan al menos 2 corridas del ingest para mostrar la tendencia."}
-        </p>
+      <div className="h-full flex flex-col">
+        <h2 className="text-sm font-semibold text-zinc-400 mb-4">{title}</h2>
+        <div className="flex-1 flex flex-col items-center justify-center text-center gap-2 py-6">
+          <svg className="w-8 h-8 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.306a11.95 11.95 0 015.814-5.518l2.74-1.22m0 0l-5.94-2.281m5.94 2.28l-2.28 5.941" />
+          </svg>
+          <p className="text-zinc-600 text-xs max-w-[220px] leading-relaxed">
+            La tendencia aparece cuando la actualización semanal acumule más de un corte de datos.
+          </p>
+        </div>
       </div>
     );
   }
@@ -133,9 +136,9 @@ export function SparklineCard({
     d.toLocaleDateString("es-CR", { day: "numeric", month: "short" });
 
   return (
-    <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+    <div>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold">{title}</h2>
+        <h2 className="text-sm font-semibold text-zinc-400">{title}</h2>
         <div className="flex items-center gap-3 text-xs text-gray-500">
           <span>Mín <span className="text-white font-bold">{min.toFixed(1)}</span></span>
           <span>Máx <span className="text-white font-bold">{max.toFixed(1)}</span></span>

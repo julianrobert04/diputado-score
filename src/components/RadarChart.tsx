@@ -41,8 +41,8 @@ function toPolygon(pts: { x: number; y: number }[]) {
 export function RadarChart({ metrics, size = 260 }: Props) {
   const cx = size / 2;
   const cy = size / 2;
-  const maxR = size * 0.38;
-  const labelR = maxR + 22;
+  const maxR = size * 0.32;
+  const labelR = maxR + 18;
 
   const dimScores = DIMS.map(([, dim]) => {
     const vals = dim.metrics.map((m) => metrics[m as keyof ScoreMetrics] ?? 0);
@@ -116,15 +116,12 @@ export function RadarChart({ metrics, size = 260 }: Props) {
         />
       ))}
 
-      {/* Labels */}
+      {/* Labels — centrados y con clamp para que no se corten en los bordes */}
       {DIMS.map(([, dim], i) => {
         const lp = labelPoints[i];
-        const angle = -Math.PI / 2 + (2 * Math.PI * i) / N;
-        const anchor = Math.abs(Math.cos(angle)) < 0.1
-          ? "middle"
-          : Math.cos(angle) > 0
-          ? "start"
-          : "end";
+        // Ancho aproximado del label para mantenerlo dentro del viewBox
+        const halfWidth = dim.label.length * 2;
+        const x = Math.min(Math.max(lp.x, halfWidth + 4), size - halfWidth - 4);
         const score = dimScores[i];
         const dimColor = getScoreColor(score);
         const strokeColor = SCORE_STROKE[dimColor];
@@ -132,10 +129,10 @@ export function RadarChart({ metrics, size = 260 }: Props) {
         return (
           <g key={i}>
             <text
-              x={lp.x}
-              y={lp.y - 4}
-              textAnchor={anchor}
-              fontSize="7.5"
+              x={x}
+              y={lp.y - 3}
+              textAnchor="middle"
+              fontSize="8"
               fontWeight="700"
               fill={strokeColor}
               fontFamily="system-ui, sans-serif"
@@ -143,9 +140,9 @@ export function RadarChart({ metrics, size = 260 }: Props) {
               {score.toFixed(1)}
             </text>
             <text
-              x={lp.x}
-              y={lp.y + 7}
-              textAnchor={anchor}
+              x={x}
+              y={lp.y + 8}
+              textAnchor="middle"
               fontSize="7"
               fill="#71717a"
               fontFamily="system-ui, sans-serif"

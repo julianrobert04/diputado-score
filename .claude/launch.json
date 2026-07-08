@@ -3,9 +3,14 @@
   "configurations": [
     {
       "name": "diputado-score",
-      "runtimeExecutable": "bash",
-      "runtimeArgs": ["-c", "export PATH=/Users/julianrobert/.railway/bin:$PATH && cd /Users/julianrobert/Sites/diputado-score && npm run dev"],
-      "port": 3000
+      "runtimeExecutable": "/opt/homebrew/bin/node",
+      "runtimeArgs": [
+        "/Users/julianrobert/Sites/diputado-score/node_modules/next/dist/bin/next",
+        "dev",
+        "/Users/julianrobert/Sites/diputado-score"
+      ],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }
