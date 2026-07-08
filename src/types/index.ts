@@ -4,6 +4,7 @@ export interface ScoreMetrics {
   ASI: number; // Asistencia plenario
   COM: number; // Asistencia comisiones
   PER: number; // Permisos / ausencias justificadas
+  VOT: number; // Asistencia a votaciones del plenario
   PRO: number; // Proyectos de ley presentados (primera firma)
   APR: number; // Tasa de aprobación de sus proyectos
   MED: number; // Cobertura mediática (sentimiento)
@@ -18,6 +19,8 @@ export interface RawData {
   permisos?: number;
   permisosTotales?: number;
   viajesOficiales?: number;
+  votacionesAsistidas?: number;
+  votacionesTotales?: number;
   proyectosPresentados?: number;
   proyectosAprobados?: number;
   medPos?: number;
@@ -79,42 +82,49 @@ export const METRIC_META: Record<
     label: "Asistencia Plenario",
     description: "Sesiones del plenario a las que asistió",
     source: "Asamblea Open Data",
-    weight: 0.13,
+    weight: 0.2,
+    higherIsBetter: true,
+  },
+  VOT: {
+    label: "Asistencia a Votaciones",
+    description: "Votaciones del plenario en las que estuvo presente",
+    source: "Delfino.cr / Asamblea",
+    weight: 0.2,
+    higherIsBetter: true,
+  },
+  PRO: {
+    label: "Proyectos Presentados",
+    description: "Proyectos de ley con su primera firma vs promedio del período",
+    source: "Delfino.cr / Asamblea",
+    weight: 0.2,
     higherIsBetter: true,
   },
   COM: {
     label: "Asistencia Comisiones",
     description: "Sesiones de comisión a las que asistió",
     source: "Asamblea Open Data",
-    weight: 0.13,
+    weight: 0.1,
     higherIsBetter: true,
   },
   PER: {
     label: "Permisos",
     description: "Ausencias justificadas con permiso vs promedio del período",
     source: "Asamblea Open Data",
-    weight: 0.14,
+    weight: 0.1,
     higherIsBetter: false,
-  },
-  PRO: {
-    label: "Proyectos Presentados",
-    description: "Proyectos de ley con su primera firma vs promedio del período",
-    source: "Delfino.cr / Asamblea",
-    weight: 0.15,
-    higherIsBetter: true,
   },
   APR: {
     label: "Proyectos Aprobados",
     description: "Tasa de aprobación de sus proyectos; sin aprobados aún queda neutro (las leyes toman años)",
     source: "Delfino.cr / Asamblea",
-    weight: 0.15,
+    weight: 0.1,
     higherIsBetter: true,
   },
   MED: {
     label: "Cobertura Mediática",
     description: "Noticias positivas suman, negativas restan; sin noticias es neutro",
     source: "Google News + Claude",
-    weight: 0.3,
+    weight: 0.1,
     higherIsBetter: true,
   },
   VIA: {
@@ -174,10 +184,12 @@ export const BILL_STATUS_COLOR: Record<BillStatus, string> = {
   en_primer_debate: "text-amber-400 bg-amber-400/10 ring-amber-400/20",
 };
 
-// Cuando haya datos de viajes, VIA entra como dimensión propia con 15%
-// (Presencia 35%, Productividad 25%, Imagen 25% — ver calcOverall)
+// El overall es una suma ponderada por métrica (ver METRIC_WEIGHTS en
+// scoreCalculator). Estas dimensiones agrupan las métricas para la UI;
+// weight = suma de los pesos de sus métricas. Cuando haya datos de viajes,
+// VIA entra con 15% y el resto se escala ×0.85.
 export const DIMENSION_META = {
-  presencia:     { label: "Presencia",      metrics: ["ASI", "COM", "PER"] as const, weight: 0.4, color: "#3b82f6" },
-  productividad: { label: "Productividad",  metrics: ["PRO", "APR"] as const,        weight: 0.3, color: "#a78bfa" },
-  imagen:        { label: "Imagen Pública", metrics: ["MED"] as const,               weight: 0.3, color: "#10b981" },
+  presencia:     { label: "Presencia",      metrics: ["ASI", "VOT", "COM", "PER"] as const, weight: 0.6, color: "#3b82f6" },
+  productividad: { label: "Productividad",  metrics: ["PRO", "APR"] as const,               weight: 0.3, color: "#a78bfa" },
+  imagen:        { label: "Imagen Pública", metrics: ["MED"] as const,                      weight: 0.1, color: "#10b981" },
 };

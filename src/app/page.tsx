@@ -137,10 +137,10 @@ export default async function Home({ searchParams }: HomeProps) {
             {" "}tu <span className="text-emerald-400">diputado</span>?
           </h1>
           <p className="text-zinc-500 text-base max-w-lg leading-relaxed">
-            Scores del 1 al 10 con datos 100% reales: asistencia oficial al plenario y
-            comisiones, permisos, proyectos de ley presentados y aprobados, y cobertura
-            mediática. Como el rating de Keylor — pero para la Asamblea. Sin estimaciones:
-            si no hay dato público, la métrica queda neutra.
+            Scores del 1 al 10 con datos 100% reales: asistencia oficial al plenario,
+            votaciones y comisiones, permisos, proyectos de ley presentados y aprobados,
+            y cobertura mediática. Como el rating de Keylor — pero para la Asamblea.
+            Sin estimaciones: si no hay dato público, la métrica queda neutra.
           </p>
         </div>
 

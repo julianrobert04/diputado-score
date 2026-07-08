@@ -289,6 +289,46 @@ async function fetchProjects(
   return { byId, term: termName };
 }
 
+export interface VoteData {
+  votAsis: number;
+  votTotal: number;
+}
+
+/** Asistencia a votaciones del plenario, legislatura actual */
+async function fetchVoteAssistance(
+  deputies: ReturnType<typeof loadDeputies>
+): Promise<Map<string, VoteData> | null> {
+  const from = `${LEGISLATURE_START.year}-${String(LEGISLATURE_START.month).padStart(2, "0")}-01`;
+  const to = new Date().toISOString().slice(0, 10);
+  const data = await gql<{
+    representativesVoteAssistance: {
+      representative: { name: string };
+      sessionsAttended: number;
+      totalEligibleSessions: number;
+    }[];
+  }>(
+    `query($f: String, $t: String) { representativesVoteAssistance(from: $f, to: $t) {
+      representative { name } sessionsAttended totalEligibleSessions
+    } }`,
+    { f: from, t: to }
+  );
+  if (!data?.representativesVoteAssistance?.length) return null;
+
+  const byId = new Map<string, VoteData>();
+  for (const row of data.representativesVoteAssistance) {
+    const depId = matchDeputy(row.representative.name, deputies);
+    if (!depId) {
+      console.log(`   votaciones: sin match para "${row.representative.name}"`);
+      continue;
+    }
+    byId.set(depId, {
+      votAsis: row.sessionsAttended,
+      votTotal: row.totalEligibleSessions,
+    });
+  }
+  return byId;
+}
+
 // ─── Cobertura mediática (Google News RSS + Claude) ─────────────────────────
 
 function fetchText(url: string, redirects = 3): Promise<string | null> {
@@ -423,6 +463,8 @@ async function main() {
       viajes: number;
       proyectos: number | null;
       aprobados: number | null;
+      votAsis: number | null;
+      votTotal: number | null;
       med: MedData | null;
       nombreXlsx: string;
     }
@@ -451,7 +493,8 @@ async function main() {
       }
       const prev = totals.get(id) ?? {
         asisPL: 0, ausPL: 0, permPL: 0, asisCom: 0, ausCom: 0, permCom: 0,
-        viajes: 0, proyectos: null, aprobados: null, med: null, nombreXlsx: xlsxName,
+        viajes: 0, proyectos: null, aprobados: null, votAsis: null, votTotal: null,
+        med: null, nombreXlsx: xlsxName,
       };
       totals.set(id, {
         ...prev,
@@ -504,6 +547,26 @@ async function main() {
     for (const [id, entry] of totals) {
       entry.proyectos = existing?.deputies?.[id]?.proyectos ?? null;
       entry.aprobados = existing?.deputies?.[id]?.aprobados ?? null;
+    }
+  }
+
+  // Asistencia a votaciones del plenario (Delfino.cr)
+  console.log("\n🗳  Asistencia a votaciones (Delfino.cr)");
+  const voteRes = await fetchVoteAssistance(deputies);
+  if (voteRes) {
+    for (const [id, data] of voteRes) {
+      const entry = totals.get(id);
+      if (entry) {
+        entry.votAsis = data.votAsis;
+        entry.votTotal = data.votTotal;
+      }
+    }
+    console.log(`   ✓ ${voteRes.size} diputados con registro de votaciones`);
+  } else {
+    console.log("   ⚠ API de Delfino no disponible — se preservan los datos existentes");
+    for (const [id, entry] of totals) {
+      entry.votAsis = existing?.deputies?.[id]?.votAsis ?? null;
+      entry.votTotal = existing?.deputies?.[id]?.votTotal ?? null;
     }
   }
 

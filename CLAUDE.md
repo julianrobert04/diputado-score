@@ -63,17 +63,23 @@ No se necesita base de datos; Prisma quedó opcional/inactivo.
 
 ## El sistema de scores
 
-### 7 métricas reales → 3 dimensiones → 1 score overall
+### 8 métricas reales → suma ponderada → 1 score overall
 
-| Dimensión | Peso | Métricas |
-|-----------|------|----------|
-| Presencia | 40% | ASI (asistencia plenario), COM (comisiones), PER (permisos) |
-| Productividad | 30% | PRO (proyectos presentados), APR (tasa de aprobación) |
-| Imagen pública | 30% | MED (cobertura mediática: Google News + Claude) |
+| Métrica | Peso | Qué mide |
+|---------|------|----------|
+| ASI | **20%** | Asistencia al plenario (Asamblea Open Data) |
+| VOT | **20%** | Asistencia a votaciones del plenario (Delfino.cr) |
+| PRO | **20%** | Proyectos de ley presentados, primera firma (Delfino.cr) |
+| COM | 10% | Asistencia a comisiones (Asamblea Open Data) |
+| PER | 10% | Permisos vs promedio, menos = mejor (Asamblea Open Data) |
+| APR | 10% | Tasa de aprobación de sus proyectos, con umbral (Delfino.cr) |
+| MED | 10% | Cobertura mediática (Google News + Claude) |
 
-\* VIA (viajes) entra como dimensión propia con 15% (Presencia 35, Productividad 25,
-Imagen 25) cuando la Asamblea publique xlsx de viajes de la legislatura 2026-2030 —
-se activa solo (`includeVIA` en `calcOverall`).
+`METRIC_WEIGHTS` en `scoreCalculator.ts` es la fuente de verdad. `DIMENSION_META`
+agrupa las métricas solo para la UI (Presencia 60 / Productividad 30 / Imagen 10).
+
+\* VIA (viajes) entra con 15% y el resto se escala ×0.85 cuando la Asamblea publique
+xlsx de viajes de la legislatura 2026-2030 — se activa solo (`includeVIA` en `calcOverall`).
 
 **MED:** noticia positiva suma, negativa resta, sin noticias = 5.5 neutro.
 Fórmula: `clamp(5.5 + 4.5·(pos−neg)/max(total,5), 1, 10)`. Clasificación con
@@ -159,7 +165,7 @@ Gerald Bogantes, Roberth Barrantes, Kattya Mora, Kattia Calvo, Joselyn Sáenz Bl
 | `datosabiertos.asamblea.go.cr` | Responde 403/404 |
 | DJB por diputado (DEC) | Las declaraciones son confidenciales; CGR solo publica aggregate |
 
-**Todas las 7 métricas son reales: ASI, COM, PER, PRO, APR, MED** (+ VIA que se
+**Todas las 8 métricas son reales: ASI, VOT, COM, PER, PRO, APR, MED** (+ VIA que se
 activa solo cuando la Asamblea suba xlsx de viajes de la legislatura 2026-2030).
 COS y ASE (costo del despacho / asesores) se eliminaron por decisión de producto —
 generaban debate sobre si más o menos asesores es "mejor". Las métricas viejas
@@ -172,6 +178,7 @@ MOC, VOT, COH, DEC y GAS se eliminaron por falta de fuente pública machine-read
 - `{ representatives(term: "2026-2030", active: true) { id name } }` — ojo: `term` es String
 - `query($r: Int, $t: Int) { projects(representativeId: $r, termId: $t, limit: 500) { status } }` — solo primera firma
 - Aprobado = status contiene "aprobado" o "resellado", pero NO "primer debate"
+- **VOT**: `representativesVoteAssistance(from: "YYYY-MM-DD", to: "YYYY-MM-DD") { representative { name } sessionsAttended totalEligibleSessions }` — asistencia a votaciones del plenario
 
 ### MED — cobertura mediática
 

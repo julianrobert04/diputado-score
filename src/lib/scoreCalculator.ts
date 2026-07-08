@@ -1,11 +1,10 @@
 /**
  * DiputadoScore — Calculador de métricas y score general
  *
- * 7 métricas, todas de fuentes reales:
- *   Presencia      (ASI + COM + PER):  40%
- *   Productividad  (PRO + APR):        30%
- *   Imagen pública (MED):              30%
- *   Viajes         (VIA):              15% cuando haya datos (Presencia 35%, Productividad 25%, Imagen 25%)
+ * 8 métricas, todas de fuentes reales. Overall = suma ponderada:
+ *   Mayores (20% c/u):  ASI (plenario), VOT (votaciones), PRO (proyectos presentados)
+ *   Menores (10% c/u):  COM (comisiones), PER (permisos), APR (aprobación), MED (medios)
+ *   VIA (viajes): 15% cuando haya datos — el resto se escala ×0.85
  */
 
 import { RawData, ScoreMetrics } from "@/types";
@@ -39,6 +38,16 @@ export interface PeriodAverages {
   avgProyectos: number;  // proyectos presentados, promedio del período
 }
 
+const METRIC_WEIGHTS: Record<Exclude<keyof ScoreMetrics, "VIA">, number> = {
+  ASI: 0.2,
+  VOT: 0.2,
+  PRO: 0.2,
+  COM: 0.1,
+  PER: 0.1,
+  APR: 0.1,
+  MED: 0.1,
+};
+
 export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
   // ASI: Asistencia plenario (asistencias / sesiones realizadas)
   const ASI = clamp(
@@ -60,6 +69,13 @@ export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
       ? (raw.permisos ?? 0) / raw.permisosTotales
       : 0;
   const PER = inverseRelativeScore(permRatio, avgs.avgPermRatio);
+
+  // VOT: Asistencia a votaciones del plenario
+  const VOT = clamp(
+    raw.votacionesTotales && raw.votacionesTotales > 0
+      ? ((raw.votacionesAsistidas ?? 0) / raw.votacionesTotales) * 10
+      : 5
+  );
 
   // PRO: Proyectos presentados (primera firma) — más que el promedio, mejor
   const PRO =
@@ -91,7 +107,7 @@ export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
       ? inverseRelativeScore(raw.viajesOficiales, avgs.avgViajes)
       : 5;
 
-  return { ASI, COM, PER, PRO, APR, MED, VIA };
+  return { ASI, COM, PER, VOT, PRO, APR, MED, VIA };
 }
 
 // ─── Cálculo del score general (overall) ──────────────────────────────────────
@@ -102,13 +118,10 @@ export interface OverallOptions {
 }
 
 export function calcOverall(m: ScoreMetrics, opts: OverallOptions = {}): number {
-  const presencia = (m.ASI + m.COM + m.PER) / 3;
-  const productividad = (m.PRO + m.APR) / 2;
-  const imagen = m.MED;
+  const base = (Object.entries(METRIC_WEIGHTS) as [keyof ScoreMetrics, number][])
+    .reduce((sum, [key, w]) => sum + m[key] * w, 0);
 
-  const overall = opts.includeVIA
-    ? presencia * 0.35 + productividad * 0.25 + m.VIA * 0.15 + imagen * 0.25
-    : presencia * 0.4 + productividad * 0.3 + imagen * 0.3;
+  const overall = opts.includeVIA ? base * 0.85 + m.VIA * 0.15 : base;
   return Math.round(clamp(overall, 1, 10) * 10) / 10;
 }
 

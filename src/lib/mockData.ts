@@ -101,6 +101,8 @@ interface RealDeputy {
   viajes: number;
   proyectos?: number | null;
   aprobados?: number | null;
+  votAsis?: number | null;
+  votTotal?: number | null;
   med: MedData | null;
   nombreXlsx: string;
 }
@@ -150,6 +152,11 @@ function buildRaw(id: string): { raw: RawData; realMetrics: RealMetric[] } {
     raw.permisos = r.permPL + r.permCom;
     raw.permisosTotales = totalPL + totalCom;
     realMetrics.push("PER");
+  }
+  if (typeof r.votAsis === "number" && typeof r.votTotal === "number" && r.votTotal > 0) {
+    raw.votacionesAsistidas = r.votAsis;
+    raw.votacionesTotales = r.votTotal;
+    realMetrics.push("VOT");
   }
   if (typeof r.proyectos === "number") {
     raw.proyectosPresentados = r.proyectos;
