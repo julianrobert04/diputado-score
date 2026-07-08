@@ -4,8 +4,8 @@ export interface ScoreMetrics {
   ASI: number; // Asistencia plenario
   COM: number; // Asistencia comisiones
   PER: number; // Permisos / ausencias justificadas
-  COS: number; // Costo del despacho (salarios de asesores)
-  ASE: number; // Cantidad de asesores
+  PRO: number; // Proyectos de ley presentados (primera firma)
+  APR: number; // Tasa de aprobación de sus proyectos
   MED: number; // Cobertura mediática (sentimiento)
   VIA: number; // Viajes oficiales
 }
@@ -17,9 +17,9 @@ export interface RawData {
   comisionesTotales?: number;
   permisos?: number;
   permisosTotales?: number;
-  costoDespacho?: number;
-  asesoresCount?: number;
   viajesOficiales?: number;
+  proyectosPresentados?: number;
+  proyectosAprobados?: number;
   medPos?: number;
   medNeg?: number;
   medNeu?: number;
@@ -79,49 +79,49 @@ export const METRIC_META: Record<
     label: "Asistencia Plenario",
     description: "Sesiones del plenario a las que asistió",
     source: "Asamblea Open Data",
-    weight: 0.15,
+    weight: 0.13,
     higherIsBetter: true,
   },
   COM: {
     label: "Asistencia Comisiones",
     description: "Sesiones de comisión a las que asistió",
     source: "Asamblea Open Data",
-    weight: 0.15,
+    weight: 0.13,
     higherIsBetter: true,
   },
   PER: {
     label: "Permisos",
     description: "Ausencias justificadas con permiso vs promedio del período",
     source: "Asamblea Open Data",
+    weight: 0.14,
+    higherIsBetter: false,
+  },
+  PRO: {
+    label: "Proyectos Presentados",
+    description: "Proyectos de ley con su primera firma vs promedio del período",
+    source: "Delfino.cr / Asamblea",
     weight: 0.15,
-    higherIsBetter: false,
+    higherIsBetter: true,
   },
-  COS: {
-    label: "Costo del Despacho",
-    description: "Suma de salarios de sus asesores vs promedio",
-    source: "Asamblea Open Data (salarios)",
-    weight: 0.12,
-    higherIsBetter: false,
-  },
-  ASE: {
-    label: "Asesores",
-    description: "Cantidad de asesores vs promedio del período",
-    source: "Asamblea Open Data (salarios)",
-    weight: 0.09,
-    higherIsBetter: false,
+  APR: {
+    label: "Proyectos Aprobados",
+    description: "Tasa de aprobación de sus proyectos; sin aprobados aún queda neutro (las leyes toman años)",
+    source: "Delfino.cr / Asamblea",
+    weight: 0.15,
+    higherIsBetter: true,
   },
   MED: {
     label: "Cobertura Mediática",
     description: "Noticias positivas suman, negativas restan; sin noticias es neutro",
     source: "Google News + Claude",
-    weight: 0.25,
+    weight: 0.3,
     higherIsBetter: true,
   },
   VIA: {
     label: "Viajes Oficiales",
-    description: "Viajes oficiales al exterior vs promedio del período",
+    description: "Viajes oficiales al exterior vs promedio — se activa cuando la Asamblea publique los datos",
     source: "Asamblea Open Data",
-    weight: 0.09,
+    weight: 0,
     higherIsBetter: false,
   },
 };
@@ -174,8 +174,10 @@ export const BILL_STATUS_COLOR: Record<BillStatus, string> = {
   en_primer_debate: "text-amber-400 bg-amber-400/10 ring-amber-400/20",
 };
 
+// Cuando haya datos de viajes, VIA entra como dimensión propia con 15%
+// (Presencia 35%, Productividad 25%, Imagen 25% — ver calcOverall)
 export const DIMENSION_META = {
-  presencia:  { label: "Presencia",       metrics: ["ASI", "COM", "PER"] as const, weight: 0.45, color: "#3b82f6" },
-  austeridad: { label: "Austeridad",      metrics: ["COS", "ASE", "VIA"] as const, weight: 0.30, color: "#ef4444" },
-  imagen:     { label: "Imagen Pública",  metrics: ["MED"] as const,               weight: 0.25, color: "#10b981" },
+  presencia:     { label: "Presencia",      metrics: ["ASI", "COM", "PER"] as const, weight: 0.4, color: "#3b82f6" },
+  productividad: { label: "Productividad",  metrics: ["PRO", "APR"] as const,        weight: 0.3, color: "#a78bfa" },
+  imagen:        { label: "Imagen Pública", metrics: ["MED"] as const,               weight: 0.3, color: "#10b981" },
 };

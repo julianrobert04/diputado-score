@@ -354,8 +354,8 @@ export default async function DiputadoPage({ params }: Props) {
                 { label: "Sesiones plenario", value: `${rawData.sesionesAsistidas ?? "—"} / ${rawData.sesionesTotales ?? "—"}` },
                 { label: "Sesiones comisión", value: `${rawData.comisionesAsistidas ?? "—"} / ${rawData.comisionesTotales ?? "—"}` },
                 { label: "Permisos", value: `${rawData.permisos ?? "—"} / ${rawData.permisosTotales ?? "—"}` },
-                { label: "Costo del despacho", value: typeof rawData.costoDespacho === "number" ? `₡${Number(rawData.costoDespacho).toLocaleString("es-CR")}/mes` : "—" },
-                { label: "Asesores", value: String(rawData.asesoresCount ?? "—") },
+                { label: "Proyectos presentados", value: String(rawData.proyectosPresentados ?? "—") },
+                { label: "Proyectos aprobados", value: String(rawData.proyectosAprobados ?? "—") },
                 { label: "Viajes oficiales", value: String(rawData.viajesOficiales ?? "—") },
                 { label: "Noticias positivas", value: String(rawData.medPos ?? "—") },
                 { label: "Noticias negativas", value: String(rawData.medNeg ?? "—") },
@@ -398,7 +398,7 @@ export default async function DiputadoPage({ params }: Props) {
 
       <footer className="mt-20 border-t border-white/[0.04] py-8">
         <div className="max-w-5xl mx-auto px-5 text-zinc-700 text-xs">
-          <p>Datos: Asamblea Legislativa Open Data · Google News</p>
+          <p>Datos: Asamblea Legislativa Open Data · Delfino.cr · Google News</p>
         </div>
       </footer>
     </div>

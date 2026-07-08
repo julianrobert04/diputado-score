@@ -137,9 +137,10 @@ export default async function Home({ searchParams }: HomeProps) {
             {" "}tu <span className="text-emerald-400">diputado</span>?
           </h1>
           <p className="text-zinc-500 text-base max-w-lg leading-relaxed">
-            Scores del 1 al 10 con datos 100% reales: asistencia oficial, costo del despacho,
-            asesores y cobertura mediática. Como el rating de Keylor — pero para la Asamblea.
-            Sin estimaciones: si no hay dato público, la métrica queda neutra.
+            Scores del 1 al 10 con datos 100% reales: asistencia oficial al plenario y
+            comisiones, permisos, proyectos de ley presentados y aprobados, y cobertura
+            mediática. Como el rating de Keylor — pero para la Asamblea. Sin estimaciones:
+            si no hay dato público, la métrica queda neutra.
           </p>
         </div>
 
@@ -236,7 +237,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
       <footer className="mt-20 border-t border-white/[0.04] py-8">
         <div className="max-w-7xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-zinc-700 text-xs">
-          <p>Datos: Asamblea Legislativa Open Data · Google News</p>
+          <p>Datos: Asamblea Legislativa Open Data · Delfino.cr · Google News</p>
           <p>DiputadoScore no es afiliado a ningún partido político.</p>
         </div>
       </footer>

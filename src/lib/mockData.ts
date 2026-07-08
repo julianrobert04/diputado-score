@@ -99,8 +99,8 @@ interface RealDeputy {
   ausCom: number;
   permCom: number;
   viajes: number;
-  asesores: number | null;
-  costoDespacho: number | null;
+  proyectos?: number | null;
+  aprobados?: number | null;
   med: MedData | null;
   nombreXlsx: string;
 }
@@ -114,8 +114,8 @@ export const REAL_DATA_INFO = {
   source: realData.source,
   attendanceMonths: realData.attendanceMonths as string[],
   tripMonths: realData.tripMonths as string[],
-  advisorsMonth: realData.advisorsMonth as string | null,
   medUpdatedAt: (realData as { medUpdatedAt?: string | null }).medUpdatedAt ?? null,
+  projectsTerm: (realData as { projectsTerm?: string | null }).projectsTerm ?? null,
   deputiesCount: Object.keys(REAL_DEPUTIES).length,
 };
 
@@ -123,9 +123,8 @@ const HAS_TRIPS = REAL_DATA_INFO.tripMonths.length > 0;
 
 const AVGS = {
   avgPermRatio: (realData.avgPermRatio as number | null) ?? 0,
-  avgCosto: (realData.avgCosto as number | null) ?? 0,
-  avgAsesores: (realData.avgAsesores as number | null) ?? 0,
   avgViajes: (realData.avgViajes as number | null) ?? 0,
+  avgProyectos: ((realData as { avgProyectos?: number | null }).avgProyectos) ?? 0,
 };
 
 /** RawData 100% desde fuentes oficiales */
@@ -152,13 +151,10 @@ function buildRaw(id: string): { raw: RawData; realMetrics: RealMetric[] } {
     raw.permisosTotales = totalPL + totalCom;
     realMetrics.push("PER");
   }
-  if (r.costoDespacho !== null) {
-    raw.costoDespacho = r.costoDespacho;
-    realMetrics.push("COS");
-  }
-  if (r.asesores !== null) {
-    raw.asesoresCount = r.asesores;
-    realMetrics.push("ASE");
+  if (typeof r.proyectos === "number") {
+    raw.proyectosPresentados = r.proyectos;
+    raw.proyectosAprobados = r.aprobados ?? 0;
+    realMetrics.push("PRO", "APR");
   }
   if (r.med !== null) {
     raw.medPos = r.med.pos;

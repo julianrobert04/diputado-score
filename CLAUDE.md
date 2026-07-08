@@ -6,7 +6,7 @@
 
 Plataforma de transparencia política para Costa Rica estilo SofaScore/365Scores.
 Muestra a los 57 diputados de la Asamblea Legislativa 2026–2030 con scores del 1 al 10
-basados en asistencia, permisos, costo del despacho, asesores y cobertura mediática —
+basados en asistencia, permisos, proyectos de ley y cobertura mediática —
 **todas las métricas usan datos reales**, sin simulación.
 
 **URL en producción:** pendiente de desplegar  
@@ -24,7 +24,7 @@ npm run dev          # → http://localhost:3000
 No necesita base de datos — los datos reales vienen versionados en `data/real-data.json`.
 Para regenerarlos:
 ```bash
-npm run ingest:opendata                        # asistencia + salarios + viajes
+npm run ingest:opendata                        # asistencia + viajes + proyectos de ley
 ANTHROPIC_API_KEY=sk-... npm run ingest:opendata  # + clasificación de noticias (MED)
 ```
 
@@ -67,19 +67,28 @@ No se necesita base de datos; Prisma quedó opcional/inactivo.
 
 | Dimensión | Peso | Métricas |
 |-----------|------|----------|
-| Presencia | 45% | ASI (asistencia plenario), COM (comisiones), PER (permisos) |
-| Austeridad | 30% | COS (costo del despacho), ASE (asesores), VIA (viajes)* |
-| Imagen pública | 25% | MED (cobertura mediática: Google News + Claude) |
+| Presencia | 40% | ASI (asistencia plenario), COM (comisiones), PER (permisos) |
+| Productividad | 30% | PRO (proyectos presentados), APR (tasa de aprobación) |
+| Imagen pública | 30% | MED (cobertura mediática: Google News + Claude) |
 
-\* VIA se excluye de Austeridad (queda `(COS+ASE)/2`) hasta que la Asamblea publique
-xlsx de viajes de la legislatura 2026-2030 — se activa solo (`includeVIA` en `calcOverall`).
+\* VIA (viajes) entra como dimensión propia con 15% (Presencia 35, Productividad 25,
+Imagen 25) cuando la Asamblea publique xlsx de viajes de la legislatura 2026-2030 —
+se activa solo (`includeVIA` en `calcOverall`).
 
 **MED:** noticia positiva suma, negativa resta, sin noticias = 5.5 neutro.
 Fórmula: `clamp(5.5 + 4.5·(pos−neg)/max(total,5), 1, 10)`. Clasificación con
 Claude Haiku en la ingesta semanal (requiere secret `ANTHROPIC_API_KEY` en GitHub).
 Sin API key la ingesta preserva la clasificación anterior de `real-data.json`.
 
-**COS/ASE/PER/VIA** usan `inverseRelativeScore` vs el promedio del período:
+**PRO:** proyectos de ley con primera firma del diputado (API GraphQL de Delfino.cr,
+`https://api.delfino.cr/graphql`). `directRelativeScore`: promedio → 5.0, cero → 0,
+doble del promedio → 10.
+
+**APR:** tasa de aprobación con umbral — sin proyectos o sin aprobados aún → 5.0
+neutro (las leyes toman años); con aprobados: `5 + (aprobados/propuestos)·5` hasta 10.
+"Aprobado" = estado final (Aprobado, Resellado), NO cuenta "Aprobado en Primer Debate".
+
+**PER/VIA** usan `inverseRelativeScore` vs el promedio del período:
 en el promedio → 5.0, en cero → 10, al doble del promedio → 0.
 
 Scores van de 1.0 a 10.0. Color por score:
@@ -125,7 +134,7 @@ El script de ingesta usa `https.Agent({ rejectUnauthorized: false })`.
 |--------|----------|--------|
 | `asamblea.go.cr/pa/datosabiertos` | **Asistencia real mensual (xlsx)** — PL + comisiones, 57 diputados desde 2026-05 | ✅ **Integrado** (`npm run ingest:opendata`) |
 | `asamblea.go.cr/pa/datosabiertos` GastosViajes | Viajes institucionales (xlsx mensual) | ✅ Parser listo — aún sin archivos de la legislatura nueva |
-| `asamblea.go.cr/pa/datosabiertos` SalarioFuncionarios | **Asesores reales por diputado (ASE)** — filas "DIP. NOMBRE (PARTIDO)" en DEPENDENCIA FUNCIONAL | ✅ **Integrado** (mismo `ingest:opendata`) |
+| `api.delfino.cr/graphql` | **Proyectos de ley por diputado (PRO/APR)** — primera firma, por legislatura, con status | ✅ **Integrado** (mismo `ingest:opendata`) |
 | `asamblea.go.cr` SharePoint | Fotos de 52/57 diputados | ✅ Funcionando |
 | `cgrfiles.cgr.go.cr` | CSV aggregate de DJB (no por diputado) | ⚠ Aggregate only |
 | `cgr.go.cr/morosos` | Lista HTML de incumplidores DJB | ⚠ Necesita adaptar parser |
@@ -146,15 +155,23 @@ Gerald Bogantes, Roberth Barrantes, Kattya Mora, Kattia Calvo, Joselyn Sáenz Bl
 
 | Fuente | Problema |
 |--------|----------|
-| `delfino.cr/asamblea/...` | App React CSR — no hay datos en el HTML, API privada |
-| `sil.go.cr` / `sil.asamblea.go.cr` | No responde desde fuera de Costa Rica |
-| Proyectos de ley por diputado (PRO/APR) | Páginas SharePoint de Consultas_SIL dan 404; `datosabiertos.asamblea.go.cr` responde 403/404; el portal de datos abiertos no tiene carpeta de proyectos ni votaciones |
+| `sil.go.cr` / `sil.asamblea.go.cr` | No responde / página IIS por defecto |
+| `datosabiertos.asamblea.go.cr` | Responde 403/404 |
 | DJB por diputado (DEC) | Las declaraciones son confidenciales; CGR solo publica aggregate |
 
-**Todas las 7 métricas son reales: ASI, COM, PER, COS, ASE, MED** (+ VIA que se
+**Todas las 7 métricas son reales: ASI, COM, PER, PRO, APR, MED** (+ VIA que se
 activa solo cuando la Asamblea suba xlsx de viajes de la legislatura 2026-2030).
-Las métricas viejas PRO, APR, MOC, VOT, COH, DEC y GAS se eliminaron del sistema
-por falta de fuente pública machine-readable.
+COS y ASE (costo del despacho / asesores) se eliminaron por decisión de producto —
+generaban debate sobre si más o menos asesores es "mejor". Las métricas viejas
+MOC, VOT, COH, DEC y GAS se eliminaron por falta de fuente pública machine-readable.
+
+### PRO/APR — proyectos de ley (Delfino.cr)
+
+- API GraphQL pública: `https://api.delfino.cr/graphql` (POST JSON)
+- `{ currentTerm { id name } }` → legislatura actual (id 4 = "2026-2030")
+- `{ representatives(term: "2026-2030", active: true) { id name } }` — ojo: `term` es String
+- `query($r: Int, $t: Int) { projects(representativeId: $r, termId: $t, limit: 500) { status } }` — solo primera firma
+- Aprobado = status contiene "aprobado" o "resellado", pero NO "primer debate"
 
 ### MED — cobertura mediática
 

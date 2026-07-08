@@ -2,9 +2,10 @@
  * DiputadoScore — Calculador de métricas y score general
  *
  * 7 métricas, todas de fuentes reales:
- *   Presencia      (ASI + COM + PER):  45%
- *   Austeridad     (COS + ASE + VIA):  30%  (VIA se excluye mientras no haya datos)
- *   Imagen pública (MED):              25%
+ *   Presencia      (ASI + COM + PER):  40%
+ *   Productividad  (PRO + APR):        30%
+ *   Imagen pública (MED):              30%
+ *   Viajes         (VIA):              15% cuando haya datos (Presencia 35%, Productividad 25%, Imagen 25%)
  */
 
 import { RawData, ScoreMetrics } from "@/types";
@@ -24,11 +25,18 @@ function inverseRelativeScore(value: number, avg: number): number {
 
 // ─── Cálculo de métricas individuales ─────────────────────────────────────────
 
+/** Score directamente proporcional.
+ *  En el promedio → 5.0 · en cero → 0 · al doble del promedio → 10
+ */
+function directRelativeScore(value: number, avg: number): number {
+  if (avg <= 0) return value > 0 ? 10 : 5;
+  return clamp((value / avg) * 5);
+}
+
 export interface PeriodAverages {
   avgPermRatio: number;  // permisos / sesiones, promedio del período
-  avgCosto: number;      // costo mensual del despacho (colones)
-  avgAsesores: number;
   avgViajes: number;
+  avgProyectos: number;  // proyectos presentados, promedio del período
 }
 
 export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
@@ -53,16 +61,19 @@ export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
       : 0;
   const PER = inverseRelativeScore(permRatio, avgs.avgPermRatio);
 
-  // COS: Costo del despacho (suma de salarios de asesores)
-  const COS =
-    typeof raw.costoDespacho === "number"
-      ? inverseRelativeScore(raw.costoDespacho, avgs.avgCosto)
+  // PRO: Proyectos presentados (primera firma) — más que el promedio, mejor
+  const PRO =
+    typeof raw.proyectosPresentados === "number"
+      ? directRelativeScore(raw.proyectosPresentados, avgs.avgProyectos)
       : 5;
 
-  // ASE: Cantidad de asesores
-  const ASE =
-    typeof raw.asesoresCount === "number"
-      ? inverseRelativeScore(raw.asesoresCount, avgs.avgAsesores)
+  // APR: Tasa de aprobación con umbral — sin proyectos o sin aprobados aún → 5.0
+  // neutro (las leyes toman años); de ahí sube hasta 10 si le aprueban todos
+  const propuestos = raw.proyectosPresentados ?? 0;
+  const aprobados = raw.proyectosAprobados ?? 0;
+  const APR =
+    propuestos > 0 && aprobados > 0
+      ? clamp(5 + (aprobados / propuestos) * 5, 5, 10)
       : 5;
 
   // MED: Cobertura mediática — positivas suman, negativas restan, sin noticias = neutro
@@ -80,24 +91,24 @@ export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
       ? inverseRelativeScore(raw.viajesOficiales, avgs.avgViajes)
       : 5;
 
-  return { ASI, COM, PER, COS, ASE, MED, VIA };
+  return { ASI, COM, PER, PRO, APR, MED, VIA };
 }
 
 // ─── Cálculo del score general (overall) ──────────────────────────────────────
 
 export interface OverallOptions {
-  /** Sin xlsx de viajes de esta legislatura, VIA se excluye de Austeridad */
+  /** Sin xlsx de viajes de esta legislatura, VIA se excluye del overall */
   includeVIA?: boolean;
 }
 
 export function calcOverall(m: ScoreMetrics, opts: OverallOptions = {}): number {
   const presencia = (m.ASI + m.COM + m.PER) / 3;
-  const austeridad = opts.includeVIA
-    ? (m.COS + m.ASE + m.VIA) / 3
-    : (m.COS + m.ASE) / 2;
+  const productividad = (m.PRO + m.APR) / 2;
   const imagen = m.MED;
 
-  const overall = presencia * 0.45 + austeridad * 0.3 + imagen * 0.25;
+  const overall = opts.includeVIA
+    ? presencia * 0.35 + productividad * 0.25 + m.VIA * 0.15 + imagen * 0.25
+    : presencia * 0.4 + productividad * 0.3 + imagen * 0.3;
   return Math.round(clamp(overall, 1, 10) * 10) / 10;
 }
 

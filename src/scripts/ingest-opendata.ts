@@ -200,31 +200,93 @@ async function fetchTrips(key: string): Promise<Map<string, number> | null> {
   return out;
 }
 
-/** Asesores + costo del despacho por diputado según el archivo de salarios */
-async function fetchAdvisors(
-  key: string
-): Promise<Map<string, { count: number; costo: number }> | null> {
-  const buf = await fetchBuffer(
-    `${BASE}/SalarioFuncionarios/${key}-salarios%20funcionarios.xlsx`
-  );
-  if (!buf) return null;
-  const wb = XLSX.read(buf, { type: "buffer" });
-  const ws = wb.Sheets[wb.SheetNames[0]];
-  const rows = XLSX.utils.sheet_to_json<(string | number | null)[]>(ws, { header: 1 });
-  const header = (rows[0] ?? []).map((h) => String(h ?? "").trim().toLowerCase());
-  const depIdx = header.findIndex((h) => h.startsWith("dependencia"));
-  const salIdx = header.findIndex((h) => h.includes("salario"));
-  const out = new Map<string, { count: number; costo: number }>();
-  for (const row of rows.slice(1)) {
-    const dep = String(row[depIdx] ?? "").trim();
-    const m = dep.match(/^DIP\.?\s+(.+?)\s*\(/);
-    if (!m) continue;
-    const name = m[1].trim();
-    const salario = salIdx >= 0 && typeof row[salIdx] === "number" ? (row[salIdx] as number) : 0;
-    const prev = out.get(name) ?? { count: 0, costo: 0 };
-    out.set(name, { count: prev.count + 1, costo: prev.costo + salario });
+// ─── Proyectos de ley (API GraphQL de Delfino.cr) ────────────────────────────
+
+const DELFINO_GQL = "https://api.delfino.cr/graphql";
+
+function postJson(url: string, body: unknown): Promise<string | null> {
+  return new Promise((resolve) => {
+    const data = JSON.stringify(body);
+    const req = https.request(
+      url,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(data),
+          "User-Agent": "DiputadoScore/1.0",
+        },
+      },
+      (res) => {
+        const chunks: Buffer[] = [];
+        res.on("data", (c) => chunks.push(c));
+        res.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
+        res.on("error", () => resolve(null));
+      }
+    );
+    req.on("error", () => resolve(null));
+    req.write(data);
+    req.end();
+  });
+}
+
+async function gql<T>(query: string, variables?: Record<string, unknown>): Promise<T | null> {
+  const raw = await postJson(DELFINO_GQL, { query, variables });
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed.data ?? null;
+  } catch {
+    return null;
   }
-  return out;
+}
+
+/** Estado final aprobado (no cuenta "Aprobado en Primer Debate") */
+function isApproved(status: string): boolean {
+  const s = status.toLowerCase();
+  if (s.includes("primer debate")) return false;
+  return s.includes("aprobado") || s.includes("resellado");
+}
+
+export interface ProjectData {
+  proyectos: number;
+  aprobados: number;
+}
+
+/** Proyectos por primera firma de cada diputado, legislatura actual */
+async function fetchProjects(
+  deputies: ReturnType<typeof loadDeputies>
+): Promise<{ byId: Map<string, ProjectData>; term: string } | null> {
+  const termData = await gql<{ currentTerm: { id: number; name: string } }>(
+    "{ currentTerm { id name } }"
+  );
+  if (!termData?.currentTerm) return null;
+  const { id: termId, name: termName } = termData.currentTerm;
+
+  const repsData = await gql<{ representatives: { id: number; name: string }[] }>(
+    `{ representatives(term: "${termName}", active: true) { id name } }`
+  );
+  if (!repsData?.representatives?.length) return null;
+
+  const byId = new Map<string, ProjectData>();
+  for (const rep of repsData.representatives) {
+    const depId = matchDeputy(rep.name, deputies);
+    if (!depId) {
+      console.log(`   proyectos: sin match para "${rep.name}"`);
+      continue;
+    }
+    const projData = await gql<{ projects: { status: string }[] }>(
+      "query($r: Int, $t: Int) { projects(representativeId: $r, termId: $t, limit: 500) { status } }",
+      { r: rep.id, t: termId }
+    );
+    const projects = projData?.projects ?? [];
+    byId.set(depId, {
+      proyectos: projects.length,
+      aprobados: projects.filter((p) => isApproved(p.status)).length,
+    });
+    await new Promise((r) => setTimeout(r, 150));
+  }
+  return { byId, term: termName };
 }
 
 // ─── Cobertura mediática (Google News RSS + Claude) ─────────────────────────
@@ -359,8 +421,8 @@ async function main() {
     string,
     Attendance & {
       viajes: number;
-      asesores: number | null;
-      costoDespacho: number | null;
+      proyectos: number | null;
+      aprobados: number | null;
       med: MedData | null;
       nombreXlsx: string;
     }
@@ -389,7 +451,7 @@ async function main() {
       }
       const prev = totals.get(id) ?? {
         asisPL: 0, ausPL: 0, permPL: 0, asisCom: 0, ausCom: 0, permCom: 0,
-        viajes: 0, asesores: null, costoDespacho: null, med: null, nombreXlsx: xlsxName,
+        viajes: 0, proyectos: null, aprobados: null, med: null, nombreXlsx: xlsxName,
       };
       totals.set(id, {
         ...prev,
@@ -422,26 +484,27 @@ async function main() {
     }
   }
 
-  // Asesores: snapshot del mes más reciente disponible
-  let advisorsMonth: string | null = null;
-  for (const { key } of [...months].reverse()) {
-    const advisors = await fetchAdvisors(key);
-    if (!advisors) continue;
-    advisorsMonth = key;
-    console.log(`   asesores   ${key}: ✓ ${advisors.size} diputados con asesores`);
-    for (const [xlsxName, data] of advisors) {
-      const id = matchDeputy(xlsxName, deputies);
-      if (!id) {
-        unmatched.push(`asesores ${key}: ${xlsxName}`);
-        continue;
-      }
-      const prev = totals.get(id);
-      if (prev) {
-        prev.asesores = data.count;
-        prev.costoDespacho = data.costo;
+  // Proyectos de ley: API GraphQL de Delfino.cr (primera firma, legislatura actual)
+  console.log("\n📜 Proyectos de ley (Delfino.cr)");
+  let projectsTerm: string | null = existing?.projectsTerm ?? null;
+  const projRes = await fetchProjects(deputies);
+  if (projRes) {
+    projectsTerm = projRes.term;
+    for (const [id, data] of projRes.byId) {
+      const entry = totals.get(id);
+      if (entry) {
+        entry.proyectos = data.proyectos;
+        entry.aprobados = data.aprobados;
       }
     }
-    break;
+    const withProjects = [...projRes.byId.values()].filter((p) => p.proyectos > 0).length;
+    console.log(`   ✓ ${projRes.byId.size} diputados (${withProjects} con proyectos) — legislatura ${projRes.term}`);
+  } else {
+    console.log("   ⚠ API de Delfino no disponible — se preservan los datos existentes");
+    for (const [id, entry] of totals) {
+      entry.proyectos = existing?.deputies?.[id]?.proyectos ?? null;
+      entry.aprobados = existing?.deputies?.[id]?.aprobados ?? null;
+    }
   }
 
   // Cobertura mediática: Google News últimos 30 días + clasificación con Claude
@@ -493,8 +556,6 @@ async function main() {
   const avg = (nums: number[]) =>
     nums.length ? nums.reduce((a, b) => a + b, 0) / nums.length : null;
   const vals = [...totals.values()];
-  const avgAsesores = avg(vals.map((t) => t.asesores).filter((n): n is number => n !== null));
-  const avgCosto = avg(vals.map((t) => t.costoDespacho).filter((n): n is number => n !== null));
   const avgViajes = tripMonths.length ? avg(vals.map((t) => t.viajes)) : null;
   const permRatios = vals
     .map((t) => {
@@ -503,18 +564,21 @@ async function main() {
     })
     .filter((n): n is number => n !== null);
   const avgPermRatio = avg(permRatios);
+  const projVals = vals
+    .map((t) => t.proyectos)
+    .filter((n): n is number => n !== null);
+  const avgProyectos = projVals.length ? avg(projVals) : null;
 
   const output = {
     updatedAt: new Date().toISOString(),
     source: "https://www.asamblea.go.cr/pa/datosabiertos/",
     attendanceMonths,
     tripMonths,
-    advisorsMonth,
     medUpdatedAt,
-    avgAsesores,
-    avgCosto,
+    projectsTerm,
     avgViajes,
     avgPermRatio,
+    avgProyectos,
     deputies: Object.fromEntries(totals),
   };
 
@@ -524,7 +588,7 @@ async function main() {
   console.log(`\n💾 ${totals.size} diputados con datos reales → data/real-data.json`);
   console.log(`   Meses de asistencia: ${attendanceMonths.join(", ") || "ninguno"}`);
   console.log(`   Meses de viajes: ${tripMonths.join(", ") || "ninguno"}`);
-  console.log(`   Asesores: ${advisorsMonth ?? "sin datos"} (promedio ${avgAsesores?.toFixed(1) ?? "—"})`);
+  console.log(`   Proyectos de ley: ${projectsTerm ? `legislatura ${projectsTerm}` : "sin datos"}`);
 }
 
 main().catch((err) => {

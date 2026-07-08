@@ -12,8 +12,8 @@ interface RankingRow {
   province: string;
   overall: number;
   ASI: number;
+  PRO: number;
   MED: number;
-  COS: number;
   photoUrl: string;
 }
 
@@ -25,8 +25,8 @@ async function getRankings(): Promise<RankingRow[]> {
     province: card.province,
     overall: card.overall,
     ASI: card.metrics.ASI,
+    PRO: card.metrics.PRO,
     MED: card.metrics.MED,
-    COS: card.metrics.COS,
     photoUrl: card.photoUrl ?? "",
   }));
 }
@@ -263,12 +263,12 @@ export default async function RankingsPage() {
                     <div>ASI</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-zinc-400 font-medium tabular-nums">{s.MED.toFixed(1)}</div>
-                    <div>MED</div>
+                    <div className="text-zinc-400 font-medium tabular-nums">{s.PRO.toFixed(1)}</div>
+                    <div>PRO</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-zinc-400 font-medium tabular-nums">{s.COS.toFixed(1)}</div>
-                    <div>COS</div>
+                    <div className="text-zinc-400 font-medium tabular-nums">{s.MED.toFixed(1)}</div>
+                    <div>MED</div>
                   </div>
                 </div>
 
@@ -284,7 +284,7 @@ export default async function RankingsPage() {
 
       <footer className="mt-20 border-t border-white/[0.04] py-8">
         <div className="max-w-4xl mx-auto px-5 text-zinc-700 text-xs">
-          <p>Datos: Asamblea Legislativa Open Data · Google News</p>
+          <p>Datos: Asamblea Legislativa Open Data · Delfino.cr · Google News</p>
         </div>
       </footer>
     </div>
