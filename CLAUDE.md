@@ -93,10 +93,13 @@ y los suma a pos/neg/neu. Clasificación con Claude Haiku (requiere secret
 
 **PRO:** proyectos de ley con primera firma del diputado (API GraphQL de Delfino.cr,
 `https://api.delfino.cr/graphql`). `directRelativeScore`: promedio → 5.0, cero → 0,
-doble del promedio → 10.
+doble del promedio → 10, **con suavizado de confianza**: `5 + (raw−5)·min(1, avg/2)`.
+Al inicio de la legislatura (avg bajo) la escala se comprime hacia el 5 neutro y se
+endurece sola conforme sube el promedio de proyectos.
 
 **APR:** tasa de aprobación con umbral — sin proyectos o sin aprobados aún → 5.0
-neutro (las leyes toman años); con aprobados: `5 + (aprobados/propuestos)·5` hasta 10.
+neutro (las leyes toman años); con aprobados: `5 + (aprobados/propuestos)·5` hasta 10,
+con el mismo suavizado de confianza que PRO.
 "Aprobado" = estado final (Aprobado, Resellado), NO cuenta "Aprobado en Primer Debate".
 
 **PER/VIA** usan `inverseRelativeScore` vs el promedio del período:

@@ -86,7 +86,7 @@ export const METRIC_META: Record<
   },
   PRO: {
     label: "Proyectos Presentados",
-    description: "Proyectos de ley con su primera firma vs promedio del período",
+    description: "Proyectos de ley con su primera firma vs promedio del período — la escala arranca suave y se endurece conforme avanza la legislatura",
     source: "Delfino.cr / Asamblea",
     weight: 0.3,
     higherIsBetter: true,

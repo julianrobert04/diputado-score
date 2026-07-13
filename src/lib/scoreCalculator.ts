@@ -75,20 +75,26 @@ export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
       : 0;
   const PER = inverseRelativeScore(permRatio, avgs.avgPermRatio);
 
+  // Confianza: con pocos meses de legislatura el promedio de proyectos es bajo
+  // y la escala relativa se vuelve brusca (0 proyectos → 0.0). El suavizado
+  // comprime hacia el 5 neutro y se endurece solo conforme sube el promedio.
+  const confianza = Math.min(1, (avgs.avgProyectos || 0) / 2);
+
   // PRO: Proyectos presentados (primera firma) — más que el promedio, mejor
   const PRO =
     typeof raw.proyectosPresentados === "number"
-      ? directRelativeScore(raw.proyectosPresentados, avgs.avgProyectos)
+      ? clamp(5 + (directRelativeScore(raw.proyectosPresentados, avgs.avgProyectos) - 5) * confianza)
       : 5;
 
   // APR: Tasa de aprobación con umbral — sin proyectos o sin aprobados aún → 5.0
-  // neutro (las leyes toman años); de ahí sube hasta 10 si le aprueban todos
+  // neutro (las leyes toman años); con aprobados sube según la tasa, suavizado
   const propuestos = raw.proyectosPresentados ?? 0;
   const aprobados = raw.proyectosAprobados ?? 0;
-  const APR =
+  const aprBase =
     propuestos > 0 && aprobados > 0
       ? clamp(5 + (aprobados / propuestos) * 5, 5, 10)
       : 5;
+  const APR = clamp(5 + (aprBase - 5) * confianza);
 
   // MED: Cobertura mediática — positivas suman, negativas restan, sin noticias = neutro
   const medPos = raw.medPos ?? 0;
