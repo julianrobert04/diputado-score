@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-07-13T18:17:19.805Z",
+  "updatedAt": "2026-07-13T18:20:42.539Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [
     "2026-05"
   ],
   "tripMonths": [],
-  "medUpdatedAt": "2026-07-13T18:17:19.804Z",
+  "medUpdatedAt": "2026-07-13T18:20:42.539Z",
   "projectsTerm": "2026-2030",
   "avgViajes": null,
   "avgPermRatio": 0,
@@ -265,8 +265,8 @@
       "med": {
         "pos": 0,
         "neg": 0,
-        "neu": 10,
-        "total": 10
+        "neu": 11,
+        "total": 11
       },
       "medSeen": [
         "8b60d728eeae",
@@ -277,7 +277,8 @@
         "a0558b9445e2",
         "da40e729772c",
         "ea41467b5e4e",
-        "71c9f6996c91"
+        "71c9f6996c91",
+        "604f76fbf428"
       ],
       "nombreXlsx": "Artavia Carballo Osvaldo"
     },
@@ -507,8 +508,8 @@
       "med": {
         "pos": 0,
         "neg": 0,
-        "neu": 10,
-        "total": 10
+        "neu": 11,
+        "total": 11
       },
       "medSeen": [
         "ea41467b5e4e",
@@ -520,7 +521,8 @@
         "91fe28c7b72c",
         "71c9f6996c91",
         "9689a201a05e",
-        "4a800ddef973"
+        "4a800ddef973",
+        "604f76fbf428"
       ],
       "nombreXlsx": "Brunner Neibig Stephan"
     },
@@ -1419,8 +1421,8 @@
       "med": {
         "pos": 0,
         "neg": 0,
-        "neu": 10,
-        "total": 10
+        "neu": 11,
+        "total": 11
       },
       "medSeen": [
         "81d78a7b8e48",
@@ -1432,7 +1434,8 @@
         "d24368b61cbe",
         "6f52330ab175",
         "d80e9c6426f1",
-        "f822678cd3ea"
+        "f822678cd3ea",
+        "604f76fbf428"
       ],
       "nombreXlsx": "Quesada Espinoza Juan Manuel"
     },
