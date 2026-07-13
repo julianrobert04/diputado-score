@@ -100,7 +100,7 @@ export default function MetricasPage() {
               Métricas mayores
             </h2>
             <span className="text-[0.65rem] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
-              20% cada una
+              30% cada una
             </span>
           </div>
           <div className="space-y-2.5">
@@ -146,7 +146,7 @@ export default function MetricasPage() {
           <ul className="space-y-3 text-sm text-zinc-500 leading-relaxed">
             <li className="flex gap-2.5">
               <span className="text-emerald-400 flex-shrink-0">•</span>
-              El score general es la suma ponderada de las métricas: las mayores pesan 20% y las menores 10%.
+              El score general es la suma ponderada de las métricas: las mayores pesan 30% y las menores 10%.
             </li>
             <li className="flex gap-2.5">
               <span className="text-emerald-400 flex-shrink-0">•</span>

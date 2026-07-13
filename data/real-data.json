@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-08T14:25:51.248Z",
+  "updatedAt": "2026-07-13T15:45:50.431Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [
     "2026-05"
@@ -21,6 +21,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 244,
       "votTotal": 248,
       "med": {
@@ -41,6 +43,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 244,
       "votTotal": 248,
       "med": {
@@ -61,6 +65,8 @@
       "viajes": 0,
       "proyectos": 3,
       "aprobados": 0,
+      "sesAsis": 28,
+      "sesTotal": 37,
       "votAsis": 181,
       "votTotal": 248,
       "med": {
@@ -81,6 +87,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 31,
+      "sesTotal": 37,
       "votAsis": 208,
       "votTotal": 248,
       "med": {
@@ -101,6 +109,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 241,
       "votTotal": 248,
       "med": {
@@ -121,6 +131,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 33,
+      "sesTotal": 37,
       "votAsis": 195,
       "votTotal": 248,
       "med": {
@@ -141,6 +153,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 34,
+      "sesTotal": 37,
       "votAsis": 233,
       "votTotal": 248,
       "med": {
@@ -161,6 +175,8 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 248,
       "votTotal": 248,
       "med": {
@@ -181,6 +197,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -201,6 +219,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 246,
       "votTotal": 248,
       "med": {
@@ -221,6 +241,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -241,6 +263,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 35,
+      "sesTotal": 37,
       "votAsis": 248,
       "votTotal": 248,
       "med": {
@@ -261,6 +285,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 238,
       "votTotal": 248,
       "med": {
@@ -281,6 +307,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -301,6 +329,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 246,
       "votTotal": 248,
       "med": {
@@ -321,6 +351,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 34,
+      "sesTotal": 37,
       "votAsis": 233,
       "votTotal": 248,
       "med": {
@@ -341,6 +373,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 245,
       "votTotal": 248,
       "med": {
@@ -361,6 +395,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 248,
       "votTotal": 248,
       "med": {
@@ -381,6 +417,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 246,
       "votTotal": 248,
       "med": {
@@ -401,6 +439,8 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 237,
       "votTotal": 248,
       "med": {
@@ -421,6 +461,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 248,
       "votTotal": 248,
       "med": {
@@ -441,6 +483,8 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -461,6 +505,8 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 226,
       "votTotal": 248,
       "med": {
@@ -481,6 +527,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -501,6 +549,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 232,
       "votTotal": 248,
       "med": {
@@ -521,6 +571,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 236,
       "votTotal": 248,
       "med": {
@@ -541,6 +593,8 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 244,
       "votTotal": 248,
       "med": {
@@ -561,6 +615,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -581,6 +637,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 32,
+      "sesTotal": 37,
       "votAsis": 214,
       "votTotal": 248,
       "med": {
@@ -601,6 +659,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 234,
       "votTotal": 248,
       "med": {
@@ -621,6 +681,8 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 229,
       "votTotal": 248,
       "med": {
@@ -641,6 +703,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 238,
       "votTotal": 248,
       "med": {
@@ -661,6 +725,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 236,
       "votTotal": 248,
       "med": {
@@ -681,6 +747,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 244,
       "votTotal": 248,
       "med": {
@@ -701,6 +769,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 243,
       "votTotal": 248,
       "med": {
@@ -721,6 +791,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 244,
       "votTotal": 248,
       "med": {
@@ -741,6 +813,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -761,6 +835,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 244,
       "votTotal": 248,
       "med": {
@@ -781,6 +857,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 245,
       "votTotal": 248,
       "med": {
@@ -801,6 +879,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -821,6 +901,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 193,
       "votTotal": 248,
       "med": {
@@ -841,6 +923,8 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
+      "sesAsis": 35,
+      "sesTotal": 37,
       "votAsis": 212,
       "votTotal": 248,
       "med": {
@@ -861,6 +945,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -881,6 +967,8 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 246,
       "votTotal": 248,
       "med": {
@@ -901,6 +989,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 34,
+      "sesTotal": 37,
       "votAsis": 231,
       "votTotal": 248,
       "med": {
@@ -921,6 +1011,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 244,
       "votTotal": 248,
       "med": {
@@ -941,6 +1033,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 244,
       "votTotal": 248,
       "med": {
@@ -961,6 +1055,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 248,
       "votTotal": 248,
       "med": {
@@ -981,6 +1077,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -1001,6 +1099,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 247,
       "votTotal": 248,
       "med": {
@@ -1021,6 +1121,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 234,
       "votTotal": 248,
       "med": {
@@ -1041,6 +1143,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 248,
       "votTotal": 248,
       "med": {
@@ -1061,6 +1165,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 36,
+      "sesTotal": 37,
       "votAsis": 245,
       "votTotal": 248,
       "med": {
@@ -1081,6 +1187,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 245,
       "votTotal": 248,
       "med": {
@@ -1101,6 +1209,8 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 235,
       "votTotal": 248,
       "med": {
@@ -1121,6 +1231,8 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
+      "sesAsis": 37,
+      "sesTotal": 37,
       "votAsis": 244,
       "votTotal": 248,
       "med": {
@@ -1141,6 +1253,8 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
+      "sesAsis": 6,
+      "sesTotal": 37,
       "votAsis": 7,
       "votTotal": 248,
       "med": {

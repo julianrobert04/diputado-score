@@ -238,7 +238,7 @@ export default async function DiputadoPage({ params }: Props) {
         {/* 11 metrics — animated progress bars */}
         {metrics && (
           <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-5">
-            <h2 className="text-base font-bold mb-6 text-white">Las 8 métricas</h2>
+            <h2 className="text-base font-bold mb-6 text-white">Las 7 métricas</h2>
             <div className="space-y-4">
               {Object.entries(METRIC_META).map(([code, meta]) => {
                 const value = metrics[code as keyof typeof metrics] ?? 0;

@@ -12,8 +12,8 @@ interface RankingRow {
   province: string;
   overall: number;
   ASI: number;
-  VOT: number;
   PRO: number;
+  MED: number;
   photoUrl: string;
 }
 
@@ -25,8 +25,8 @@ async function getRankings(): Promise<RankingRow[]> {
     province: card.province,
     overall: card.overall,
     ASI: card.metrics.ASI,
-    VOT: card.metrics.VOT,
     PRO: card.metrics.PRO,
+    MED: card.metrics.MED,
     photoUrl: card.photoUrl ?? "",
   }));
 }
@@ -266,12 +266,12 @@ export default async function RankingsPage() {
                     <div>ASI</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-zinc-400 font-medium tabular-nums">{s.VOT.toFixed(1)}</div>
-                    <div>VOT</div>
-                  </div>
-                  <div className="text-center">
                     <div className="text-zinc-400 font-medium tabular-nums">{s.PRO.toFixed(1)}</div>
                     <div>PRO</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-zinc-400 font-medium tabular-nums">{s.MED.toFixed(1)}</div>
+                    <div>MED</div>
                   </div>
                 </div>
 

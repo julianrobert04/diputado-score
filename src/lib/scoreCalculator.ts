@@ -1,8 +1,8 @@
 /**
  * DiputadoScore — Calculador de métricas y score general
  *
- * 8 métricas, todas de fuentes reales. Overall = suma ponderada:
- *   Mayores (20% c/u):  ASI (plenario), VOT (votaciones), PRO (proyectos presentados)
+ * 7 métricas, todas de fuentes reales. Overall = suma ponderada:
+ *   Mayores (30% c/u):  ASI (sesiones + votaciones, al día), PRO (proyectos presentados)
  *   Menores (10% c/u):  COM (comisiones), PER (permisos), APR (aprobación), MED (medios)
  *   VIA (viajes): 15% cuando haya datos — el resto se escala ×0.85
  */
@@ -39,9 +39,8 @@ export interface PeriodAverages {
 }
 
 const METRIC_WEIGHTS: Record<Exclude<keyof ScoreMetrics, "VIA">, number> = {
-  ASI: 0.2,
-  VOT: 0.2,
-  PRO: 0.2,
+  ASI: 0.3,
+  PRO: 0.3,
   COM: 0.1,
   PER: 0.1,
   APR: 0.1,
@@ -49,12 +48,18 @@ const METRIC_WEIGHTS: Record<Exclude<keyof ScoreMetrics, "VIA">, number> = {
 };
 
 export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
-  // ASI: Asistencia plenario (asistencias / sesiones realizadas)
-  const ASI = clamp(
-    raw.sesionesTotales && raw.sesionesTotales > 0
-      ? ((raw.sesionesAsistidas ?? 0) / raw.sesionesTotales) * 10
-      : 5
-  );
+  // ASI: Asistencia — promedio entre sesiones del plenario y votaciones (al día).
+  // Si solo hay una de las dos fuentes, se usa esa; sin datos queda neutro.
+  const asiRatios: number[] = [];
+  if (raw.sesionesTotales && raw.sesionesTotales > 0) {
+    asiRatios.push((raw.sesionesAsistidas ?? 0) / raw.sesionesTotales);
+  }
+  if (raw.votacionesTotales && raw.votacionesTotales > 0) {
+    asiRatios.push((raw.votacionesAsistidas ?? 0) / raw.votacionesTotales);
+  }
+  const ASI = asiRatios.length
+    ? clamp((asiRatios.reduce((a, b) => a + b, 0) / asiRatios.length) * 10)
+    : 5;
 
   // COM: Asistencia comisiones
   const COM = clamp(
@@ -69,13 +74,6 @@ export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
       ? (raw.permisos ?? 0) / raw.permisosTotales
       : 0;
   const PER = inverseRelativeScore(permRatio, avgs.avgPermRatio);
-
-  // VOT: Asistencia a votaciones del plenario
-  const VOT = clamp(
-    raw.votacionesTotales && raw.votacionesTotales > 0
-      ? ((raw.votacionesAsistidas ?? 0) / raw.votacionesTotales) * 10
-      : 5
-  );
 
   // PRO: Proyectos presentados (primera firma) — más que el promedio, mejor
   const PRO =
@@ -107,7 +105,7 @@ export function calcMetrics(raw: RawData, avgs: PeriodAverages): ScoreMetrics {
       ? inverseRelativeScore(raw.viajesOficiales, avgs.avgViajes)
       : 5;
 
-  return { ASI, COM, PER, VOT, PRO, APR, MED, VIA };
+  return { ASI, COM, PER, PRO, APR, MED, VIA };
 }
 
 // ─── Cálculo del score general (overall) ──────────────────────────────────────

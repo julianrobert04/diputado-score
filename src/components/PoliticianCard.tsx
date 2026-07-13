@@ -17,8 +17,8 @@ interface Props {
 
 const CARD_METRICS: Array<{ key: keyof PoliticianCardType["metrics"]; label: string }> = [
   { key: "ASI", label: "Asistencia" },
-  { key: "VOT", label: "Votaciones" },
   { key: "PRO", label: "Proyectos" },
+  { key: "COM", label: "Comisiones" },
   { key: "MED", label: "Medios" },
 ];
 

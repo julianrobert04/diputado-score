@@ -101,6 +101,8 @@ interface RealDeputy {
   viajes: number;
   proyectos?: number | null;
   aprobados?: number | null;
+  sesAsis?: number | null;
+  sesTotal?: number | null;
   votAsis?: number | null;
   votTotal?: number | null;
   med: MedData | null;
@@ -136,8 +138,13 @@ function buildRaw(id: string): { raw: RawData; realMetrics: RealMetric[] } {
   const raw: RawData = {};
   const realMetrics: RealMetric[] = [];
 
+  // Sesiones del plenario: Delfino (al día) con fallback al xlsx mensual
   const totalPL = r.asisPL + r.ausPL + r.permPL;
-  if (totalPL > 0) {
+  if (typeof r.sesAsis === "number" && typeof r.sesTotal === "number" && r.sesTotal > 0) {
+    raw.sesionesAsistidas = r.sesAsis;
+    raw.sesionesTotales = r.sesTotal;
+    realMetrics.push("ASI");
+  } else if (totalPL > 0) {
     raw.sesionesAsistidas = r.asisPL;
     raw.sesionesTotales = totalPL;
     realMetrics.push("ASI");
@@ -156,7 +163,7 @@ function buildRaw(id: string): { raw: RawData; realMetrics: RealMetric[] } {
   if (typeof r.votAsis === "number" && typeof r.votTotal === "number" && r.votTotal > 0) {
     raw.votacionesAsistidas = r.votAsis;
     raw.votacionesTotales = r.votTotal;
-    realMetrics.push("VOT");
+    if (!realMetrics.includes("ASI")) realMetrics.push("ASI");
   }
   if (typeof r.proyectos === "number") {
     raw.proyectosPresentados = r.proyectos;

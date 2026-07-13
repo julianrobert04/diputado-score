@@ -289,41 +289,40 @@ async function fetchProjects(
   return { byId, term: termName };
 }
 
-export interface VoteData {
-  votAsis: number;
-  votTotal: number;
+export interface AssistanceData {
+  attended: number;
+  total: number;
 }
 
-/** Asistencia a votaciones del plenario, legislatura actual */
-async function fetchVoteAssistance(
-  deputies: ReturnType<typeof loadDeputies>
-): Promise<Map<string, VoteData> | null> {
+/** Asistencia a sesiones del plenario o a votaciones (Delfino), legislatura actual */
+async function fetchAssistance(
+  deputies: ReturnType<typeof loadDeputies>,
+  kind: "meetings" | "votes"
+): Promise<Map<string, AssistanceData> | null> {
+  const field =
+    kind === "meetings" ? "representativesMeetingAssistance" : "representativesVoteAssistance";
   const from = `${LEGISLATURE_START.year}-${String(LEGISLATURE_START.month).padStart(2, "0")}-01`;
   const to = new Date().toISOString().slice(0, 10);
-  const data = await gql<{
-    representativesVoteAssistance: {
-      representative: { name: string };
-      sessionsAttended: number;
-      totalEligibleSessions: number;
-    }[];
-  }>(
-    `query($f: String, $t: String) { representativesVoteAssistance(from: $f, to: $t) {
+  const data = await gql<
+    Record<string, { representative: { name: string }; sessionsAttended: number; totalEligibleSessions: number }[]>
+  >(
+    `query($f: String, $t: String) { ${field}(from: $f, to: $t) {
       representative { name } sessionsAttended totalEligibleSessions
     } }`,
     { f: from, t: to }
   );
-  if (!data?.representativesVoteAssistance?.length) return null;
+  if (!data?.[field]?.length) return null;
 
-  const byId = new Map<string, VoteData>();
-  for (const row of data.representativesVoteAssistance) {
+  const byId = new Map<string, AssistanceData>();
+  for (const row of data[field]) {
     const depId = matchDeputy(row.representative.name, deputies);
     if (!depId) {
-      console.log(`   votaciones: sin match para "${row.representative.name}"`);
+      console.log(`   ${kind}: sin match para "${row.representative.name}"`);
       continue;
     }
     byId.set(depId, {
-      votAsis: row.sessionsAttended,
-      votTotal: row.totalEligibleSessions,
+      attended: row.sessionsAttended,
+      total: row.totalEligibleSessions,
     });
   }
   return byId;
@@ -463,6 +462,8 @@ async function main() {
       viajes: number;
       proyectos: number | null;
       aprobados: number | null;
+      sesAsis: number | null;
+      sesTotal: number | null;
       votAsis: number | null;
       votTotal: number | null;
       med: MedData | null;
@@ -493,7 +494,8 @@ async function main() {
       }
       const prev = totals.get(id) ?? {
         asisPL: 0, ausPL: 0, permPL: 0, asisCom: 0, ausCom: 0, permCom: 0,
-        viajes: 0, proyectos: null, aprobados: null, votAsis: null, votTotal: null,
+        viajes: 0, proyectos: null, aprobados: null,
+        sesAsis: null, sesTotal: null, votAsis: null, votTotal: null,
         med: null, nombreXlsx: xlsxName,
       };
       totals.set(id, {
@@ -550,21 +552,25 @@ async function main() {
     }
   }
 
-  // Asistencia a votaciones del plenario (Delfino.cr)
-  console.log("\n🗳  Asistencia a votaciones (Delfino.cr)");
-  const voteRes = await fetchVoteAssistance(deputies);
-  if (voteRes) {
-    for (const [id, data] of voteRes) {
-      const entry = totals.get(id);
-      if (entry) {
-        entry.votAsis = data.votAsis;
-        entry.votTotal = data.votTotal;
-      }
+  // Asistencia al plenario y a votaciones, al día (Delfino.cr)
+  console.log("\n🗳  Asistencia a sesiones y votaciones (Delfino.cr)");
+  const meetRes = await fetchAssistance(deputies, "meetings");
+  const voteRes = await fetchAssistance(deputies, "votes");
+  if (meetRes || voteRes) {
+    for (const [id, entry] of totals) {
+      const m = meetRes?.get(id);
+      const v = voteRes?.get(id);
+      entry.sesAsis = m?.attended ?? existing?.deputies?.[id]?.sesAsis ?? null;
+      entry.sesTotal = m?.total ?? existing?.deputies?.[id]?.sesTotal ?? null;
+      entry.votAsis = v?.attended ?? existing?.deputies?.[id]?.votAsis ?? null;
+      entry.votTotal = v?.total ?? existing?.deputies?.[id]?.votTotal ?? null;
     }
-    console.log(`   ✓ ${voteRes.size} diputados con registro de votaciones`);
+    console.log(`   ✓ sesiones: ${meetRes?.size ?? 0} diputados · votaciones: ${voteRes?.size ?? 0} diputados`);
   } else {
     console.log("   ⚠ API de Delfino no disponible — se preservan los datos existentes");
     for (const [id, entry] of totals) {
+      entry.sesAsis = existing?.deputies?.[id]?.sesAsis ?? null;
+      entry.sesTotal = existing?.deputies?.[id]?.sesTotal ?? null;
       entry.votAsis = existing?.deputies?.[id]?.votAsis ?? null;
       entry.votTotal = existing?.deputies?.[id]?.votTotal ?? null;
     }

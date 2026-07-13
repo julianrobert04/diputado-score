@@ -1,10 +1,9 @@
 export type PoliticianType = "diputado" | "alcalde" | "ejecutivo";
 
 export interface ScoreMetrics {
-  ASI: number; // Asistencia plenario
+  ASI: number; // Asistencia: promedio de sesiones del plenario y votaciones (Delfino, al día)
   COM: number; // Asistencia comisiones
   PER: number; // Permisos / ausencias justificadas
-  VOT: number; // Asistencia a votaciones del plenario
   PRO: number; // Proyectos de ley presentados (primera firma)
   APR: number; // Tasa de aprobación de sus proyectos
   MED: number; // Cobertura mediática (sentimiento)
@@ -79,24 +78,17 @@ export const METRIC_META: Record<
   { label: string; description: string; source: string; weight: number; higherIsBetter: boolean }
 > = {
   ASI: {
-    label: "Asistencia Plenario",
-    description: "Sesiones del plenario a las que asistió",
-    source: "Asamblea Open Data",
-    weight: 0.2,
-    higherIsBetter: true,
-  },
-  VOT: {
-    label: "Asistencia a Votaciones",
-    description: "Votaciones del plenario en las que estuvo presente",
+    label: "Asistencia",
+    description: "Promedio entre sesiones del plenario a las que asistió y votaciones en las que estuvo presente — al día, sube y baja cada semana",
     source: "Delfino.cr / Asamblea",
-    weight: 0.2,
+    weight: 0.3,
     higherIsBetter: true,
   },
   PRO: {
     label: "Proyectos Presentados",
     description: "Proyectos de ley con su primera firma vs promedio del período",
     source: "Delfino.cr / Asamblea",
-    weight: 0.2,
+    weight: 0.3,
     higherIsBetter: true,
   },
   COM: {
@@ -189,7 +181,7 @@ export const BILL_STATUS_COLOR: Record<BillStatus, string> = {
 // weight = suma de los pesos de sus métricas. Cuando haya datos de viajes,
 // VIA entra con 15% y el resto se escala ×0.85.
 export const DIMENSION_META = {
-  presencia:     { label: "Presencia",      metrics: ["ASI", "VOT", "COM", "PER"] as const, weight: 0.6, color: "#3b82f6" },
-  productividad: { label: "Productividad",  metrics: ["PRO", "APR"] as const,               weight: 0.3, color: "#a78bfa" },
-  imagen:        { label: "Imagen Pública", metrics: ["MED"] as const,                      weight: 0.1, color: "#10b981" },
+  presencia:     { label: "Presencia",      metrics: ["ASI", "COM", "PER"] as const, weight: 0.5, color: "#3b82f6" },
+  productividad: { label: "Productividad",  metrics: ["PRO", "APR"] as const,        weight: 0.4, color: "#a78bfa" },
+  imagen:        { label: "Imagen Pública", metrics: ["MED"] as const,               weight: 0.1, color: "#10b981" },
 };
