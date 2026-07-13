@@ -143,8 +143,8 @@ export default async function Home({ searchParams }: HomeProps) {
                 </span>
               </div>
               <h1 className="text-3xl sm:text-[2.75rem] font-black tracking-tight leading-[1.1] mb-4">
-                En Costa Rica sabemos más sobre el rendimiento de los futbolistas{" "}
-                <span className="text-emerald-400">que sobre el de nuestros diputados.</span>
+                Los ticos sabemos más sobre el rendimiento de los futbolistas{" "}
+                <span className="text-emerald-400">que el de nuestros diputados.</span>
               </h1>
               <p className="text-zinc-500 text-base max-w-lg leading-relaxed">
                 Inspirados en los puntajes con los que se evalúa a los jugadores,
