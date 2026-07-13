@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-07-13T15:45:50.431Z",
+  "updatedAt": "2026-07-13T17:31:07.480Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [
     "2026-05"
   ],
   "tripMonths": [],
-  "medUpdatedAt": "2026-07-07T22:06:40.749Z",
+  "medUpdatedAt": "2026-07-13T17:31:07.480Z",
   "projectsTerm": "2026-2030",
   "avgViajes": null,
   "avgPermRatio": 0,
@@ -666,8 +666,8 @@
       "med": {
         "pos": 0,
         "neg": 0,
-        "neu": 3,
-        "total": 3
+        "neu": 0,
+        "total": 0
       },
       "nombreXlsx": "Matamoros Montoya Karol Vanessa"
     },
