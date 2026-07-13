@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-07-13T18:20:42.539Z",
+  "updatedAt": "2026-07-13T21:14:03.688Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [
     "2026-05"
   ],
   "tripMonths": [],
-  "medUpdatedAt": "2026-07-13T18:20:42.539Z",
+  "medUpdatedAt": "2026-07-13T21:14:03.687Z",
   "projectsTerm": "2026-2030",
   "avgViajes": null,
   "avgPermRatio": 0,
@@ -78,8 +78,8 @@
       "med": {
         "pos": 1,
         "neg": 8,
-        "neu": 16,
-        "total": 25
+        "neu": 17,
+        "total": 26
       },
       "medSeen": [
         "8b8207561ce9",
@@ -106,7 +106,8 @@
         "b095f0270288",
         "bb1248b28b7d",
         "2880022b6a80",
-        "4958d660fa9b"
+        "4958d660fa9b",
+        "f87030be4c60"
       ],
       "nombreXlsx": "Aguilar Vargas Ángela"
     },
@@ -1284,9 +1285,9 @@
       "votTotal": 248,
       "med": {
         "pos": 3,
-        "neg": 0,
+        "neg": 1,
         "neu": 7,
-        "total": 10
+        "total": 11
       },
       "medSeen": [
         "e07a8db3836a",
@@ -1298,7 +1299,8 @@
         "fd9c15535215",
         "ea41467b5e4e",
         "c299b1bff8ab",
-        "36673563e149"
+        "36673563e149",
+        "8ecce2379c27"
       ],
       "nombreXlsx": "Murillo Murillo Diana"
     },
@@ -1456,8 +1458,8 @@
       "med": {
         "pos": 4,
         "neg": 1,
-        "neu": 18,
-        "total": 23
+        "neu": 19,
+        "total": 24
       },
       "medSeen": [
         "3d69f18593b5",
@@ -1481,7 +1483,8 @@
         "ce13212cec7a",
         "ea41467b5e4e",
         "5349c9aa4b2c",
-        "8a898fe21f17"
+        "8a898fe21f17",
+        "24469d2635a3"
       ],
       "nombreXlsx": "Ramírez Bogantes Álvaro"
     },
