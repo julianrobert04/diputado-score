@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-07-13T18:11:10.026Z",
+  "updatedAt": "2026-07-13T18:17:19.805Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [
     "2026-05"
   ],
   "tripMonths": [],
-  "medUpdatedAt": "2026-07-13T17:59:59.087Z",
+  "medUpdatedAt": "2026-07-13T18:17:19.804Z",
   "projectsTerm": "2026-2030",
   "avgViajes": null,
   "avgPermRatio": 0,
@@ -27,9 +27,9 @@
       "votTotal": 248,
       "med": {
         "pos": 5,
-        "neg": 10,
+        "neg": 11,
         "neu": 10,
-        "total": 25
+        "total": 26
       },
       "medSeen": [
         "15047fa54463",
@@ -56,7 +56,8 @@
         "46e02c55d64a",
         "9f06a58bada1",
         "8542f2b2da66",
-        "6ea4fd735be2"
+        "6ea4fd735be2",
+        "fa764022d34e"
       ],
       "nombreXlsx": "Acosta Jaén Nogui"
     },
@@ -124,10 +125,10 @@
       "votAsis": 181,
       "votTotal": 248,
       "med": {
-        "pos": 4,
+        "pos": 5,
         "neg": 1,
         "neu": 4,
-        "total": 9
+        "total": 10
       },
       "medSeen": [
         "26528e3d718d",
@@ -138,7 +139,8 @@
         "30bba6ab692b",
         "3427067c5643",
         "0f3ac896746f",
-        "fb4dfae0fec7"
+        "fb4dfae0fec7",
+        "2d209b174fc5"
       ],
       "nombreXlsx": "Alfaro Guerrero Iztarú"
     },
@@ -159,8 +161,8 @@
       "med": {
         "pos": 3,
         "neg": 0,
-        "neu": 7,
-        "total": 10
+        "neu": 8,
+        "total": 11
       },
       "medSeen": [
         "b1260053c515",
@@ -172,7 +174,8 @@
         "5990dbd2500c",
         "3db3a6da9cc9",
         "d7c425544531",
-        "a0a006cbf5e1"
+        "a0a006cbf5e1",
+        "622822019d92"
       ],
       "nombreXlsx": "Alfaro Jiménez Karen"
     },
@@ -375,10 +378,10 @@
       "votAsis": 247,
       "votTotal": 248,
       "med": {
-        "pos": 4,
+        "pos": 5,
         "neg": 0,
         "neu": 6,
-        "total": 10
+        "total": 11
       },
       "medSeen": [
         "dea43931af5b",
@@ -390,7 +393,8 @@
         "c0abfefbd8a2",
         "f596caee8c39",
         "13d1cf936f68",
-        "c884454ed50a"
+        "c884454ed50a",
+        "b42a23fc8054"
       ],
       "nombreXlsx": "Barzuna Thompson Antonio"
     },
@@ -468,8 +472,8 @@
       "med": {
         "pos": 1,
         "neg": 0,
-        "neu": 9,
-        "total": 10
+        "neu": 10,
+        "total": 11
       },
       "medSeen": [
         "1a98036adcad",
@@ -481,7 +485,8 @@
         "0c7da5581f5d",
         "71c9f6996c91",
         "d4c68e0e2eed",
-        "604f76fbf428"
+        "604f76fbf428",
+        "91fe28c7b72c"
       ],
       "nombreXlsx": "Britton González Esmeralda"
     },
@@ -778,8 +783,8 @@
       "med": {
         "pos": 1,
         "neg": 4,
-        "neu": 20,
-        "total": 25
+        "neu": 21,
+        "total": 26
       },
       "medSeen": [
         "6ff8d054ed4e",
@@ -806,7 +811,8 @@
         "639b03c0d0d9",
         "f082bd349672",
         "af1f3c90341d",
-        "6c8baf12792d"
+        "6c8baf12792d",
+        "96659d105c79"
       ],
       "nombreXlsx": "Gordienko López Abril"
     },
@@ -827,8 +833,8 @@
       "med": {
         "pos": 1,
         "neg": 0,
-        "neu": 9,
-        "total": 10
+        "neu": 10,
+        "total": 11
       },
       "medSeen": [
         "7915090eae1e",
@@ -840,7 +846,8 @@
         "d24368b61cbe",
         "c8f877c020a4",
         "df31aab06206",
-        "b53511e55f6e"
+        "b53511e55f6e",
+        "81cce6950398"
       ],
       "nombreXlsx": "Guadamuz Rosales Nayuribe"
     },
@@ -1687,8 +1694,8 @@
       "med": {
         "pos": 0,
         "neg": 0,
-        "neu": 11,
-        "total": 11
+        "neu": 13,
+        "total": 13
       },
       "medSeen": [
         "cddb16fdc62b",
@@ -1700,7 +1707,9 @@
         "ea41467b5e4e",
         "fd9c15535215",
         "13d1cf936f68",
-        "78e31ec30861"
+        "78e31ec30861",
+        "d70464596290",
+        "b6e4c706f84a"
       ],
       "nombreXlsx": "Trejos Mazariegos Antonio"
     },
@@ -1747,8 +1756,8 @@
       "med": {
         "pos": 0,
         "neg": 0,
-        "neu": 10,
-        "total": 10
+        "neu": 11,
+        "total": 11
       },
       "medSeen": [
         "a3b01178f3a6",
@@ -1760,7 +1769,8 @@
         "da40e729772c",
         "91fe28c7b72c",
         "a0558b9445e2",
-        "71c9f6996c91"
+        "71c9f6996c91",
+        "604f76fbf428"
       ],
       "nombreXlsx": "Valverde Palavicini Andrea"
     },
@@ -1781,8 +1791,8 @@
       "med": {
         "pos": 1,
         "neg": 0,
-        "neu": 6,
-        "total": 7
+        "neu": 7,
+        "total": 8
       },
       "medSeen": [
         "8346f2eaf5d8",
@@ -1792,7 +1802,8 @@
         "631d9abaf540",
         "a9b3338142a0",
         "5a9c9efafe84",
-        "c9066b100cc2"
+        "c9066b100cc2",
+        "a1d1037ef257"
       ],
       "nombreXlsx": "Vargas Brenes Rafael"
     },
@@ -1899,8 +1910,8 @@
       "med": {
         "pos": 1,
         "neg": 0,
-        "neu": 9,
-        "total": 10
+        "neu": 10,
+        "total": 11
       },
       "medSeen": [
         "848a22476ad9",
@@ -1912,7 +1923,8 @@
         "91fe28c7b72c",
         "f8133c04d62a",
         "71c9f6996c91",
-        "ea41467b5e4e"
+        "ea41467b5e4e",
+        "604f76fbf428"
       ],
       "nombreXlsx": "Ward Hudson Kristel"
     }
