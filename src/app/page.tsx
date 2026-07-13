@@ -146,9 +146,9 @@ export default async function Home({ searchParams }: HomeProps) {
                 Los ticos sabemos más sobre el rendimiento de los futbolistas{" "}
                 <span className="text-emerald-400">que el de nuestros diputados.</span>
               </h1>
-              <p className="text-zinc-500 text-base max-w-lg leading-relaxed">
-                Inspirados en los puntajes con los que se evalúa a los jugadores,
-                calificamos el desempeño de cada diputado de la Asamblea Legislativa.
+              <p className="text-zinc-500 text-base max-w-xl leading-relaxed text-pretty">
+                Inspirados en los puntajes con los que se evalúa a los jugadores, calificamos
+                el desempeño de cada diputado de la Asamblea Legislativa.
               </p>
             </div>
 
