@@ -186,7 +186,7 @@ export default async function Home({ searchParams }: HomeProps) {
                             {PARTIDO_SHORT[card.party] ?? card.party}
                           </p>
                         </div>
-                        <span className="text-amber-400 text-sm font-black tabular-nums">
+                        <span className={`${SCORE_TEXT[getScoreColor(card.overall)]} text-sm font-black tabular-nums`}>
                           {card.overall.toFixed(1)}
                         </span>
                       </Link>

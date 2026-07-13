@@ -127,8 +127,8 @@ export function calcOverall(m: ScoreMetrics, opts: OverallOptions = {}): number 
 
 export type ScoreColor = "gold" | "green" | "yellow" | "orange" | "red" | "gray";
 
+// Siempre de verde a rojo: los mejores en verde intenso, luego amarillo, luego rojo
 export function getScoreColor(score: number): ScoreColor {
-  if (score >= 9) return "gold";
   if (score >= 7) return "green";
   if (score >= 5.5) return "yellow";
   if (score >= 4) return "orange";
