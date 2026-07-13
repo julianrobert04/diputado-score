@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-13T17:59:59.087Z",
+  "updatedAt": "2026-07-13T18:11:10.026Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [
     "2026-05"
@@ -31,6 +31,33 @@
         "neu": 10,
         "total": 25
       },
+      "medSeen": [
+        "15047fa54463",
+        "41b0feaa471b",
+        "20d6d5ce53af",
+        "d27e1905b76f",
+        "77386050f778",
+        "27ef31d1bca7",
+        "1b44d2142f0d",
+        "8c829cfe583e",
+        "095952a16722",
+        "30b4e2c2da0b",
+        "ad40d4e74fca",
+        "5f56bfb1f017",
+        "5a964e42e7c0",
+        "d5d87cb2d435",
+        "882d76b2f7d0",
+        "22dd86ac87ab",
+        "0dbd7e14b2cc",
+        "c6c4c8145dbf",
+        "9f6bbeff4638",
+        "62948dbad66d",
+        "bd6a88975c0a",
+        "46e02c55d64a",
+        "9f06a58bada1",
+        "8542f2b2da66",
+        "6ea4fd735be2"
+      ],
       "nombreXlsx": "Acosta Jaén Nogui"
     },
     "dep-angela-aguilar": {
@@ -53,6 +80,33 @@
         "neu": 16,
         "total": 25
       },
+      "medSeen": [
+        "8b8207561ce9",
+        "ca244bc43a16",
+        "1eb278ef490b",
+        "d3b9a3bee02e",
+        "f0768d9bfb1d",
+        "add64f3ad457",
+        "496090caca9c",
+        "9c5df2d14950",
+        "a0498f7d0240",
+        "b2daa917e598",
+        "03dec964cdc6",
+        "3d639a0c9f31",
+        "c80ffa37afb4",
+        "33e2a1521e77",
+        "ac6f6be57771",
+        "52938d548a94",
+        "0a7aba37ad48",
+        "6f3028abc465",
+        "5170420b09e5",
+        "d892ba6fdefc",
+        "e054e862659a",
+        "b095f0270288",
+        "bb1248b28b7d",
+        "2880022b6a80",
+        "4958d660fa9b"
+      ],
       "nombreXlsx": "Aguilar Vargas Ángela"
     },
     "dep-iztaru-alfaro": {
@@ -75,6 +129,17 @@
         "neu": 4,
         "total": 9
       },
+      "medSeen": [
+        "26528e3d718d",
+        "8603ba0e5ff5",
+        "3ae6567d273b",
+        "9439f13de34b",
+        "75cfbe2c0b62",
+        "30bba6ab692b",
+        "3427067c5643",
+        "0f3ac896746f",
+        "fb4dfae0fec7"
+      ],
       "nombreXlsx": "Alfaro Guerrero Iztarú"
     },
     "dep-karen-alfaro": {
@@ -97,6 +162,18 @@
         "neu": 7,
         "total": 10
       },
+      "medSeen": [
+        "b1260053c515",
+        "85a6273528ea",
+        "ea41467b5e4e",
+        "36673563e149",
+        "74760065b80c",
+        "cbcc11ddbd24",
+        "5990dbd2500c",
+        "3db3a6da9cc9",
+        "d7c425544531",
+        "a0a006cbf5e1"
+      ],
       "nombreXlsx": "Alfaro Jiménez Karen"
     },
     "dep-edgardo-araya": {
@@ -119,6 +196,19 @@
         "neu": 4,
         "total": 10
       },
+      "medSeen": [
+        "b9438f1f463a",
+        "9c15ecb890b2",
+        "8bcc896dbbc1",
+        "596ad161a89c",
+        "dfe4112b8a2e",
+        "a15359943cb8",
+        "433cc1bc6f1a",
+        "eaabd4e75e36",
+        "decd550627cc",
+        "211ed3b77034",
+        "d088730a299b"
+      ],
       "nombreXlsx": "Araya Sibaja Edgardo"
     },
     "dep-reynaldo-arias": {
@@ -141,6 +231,18 @@
         "neu": 10,
         "total": 10
       },
+      "medSeen": [
+        "b93a012e861b",
+        "0c7da5581f5d",
+        "fd9c15535215",
+        "a9dddd47e21e",
+        "df0b8bb41a1f",
+        "d24368b61cbe",
+        "b19cf850df05",
+        "71c9f6996c91",
+        "8c99de7229ee",
+        "604f76fbf428"
+      ],
       "nombreXlsx": "Arias Mora Reynaldo"
     },
     "dep-osvaldo-artavia": {
@@ -163,6 +265,17 @@
         "neu": 10,
         "total": 10
       },
+      "medSeen": [
+        "8b60d728eeae",
+        "91fe28c7b72c",
+        "0c7da5581f5d",
+        "fd9c15535215",
+        "918f56f9b0d6",
+        "a0558b9445e2",
+        "da40e729772c",
+        "ea41467b5e4e",
+        "71c9f6996c91"
+      ],
       "nombreXlsx": "Artavia Carballo Osvaldo"
     },
     "dep-grethel-avila": {
@@ -185,6 +298,7 @@
         "neu": 0,
         "total": 0
       },
+      "medSeen": [],
       "nombreXlsx": "Ávila Vargas Gréthel María"
     },
     "dep-marco-badilla": {
@@ -207,6 +321,17 @@
         "neu": 7,
         "total": 9
       },
+      "medSeen": [
+        "00b1f53a8ef7",
+        "4a7442e5999a",
+        "7b29138d93b4",
+        "a0a006cbf5e1",
+        "d24368b61cbe",
+        "c5ca0f2c488f",
+        "7264a0be7d96",
+        "d80e9c6426f1",
+        "d70464596290"
+      ],
       "nombreXlsx": "Badilla Chavaría Marco"
     },
     "dep-robert-barrantes": {
@@ -229,6 +354,10 @@
         "neu": 0,
         "total": 2
       },
+      "medSeen": [
+        "ab9b1329ee1e",
+        "3bbc5f8bdbdc"
+      ],
       "nombreXlsx": "Barrantes Camacho Roberth Junior"
     },
     "dep-antonio-barzuna": {
@@ -251,6 +380,18 @@
         "neu": 6,
         "total": 10
       },
+      "medSeen": [
+        "dea43931af5b",
+        "cddb16fdc62b",
+        "731dcd0ff312",
+        "728bde607dad",
+        "ea41467b5e4e",
+        "80873270def4",
+        "c0abfefbd8a2",
+        "f596caee8c39",
+        "13d1cf936f68",
+        "c884454ed50a"
+      ],
       "nombreXlsx": "Barzuna Thompson Antonio"
     },
     "dep-cindy-blanco": {
@@ -273,6 +414,7 @@
         "neu": 0,
         "total": 0
       },
+      "medSeen": [],
       "nombreXlsx": "Blanco González Cindy María"
     },
     "dep-gerardo-bogantes": {
@@ -295,6 +437,18 @@
         "neu": 8,
         "total": 10
       },
+      "medSeen": [
+        "e8cac6cee8cf",
+        "ac209febf422",
+        "ef5a7733c39b",
+        "48f690be0277",
+        "66558679a01e",
+        "abb6678de62e",
+        "13d1cf936f68",
+        "fd9c15535215",
+        "78e31ec30861",
+        "8c99de7229ee"
+      ],
       "nombreXlsx": "Bogantes Rivera Gerald"
     },
     "dep-sadie-britton": {
@@ -317,6 +471,18 @@
         "neu": 9,
         "total": 10
       },
+      "medSeen": [
+        "1a98036adcad",
+        "8b60d728eeae",
+        "f8133c04d62a",
+        "ea41467b5e4e",
+        "fd9c15535215",
+        "d24368b61cbe",
+        "0c7da5581f5d",
+        "71c9f6996c91",
+        "d4c68e0e2eed",
+        "604f76fbf428"
+      ],
       "nombreXlsx": "Britton González Esmeralda"
     },
     "dep-stephan-brunner": {
@@ -339,6 +505,18 @@
         "neu": 10,
         "total": 10
       },
+      "medSeen": [
+        "ea41467b5e4e",
+        "af1f3c90341d",
+        "fd9c15535215",
+        "d24368b61cbe",
+        "23d9ce09e131",
+        "a0558b9445e2",
+        "91fe28c7b72c",
+        "71c9f6996c91",
+        "9689a201a05e",
+        "4a800ddef973"
+      ],
       "nombreXlsx": "Brunner Neibig Stephan"
     },
     "dep-jesus-calderon": {
@@ -361,6 +539,17 @@
         "neu": 4,
         "total": 8
       },
+      "medSeen": [
+        "8f2575f81b4b",
+        "0b3968b4f392",
+        "8026d8f9d79c",
+        "f0125a6d1983",
+        "23b538f7ac6d",
+        "2d8e4e9ad4ba",
+        "adb4e595a78b",
+        "a67f49d9cc9a",
+        "fd9c15535215"
+      ],
       "nombreXlsx": "Calderón Calderón Jesús"
     },
     "dep-kathia-calvo": {
@@ -383,6 +572,17 @@
         "neu": 5,
         "total": 9
       },
+      "medSeen": [
+        "96c2e287ebf7",
+        "a0cc9864b8f8",
+        "312409bfd94e",
+        "46437155a7d0",
+        "f736f238a96b",
+        "ad04dc3da8f7",
+        "4ca546a8f145",
+        "6802dd4e119f",
+        "cc23cfba8df9"
+      ],
       "nombreXlsx": "Calvo Cruz Kattia"
     },
     "dep-maria-camareno": {
@@ -405,6 +605,18 @@
         "neu": 7,
         "total": 10
       },
+      "medSeen": [
+        "c4d435b24584",
+        "8d1f8f93e511",
+        "4f0f1a16d6f1",
+        "7255ff01a472",
+        "d573fe87525e",
+        "d24368b61cbe",
+        "d522a79c60be",
+        "fc4ece080e08",
+        "ea41467b5e4e",
+        "9fa2c775bff8"
+      ],
       "nombreXlsx": "Camareno Camareno María Isabel"
     },
     "dep-ronald-campos": {
@@ -427,6 +639,18 @@
         "neu": 5,
         "total": 10
       },
+      "medSeen": [
+        "fc2cf66ceab8",
+        "e9247743c8d9",
+        "7356f777770f",
+        "1ce33647b61f",
+        "4ca546a8f145",
+        "e07a8db3836a",
+        "7735e6d84763",
+        "dff1e0711ee6",
+        "a953ead2e3a0",
+        "ea41467b5e4e"
+      ],
       "nombreXlsx": "Campos Villegas Ronald"
     },
     "dep-claudia-dobles": {
@@ -449,6 +673,33 @@
         "neu": 8,
         "total": 25
       },
+      "medSeen": [
+        "c0d19e4ec312",
+        "ffdbbb54e333",
+        "37f78157f6d1",
+        "d998e98597d1",
+        "bfcd2783cee0",
+        "4ee617352c4e",
+        "f6edae0ca0e5",
+        "a39f3c0e2972",
+        "6f1e26258da9",
+        "39f74e61bd88",
+        "a651157aacfb",
+        "48451a0bb8c3",
+        "c6bac5f9a75e",
+        "c365a26ac90c",
+        "ed587aeb45e4",
+        "3433e1d26852",
+        "1b2821b0b277",
+        "312409bfd94e",
+        "b504fc4b7bf6",
+        "681635b1800c",
+        "48a45011f765",
+        "e8706742eb43",
+        "1561fa93cd07",
+        "4a7442e5999a",
+        "2b626565907d"
+      ],
       "nombreXlsx": "Dobles Camargo Claudia"
     },
     "dep-anaruth-esquivel": {
@@ -471,6 +722,13 @@
         "neu": 4,
         "total": 5
       },
+      "medSeen": [
+        "16daabab6057",
+        "ea41467b5e4e",
+        "15448525b923",
+        "af1f3c90341d",
+        "d24368b61cbe"
+      ],
       "nombreXlsx": "Esquivel Medrano Ana Ruth"
     },
     "dep-marta-esquivel": {
@@ -493,6 +751,14 @@
         "neu": 3,
         "total": 6
       },
+      "medSeen": [
+        "cb72f396de11",
+        "cddb16fdc62b",
+        "6ea305f75cee",
+        "ea41467b5e4e",
+        "0ba530e57eb8",
+        "2dceaad57f10"
+      ],
       "nombreXlsx": "Esquivel Rodríguez Marta Eugenia"
     },
     "dep-abril-gordienko": {
@@ -515,6 +781,33 @@
         "neu": 20,
         "total": 25
       },
+      "medSeen": [
+        "6ff8d054ed4e",
+        "58baf1e27635",
+        "844bf2f9cdb0",
+        "269b4936bea0",
+        "2ccf6e30c3cb",
+        "56274e377910",
+        "de1c9126613a",
+        "cece2dc3487b",
+        "7095fdd5fdb5",
+        "0c7da5581f5d",
+        "9b4a3083b569",
+        "39f74e61bd88",
+        "f42d086f2d9d",
+        "d1ab4ec1f9cf",
+        "681635b1800c",
+        "ea41467b5e4e",
+        "c09dd8898d03",
+        "4d6be408b471",
+        "01dd713821b7",
+        "b6027a1b27cd",
+        "1d2d561ea468",
+        "639b03c0d0d9",
+        "f082bd349672",
+        "af1f3c90341d",
+        "6c8baf12792d"
+      ],
       "nombreXlsx": "Gordienko López Abril"
     },
     "dep-nayuribe-guadamuz": {
@@ -537,6 +830,18 @@
         "neu": 9,
         "total": 10
       },
+      "medSeen": [
+        "7915090eae1e",
+        "9a0ee3bde85e",
+        "7e953b42a69d",
+        "ea41467b5e4e",
+        "6bcf48324f64",
+        "76a566c3c53c",
+        "d24368b61cbe",
+        "c8f877c020a4",
+        "df31aab06206",
+        "b53511e55f6e"
+      ],
       "nombreXlsx": "Guadamuz Rosales Nayuribe"
     },
     "dep-eder-hernandez": {
@@ -559,6 +864,18 @@
         "neu": 7,
         "total": 10
       },
+      "medSeen": [
+        "d5e7ebef9f57",
+        "2738aab1e2e4",
+        "679d94e050f1",
+        "23d9ce09e131",
+        "9e432cb1d7f0",
+        "d258ac87dbac",
+        "8a9deb310b1c",
+        "d3a9dc493ae3",
+        "ad7655910680",
+        "964af79f2924"
+      ],
       "nombreXlsx": "Hernández Ulloa Eder"
     },
     "dep-victor-hidalgo": {
@@ -581,6 +898,16 @@
         "neu": 8,
         "total": 8
       },
+      "medSeen": [
+        "7dd496037997",
+        "3f7963435042",
+        "36673563e149",
+        "4830786a67cb",
+        "02dba6260e4f",
+        "2d07c8b0056c",
+        "ac623322192c",
+        "29d057ece01c"
+      ],
       "nombreXlsx": "Hidalgo Solís Víctor"
     },
     "dep-wilson-jimenez": {
@@ -603,6 +930,7 @@
         "neu": 0,
         "total": 0
       },
+      "medSeen": [],
       "nombreXlsx": "Jiménez Cordero Wilson Alfredo"
     },
     "dep-yara-jimenez": {
@@ -625,6 +953,27 @@
         "neu": 13,
         "total": 19
       },
+      "medSeen": [
+        "442e4afb112a",
+        "21a4b6679bdb",
+        "54972dd1cbf4",
+        "d6eecab371b4",
+        "91fe28c7b72c",
+        "80873270def4",
+        "df0b8bb41a1f",
+        "a0558b9445e2",
+        "2b03488f9592",
+        "2297f0f3e09f",
+        "608332cb8c46",
+        "9689a201a05e",
+        "ee6a5177b932",
+        "4a7442e5999a",
+        "232338bb147a",
+        "71c9f6996c91",
+        "0a31cc5bb03f",
+        "b0d08391518d",
+        "0ba530e57eb8"
+      ],
       "nombreXlsx": "Jiménez Fallas Yara"
     },
     "dep-norjelens-lobo": {
@@ -647,6 +996,7 @@
         "neu": 0,
         "total": 0
       },
+      "medSeen": [],
       "nombreXlsx": "Lobo Vargas Norjelens María"
     },
     "dep-karol-matamoros": {
@@ -669,6 +1019,7 @@
         "neu": 0,
         "total": 0
       },
+      "medSeen": [],
       "nombreXlsx": "Matamoros Montoya Karol Vanessa"
     },
     "dep-mangell-mclean": {
@@ -691,6 +1042,7 @@
         "neu": 0,
         "total": 0
       },
+      "medSeen": [],
       "nombreXlsx": "Mc Lean Villalobos Mangell"
     },
     "dep-ariel-mora": {
@@ -713,6 +1065,18 @@
         "neu": 7,
         "total": 9
       },
+      "medSeen": [
+        "982253844a2f",
+        "d9b4247affe3",
+        "ea41467b5e4e",
+        "cce72f1124e4",
+        "8870056900a9",
+        "d24368b61cbe",
+        "cbcc11ddbd24",
+        "d41c354363dd",
+        "af1f3c90341d",
+        "3935ec705b96"
+      ],
       "nombreXlsx": "Mora Fallas Ariel"
     },
     "dep-kattia-mora": {
@@ -735,6 +1099,13 @@
         "neu": 3,
         "total": 4
       },
+      "medSeen": [
+        "5b5fe36e9573",
+        "e013cc893f28",
+        "2b74dd5a6f17",
+        "4b2cd5d22962",
+        "df34f6c14cf1"
+      ],
       "nombreXlsx": "Mora Montoya Kattya"
     },
     "dep-royner-mora": {
@@ -757,6 +1128,7 @@
         "neu": 0,
         "total": 0
       },
+      "medSeen": [],
       "nombreXlsx": "Mora Ruiz Royner G."
     },
     "dep-vianey-mora": {
@@ -779,6 +1151,18 @@
         "neu": 4,
         "total": 6
       },
+      "medSeen": [
+        "e07a8db3836a",
+        "81acd178b2a9",
+        "0ea9e9ef43d0",
+        "0c7da5581f5d",
+        "cb2fe85e7437",
+        "ea41467b5e4e",
+        "fd9c15535215",
+        "6d7a8f97398d",
+        "9689a201a05e",
+        "71c9f6996c91"
+      ],
       "nombreXlsx": "Mora Vega Vianey"
     },
     "dep-anna-muller": {
@@ -801,6 +1185,9 @@
         "neu": 0,
         "total": 2
       },
+      "medSeen": [
+        "ea41467b5e4e"
+      ],
       "nombreXlsx": "Müller Castro Anna Katharina"
     },
     "dep-cindy-murillo": {
@@ -823,6 +1210,20 @@
         "neu": 3,
         "total": 11
       },
+      "medSeen": [
+        "7b5bef7b27d0",
+        "94fa1e725077",
+        "5740ba84b271",
+        "433cc1bc6f1a",
+        "dfe4112b8a2e",
+        "b9438f1f463a",
+        "7813dbc54bca",
+        "4c0bcc3748b3",
+        "e92f9f4aa6eb",
+        "1c8b7bab16d4",
+        "8614befa653d",
+        "0dbd7e14b2cc"
+      ],
       "nombreXlsx": "Murillo Artavia Cindy"
     },
     "dep-zaira-murillo": {
@@ -845,6 +1246,17 @@
         "neu": 8,
         "total": 9
       },
+      "medSeen": [
+        "2a80f4b8164d",
+        "af1f3c90341d",
+        "ea41467b5e4e",
+        "d24368b61cbe",
+        "15448525b923",
+        "3bbc5f8bdbdc",
+        "f42d086f2d9d",
+        "3db3a6da9cc9",
+        "ab9b1329ee1e"
+      ],
       "nombreXlsx": "Murillo Marín Zaira"
     },
     "dep-diana-murillo": {
@@ -867,6 +1279,18 @@
         "neu": 7,
         "total": 10
       },
+      "medSeen": [
+        "e07a8db3836a",
+        "101f99a05f22",
+        "b5ed528c1288",
+        "ff0389b66392",
+        "8564e5df49dd",
+        "ef29c5e31c69",
+        "fd9c15535215",
+        "ea41467b5e4e",
+        "c299b1bff8ab",
+        "36673563e149"
+      ],
       "nombreXlsx": "Murillo Murillo Diana"
     },
     "dep-fernando-obaldia": {
@@ -889,6 +1313,18 @@
         "neu": 7,
         "total": 7
       },
+      "medSeen": [
+        "ea41467b5e4e",
+        "04017addc74e",
+        "f496bd0383b3",
+        "ce7b94151911",
+        "b0f66f9f5cf2",
+        "d24368b61cbe",
+        "8f512434cc78",
+        "8719417ae103",
+        "3db3a6da9cc9",
+        "88bbe76032de"
+      ],
       "nombreXlsx": "Obaldía Álvarez Fernando"
     },
     "dep-mayuli-ortega": {
@@ -911,6 +1347,18 @@
         "neu": 9,
         "total": 10
       },
+      "medSeen": [
+        "9a0ee3bde85e",
+        "e5626bc626e2",
+        "d573fe87525e",
+        "cce72f1124e4",
+        "ea41467b5e4e",
+        "12d2aa165eb0",
+        "fd9c15535215",
+        "f05eb2652b33",
+        "cde10bacbb72",
+        "0e3e87ad42d8"
+      ],
       "nombreXlsx": "Ortega Guzmán Mayuli"
     },
     "dep-salvador-padilla": {
@@ -933,6 +1381,18 @@
         "neu": 5,
         "total": 9
       },
+      "medSeen": [
+        "6fbfe8530466",
+        "81f084899a2c",
+        "0f58da3fbbc6",
+        "cddb16fdc62b",
+        "71e6ff6ddf84",
+        "3f4b0c79458f",
+        "8aa1db7dd8c5",
+        "e1e340d61b38",
+        "ff0389b66392",
+        "ef29c5e31c69"
+      ],
       "nombreXlsx": "Padilla Villanueva Salvador"
     },
     "dep-juan-quesada": {
@@ -955,6 +1415,18 @@
         "neu": 10,
         "total": 10
       },
+      "medSeen": [
+        "81d78a7b8e48",
+        "a4b08e03bf31",
+        "fd9c15535215",
+        "0c7da5581f5d",
+        "ea41467b5e4e",
+        "3fa18704b02c",
+        "d24368b61cbe",
+        "6f52330ab175",
+        "d80e9c6426f1",
+        "f822678cd3ea"
+      ],
       "nombreXlsx": "Quesada Espinoza Juan Manuel"
     },
     "dep-alvaro-ramirez": {
@@ -977,6 +1449,30 @@
         "neu": 18,
         "total": 23
       },
+      "medSeen": [
+        "3d69f18593b5",
+        "a0244c5a86ab",
+        "dfc983ceaac9",
+        "2068f502f9a8",
+        "2299d61bcd73",
+        "e62f1a3f3580",
+        "d7ea0ce2f14b",
+        "43001a39161f",
+        "86e551171c41",
+        "d82b0c1e432c",
+        "d70464596290",
+        "1561fa93cd07",
+        "8564e5df49dd",
+        "5d6152eb909e",
+        "ef79a15e4bfe",
+        "133abd3e065b",
+        "717b752eda05",
+        "52db79472799",
+        "ce13212cec7a",
+        "ea41467b5e4e",
+        "5349c9aa4b2c",
+        "8a898fe21f17"
+      ],
       "nombreXlsx": "Ramírez Bogantes Álvaro"
     },
     "dep-gonzalo-ramirez": {
@@ -999,6 +1495,18 @@
         "neu": 10,
         "total": 10
       },
+      "medSeen": [
+        "834b1f0ccde5",
+        "3c31106f6970",
+        "3879d5fd5e54",
+        "4f749802cc93",
+        "7b10d735d97c",
+        "45e20f25e2bf",
+        "115a89c22852",
+        "540fd25ef318",
+        "132980b731bc",
+        "20c7a174595a"
+      ],
       "nombreXlsx": "Ramírez Zamora Gonzalo"
     },
     "dep-maria-roman": {
@@ -1021,6 +1529,18 @@
         "neu": 7,
         "total": 8
       },
+      "medSeen": [
+        "608332cb8c46",
+        "0ea9e9ef43d0",
+        "0f58da3fbbc6",
+        "e07a8db3836a",
+        "6624bf3bf4ec",
+        "72d8dbd1835b",
+        "d2bb2251ed19",
+        "ea41467b5e4e",
+        "dbaa61d22478",
+        "0d555721876f"
+      ],
       "nombreXlsx": "Román Mora María Eugenia"
     },
     "dep-joselyn-saenz": {
@@ -1043,6 +1563,17 @@
         "neu": 3,
         "total": 9
       },
+      "medSeen": [
+        "0b9ae10d6b46",
+        "e07a8db3836a",
+        "4dc62c47bc69",
+        "e8706742eb43",
+        "0ea9e9ef43d0",
+        "e85c94074e36",
+        "608332cb8c46",
+        "abbb584d0799",
+        "42ee266a4d38"
+      ],
       "nombreXlsx": "Sáenz Blanco Joselyn"
     },
     "dep-janice-sandi": {
@@ -1065,6 +1596,17 @@
         "neu": 9,
         "total": 9
       },
+      "medSeen": [
+        "3a3920fa97a8",
+        "029a170432d7",
+        "dad44dd3cca9",
+        "42104a264ab2",
+        "ea41467b5e4e",
+        "13d1cf936f68",
+        "483486e15e4d",
+        "e05cc87fae15",
+        "fe379a11f18c"
+      ],
       "nombreXlsx": "Sandí Morales Janice"
     },
     "dep-sigrid-segura": {
@@ -1087,6 +1629,17 @@
         "neu": 6,
         "total": 9
       },
+      "medSeen": [
+        "1739a2ecf1e9",
+        "150b8bd28782",
+        "6e5937a26b0c",
+        "d0088932deab",
+        "e07a8db3836a",
+        "a4e5a23bfe39",
+        "d70464596290",
+        "1233def17b58",
+        "ea41467b5e4e"
+      ],
       "nombreXlsx": "Segura Artavia Sigrid"
     },
     "dep-daniel-siezar": {
@@ -1109,6 +1662,12 @@
         "neu": 4,
         "total": 4
       },
+      "medSeen": [
+        "cce72f1124e4",
+        "ea41467b5e4e",
+        "78e31ec30861",
+        "d24368b61cbe"
+      ],
       "nombreXlsx": "Siézar Cárdenas Daniel"
     },
     "dep-antonio-trejos": {
@@ -1131,6 +1690,18 @@
         "neu": 11,
         "total": 11
       },
+      "medSeen": [
+        "cddb16fdc62b",
+        "1233def17b58",
+        "e07a8db3836a",
+        "16daabab6057",
+        "42104a264ab2",
+        "39f28a577b4e",
+        "ea41467b5e4e",
+        "fd9c15535215",
+        "13d1cf936f68",
+        "78e31ec30861"
+      ],
       "nombreXlsx": "Trejos Mazariegos Antonio"
     },
     "dep-kattia-ulate": {
@@ -1153,6 +1724,10 @@
         "neu": 2,
         "total": 2
       },
+      "medSeen": [
+        "ea41467b5e4e",
+        "91fe28c7b72c"
+      ],
       "nombreXlsx": "Ulate Alvarado Kattia María"
     },
     "dep-andrea-valverde": {
@@ -1175,6 +1750,18 @@
         "neu": 10,
         "total": 10
       },
+      "medSeen": [
+        "a3b01178f3a6",
+        "8b60d728eeae",
+        "ea41467b5e4e",
+        "0c7da5581f5d",
+        "fd9c15535215",
+        "9689a201a05e",
+        "da40e729772c",
+        "91fe28c7b72c",
+        "a0558b9445e2",
+        "71c9f6996c91"
+      ],
       "nombreXlsx": "Valverde Palavicini Andrea"
     },
     "dep-rafael-vargas": {
@@ -1197,6 +1784,16 @@
         "neu": 6,
         "total": 7
       },
+      "medSeen": [
+        "8346f2eaf5d8",
+        "c0641abdc3dd",
+        "d23cea523a34",
+        "06fecfc9c829",
+        "631d9abaf540",
+        "a9b3338142a0",
+        "5a9c9efafe84",
+        "c9066b100cc2"
+      ],
       "nombreXlsx": "Vargas Brenes Rafael"
     },
     "dep-jose-villalobos": {
@@ -1219,6 +1816,33 @@
         "neu": 7,
         "total": 25
       },
+      "medSeen": [
+        "c7d9afd35b61",
+        "831642441b09",
+        "8ba71b5b3fa1",
+        "1d23327f1cbb",
+        "abd0c2e93dbe",
+        "5cb7bb38bf4e",
+        "3fb8e3dd1caa",
+        "87d4a59a605b",
+        "bcd42a109216",
+        "35f1eba093fe",
+        "347d52bf2267",
+        "0f95f442027c",
+        "29e71c1cdcb5",
+        "fc2f3ec806ae",
+        "c4afd44d82cf",
+        "38d2753acf34",
+        "cdd083b2423e",
+        "98cd6ed8816c",
+        "6d60a5bc9a88",
+        "b3e6a68e81d7",
+        "0f269ad5969b",
+        "2af6a04b0c67",
+        "33582835a6e5",
+        "daef37d22263",
+        "f596caee8c39"
+      ],
       "nombreXlsx": "Villalobos Umaña José Miguel"
     },
     "dep-jose-villalta": {
@@ -1241,6 +1865,21 @@
         "neu": 6,
         "total": 13
       },
+      "medSeen": [
+        "e0770a1054b6",
+        "901708908bd2",
+        "b6c850919518",
+        "f7ea581320c2",
+        "a15359943cb8",
+        "af624632c5d0",
+        "14438583f403",
+        "d088730a299b",
+        "5987d4417c5a",
+        "0fcac0b1e7be",
+        "ea41467b5e4e",
+        "abb6678de62e",
+        "e07a8db3836a"
+      ],
       "nombreXlsx": "Villalta Flórez-Estrada José María"
     },
     "dep-kristel-ward": {
@@ -1263,6 +1902,18 @@
         "neu": 9,
         "total": 10
       },
+      "medSeen": [
+        "848a22476ad9",
+        "8b60d728eeae",
+        "0c7da5581f5d",
+        "fd9c15535215",
+        "5652dc18633c",
+        "9689a201a05e",
+        "91fe28c7b72c",
+        "f8133c04d62a",
+        "71c9f6996c91",
+        "ea41467b5e4e"
+      ],
       "nombreXlsx": "Ward Hudson Kristel"
     }
   }

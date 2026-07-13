@@ -114,7 +114,7 @@ export const METRIC_META: Record<
   },
   MED: {
     label: "Cobertura Mediática",
-    description: "Noticias positivas suman, negativas restan; sin noticias es neutro",
+    description: "Noticias acumuladas desde el inicio de la legislatura: positivas suman, negativas restan; sin noticias es neutro",
     source: "Google News + Claude",
     weight: 0.1,
     higherIsBetter: true,

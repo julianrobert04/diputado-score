@@ -12,6 +12,7 @@
  */
 
 import https from "https";
+import crypto from "crypto";
 import * as fs from "fs";
 import * as path from "path";
 import * as XLSX from "xlsx";
@@ -395,6 +396,12 @@ interface MedData {
   total: number;
 }
 
+/** Hash estable de un titular (normalizado) para no contarlo dos veces
+ *  entre corridas semanales con ventanas de búsqueda que se traslapan. */
+function headlineHash(title: string): string {
+  return crypto.createHash("sha1").update(normalize(title).join(" ")).digest("hex").slice(0, 12);
+}
+
 /** Clasifica titulares con Claude Haiku: P (positiva), N (negativa), X (neutra) */
 async function classifyHeadlines(
   deputy: string,
@@ -467,6 +474,7 @@ async function main() {
       votAsis: number | null;
       votTotal: number | null;
       med: MedData | null;
+      medSeen: string[];
       nombreXlsx: string;
     }
   >();
@@ -496,7 +504,7 @@ async function main() {
         asisPL: 0, ausPL: 0, permPL: 0, asisCom: 0, ausCom: 0, permCom: 0,
         viajes: 0, proyectos: null, aprobados: null,
         sesAsis: null, sesTotal: null, votAsis: null, votTotal: null,
-        med: null, nombreXlsx: xlsxName,
+        med: null, medSeen: [], nombreXlsx: xlsxName,
       };
       totals.set(id, {
         ...prev,
@@ -581,26 +589,43 @@ async function main() {
   const dumpHeadlines = process.env.DUMP_HEADLINES === "1";
   let medUpdatedAt: string | null = existing?.medUpdatedAt ?? null;
   if (apiKey || dumpHeadlines) {
-    console.log(`\n📰 Noticias (Google News, 30 días)${apiKey ? "" : " — solo dump, sin clasificar"}`);
+    console.log(`\n📰 Noticias (Google News) — acumuladas desde el inicio de la legislatura${apiKey ? "" : " — solo dump, sin clasificar"}`);
     const dump: Record<string, { query: string; headlines: string[] }> = {};
     for (const dep of deputies) {
       const entry = totals.get(dep.id);
       if (!entry) continue;
+      const prevMed: MedData | null = existing?.deputies?.[dep.id]?.med ?? null;
+      const seen = new Set<string>(existing?.deputies?.[dep.id]?.medSeen ?? []);
       const query = searchName(entry.nombreXlsx, dep.nombre);
       const headlines = await fetchHeadlines(query);
       dump[dep.id] = { query, headlines };
-      if (!headlines.length) {
-        if (apiKey) entry.med = { pos: 0, neg: 0, neu: 0, total: 0 };
-        continue;
-      }
+      // Solo clasificar titulares que no se hayan contado en corridas anteriores
+      const fresh = headlines.filter((h) => !seen.has(headlineHash(h)));
       if (apiKey) {
-        const med = await classifyHeadlines(query, headlines, apiKey);
-        entry.med = med ?? existing?.deputies?.[dep.id]?.med ?? null;
-        console.log(
-          `   ${query}: ${headlines.length} titulares → +${med?.pos ?? "?"} −${med?.neg ?? "?"}`
-        );
+        if (fresh.length) {
+          const med = await classifyHeadlines(query, fresh, apiKey);
+          if (med) {
+            entry.med = {
+              pos: (prevMed?.pos ?? 0) + med.pos,
+              neg: (prevMed?.neg ?? 0) + med.neg,
+              neu: (prevMed?.neu ?? 0) + med.neu,
+              total: (prevMed?.total ?? 0) + med.total,
+            };
+            fresh.forEach((h) => seen.add(headlineHash(h)));
+            console.log(
+              `   ${query}: ${fresh.length} titulares nuevos → +${med.pos} −${med.neg} · acumulado ${entry.med.total}`
+            );
+          } else {
+            entry.med = prevMed;
+            console.log(`   ${query}: error clasificando — se conserva el acumulado`);
+          }
+        } else {
+          entry.med = prevMed ?? { pos: 0, neg: 0, neu: 0, total: 0 };
+          console.log(`   ${query}: sin titulares nuevos · acumulado ${entry.med.total}`);
+        }
+        entry.medSeen = [...seen];
       } else {
-        console.log(`   ${query}: ${headlines.length} titulares`);
+        console.log(`   ${query}: ${headlines.length} titulares (${fresh.length} nuevos)`);
       }
       await new Promise((r) => setTimeout(r, 300));
     }
@@ -614,6 +639,7 @@ async function main() {
     console.log("\n⚠ Sin ANTHROPIC_API_KEY — se preserva la clasificación de medios existente");
     for (const [id, entry] of totals) {
       entry.med = existing?.deputies?.[id]?.med ?? entry.med ?? null;
+      entry.medSeen = existing?.deputies?.[id]?.medSeen ?? entry.medSeen ?? [];
     }
   }
 

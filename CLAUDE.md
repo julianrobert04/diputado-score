@@ -85,9 +85,11 @@ fuente de verdad. `DIMENSION_META` agrupa las métricas solo para la UI
 xlsx de viajes de la legislatura 2026-2030 — se activa solo (`includeVIA` en `calcOverall`).
 
 **MED:** noticia positiva suma, negativa resta, sin noticias = 5.5 neutro.
-Fórmula: `clamp(5.5 + 4.5·(pos−neg)/max(total,5), 1, 10)`. Clasificación con
-Claude Haiku en la ingesta semanal (requiere secret `ANTHROPIC_API_KEY` en GitHub).
-Sin API key la ingesta preserva la clasificación anterior de `real-data.json`.
+Fórmula: `clamp(5.5 + 4.5·(pos−neg)/max(total,5), 1, 10)` sobre los totales
+**acumulados desde el inicio de la legislatura** — cada corrida semanal clasifica
+solo los titulares nuevos (dedupe por `medSeen`, hash sha1 del titular normalizado)
+y los suma a pos/neg/neu. Clasificación con Claude Haiku (requiere secret
+`ANTHROPIC_API_KEY` en GitHub). Sin API key la ingesta preserva el acumulado.
 
 **PRO:** proyectos de ley con primera firma del diputado (API GraphQL de Delfino.cr,
 `https://api.delfino.cr/graphql`). `directRelativeScore`: promedio → 5.0, cero → 0,
