@@ -143,12 +143,12 @@ export default async function Home({ searchParams }: HomeProps) {
                 </span>
               </div>
               <h1 className="text-3xl sm:text-[2.75rem] font-black tracking-tight leading-[1.1] mb-4">
-                Si la Asamblea Legislativa fuera un partido,{" "}
-                <span className="text-emerald-400">así rendirían nuestros diputados.</span>
+                En Costa Rica sabemos más sobre el rendimiento de los futbolistas{" "}
+                <span className="text-emerald-400">que sobre el de nuestros diputados.</span>
               </h1>
               <p className="text-zinc-500 text-base max-w-lg leading-relaxed">
-                Inspirado en las métricas con las que calificamos el rendimiento de los
-                jugadores de fútbol en cada partido.
+                Inspirados en los puntajes con los que se evalúa a los jugadores,
+                calificamos el desempeño de cada diputado de la Asamblea Legislativa.
               </p>
             </div>
 
@@ -210,13 +210,13 @@ export default async function Home({ searchParams }: HomeProps) {
         {/* Stats strip */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
           <div className={STAT_TILE}>
-            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Score promedio</p>
+            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Rating promedio</p>
             <p className={`text-xl font-black ${SCORE_TEXT[getScoreColor(avgScore)]}`}>
               {avgScore.toFixed(1)}
             </p>
           </div>
           <div className={STAT_TILE}>
-            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Mejor diputado</p>
+            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">MVP de la jornada</p>
             {best ? (
               <>
                 <p className="text-white text-sm font-bold leading-tight truncate">{shortName(best.card.fullName)}</p>

@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import { RankingAvatar } from "@/components/RankingAvatar";
+import { OnceIdeal } from "@/components/OnceIdeal";
 import { getScoreColor } from "@/lib/scoreCalculator";
 import { getMockPoliticians } from "@/lib/mockData";
 
@@ -166,7 +167,7 @@ export default async function RankingsPage() {
           <h1 className="text-3xl font-black tracking-tight mb-2">
             Rankings <span className="text-emerald-400">2026–2030</span>
           </h1>
-          <p className="text-zinc-500 text-sm">Diputados ordenados de mejor a peor score general</p>
+          <p className="text-zinc-500 text-sm">La tabla de posiciones de la Asamblea — de mejor a peor score</p>
         </div>
 
         {/* Podio top 3 */}
@@ -185,6 +186,26 @@ export default async function RankingsPage() {
             </div>
           </div>
         )}
+
+        {/* Once ideal */}
+        <div className="mb-8 bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] px-6 pt-5 pb-7">
+          <div className="flex items-baseline justify-between mb-5">
+            <h2 className="text-base font-bold text-white">
+              El once <span className="text-emerald-400">ideal</span>
+            </h2>
+            <span className="text-[0.65rem] text-zinc-600 uppercase tracking-widest font-semibold">
+              Los 11 mejor calificados
+            </span>
+          </div>
+          <OnceIdeal
+            players={scores.map((s) => ({
+              id: s.id,
+              fullName: s.fullName,
+              photoUrl: s.photoUrl,
+              overall: s.overall,
+            }))}
+          />
+        </div>
 
         {/* Stats por partido */}
         <div className="mb-8 bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] px-5 py-4">

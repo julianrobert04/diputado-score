@@ -125,12 +125,12 @@ export function PoliticianCard({ politician, rank, snapshots = [], latestDelta =
               )}
             </div>
 
-            {/* Score badge — TOP-LEFT, estilo SofaScore */}
+            {/* Rating chip — cuadrado redondeado estilo SofaScore, top-left */}
             <div
               className={`
                 absolute -top-2 -left-2.5
                 ${SCORE_PILL_BG[color]}
-                rounded-full px-1.5 py-[0.2rem]
+                rounded-[0.4rem] px-1.5 py-1
                 flex items-center gap-0.5
                 shadow-lg ring-1 ring-black/20
                 whitespace-nowrap
@@ -143,6 +143,18 @@ export function PoliticianCard({ politician, rank, snapshots = [], latestDelta =
                 <TrendBadge delta={latestDelta} size="xs" showValue={false} />
               )}
             </div>
+
+            {/* Estrella MVP — mejor de la jornada, como "player of the match" */}
+            {rank === 1 && (
+              <div
+                className="absolute -top-2 -right-2.5 w-[1.35rem] h-[1.35rem] rounded-[0.4rem] bg-amber-400 shadow-lg ring-1 ring-black/20 flex items-center justify-center"
+                title="MVP de la jornada"
+              >
+                <svg className="w-3 h-3 text-amber-950" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01L12 2z"/>
+                </svg>
+              </div>
+            )}
           </div>
         </div>
 
