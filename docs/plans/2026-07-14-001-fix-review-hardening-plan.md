@@ -1,7 +1,7 @@
 ---
 title: "fix: harden ingest pipeline, security, tests, and frontend from code review"
 type: fix
-status: active
+status: completed
 date: 2026-07-14
 origin: thermo-nuclear code review (5-dimension audit, 2026-07-14), approved by Julián
 ---
