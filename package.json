@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test 'test/**/*.test.ts'",
     "ingest:opendata": "tsx src/scripts/ingest-opendata.ts"
   },
   "dependencies": {
