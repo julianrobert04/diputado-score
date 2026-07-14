@@ -13,10 +13,15 @@ interface SparklineProps {
  * Sparkline SVG — gráfico de línea minimalista al estilo SofaScore
  * para mostrar la evolución del score a lo largo del tiempo.
  */
-export function Sparkline({ snapshots, width = 80, height = 28, className = "" }: SparklineProps) {
+export function Sparkline({
+  snapshots,
+  width = 80,
+  height = 28,
+  className = "",
+}: SparklineProps) {
   if (snapshots.length < 2) {
     return (
-      <span className="text-xs text-gray-600 italic">
+      <span className="text-xs text-zinc-400 italic">
         {snapshots.length === 0 ? "Sin historial" : "1 dato"}
       </span>
     );
@@ -56,6 +61,7 @@ export function Sparkline({ snapshots, width = 80, height = 28, className = "" }
       height={height}
       viewBox={`0 0 ${width} ${height}`}
       className={className}
+      role="img"
       aria-label={`Tendencia del score: de ${values[0].toFixed(1)} a ${values[values.length - 1].toFixed(1)}`}
     >
       {/* Línea de tendencia */}
@@ -90,11 +96,22 @@ export function SparklineCard({
       <div className="h-full flex flex-col">
         <h2 className="text-sm font-semibold text-zinc-400 mb-4">{title}</h2>
         <div className="flex-1 flex flex-col items-center justify-center text-center gap-2 py-6">
-          <svg className="w-8 h-8 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.306a11.95 11.95 0 015.814-5.518l2.74-1.22m0 0l-5.94-2.281m5.94 2.28l-2.28 5.941" />
+          <svg
+            className="w-8 h-8 text-zinc-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M2.25 18L9 11.25l4.306 4.306a11.95 11.95 0 015.814-5.518l2.74-1.22m0 0l-5.94-2.281m5.94 2.28l-2.28 5.941"
+            />
           </svg>
-          <p className="text-zinc-600 text-xs max-w-[220px] leading-relaxed">
-            La tendencia aparece cuando la actualización semanal acumule más de un corte de datos.
+          <p className="text-zinc-400 text-xs max-w-[220px] leading-relaxed">
+            La tendencia aparece cuando la actualización semanal acumule más de
+            un corte de datos.
           </p>
         </div>
       </div>
@@ -120,7 +137,9 @@ export function SparklineCard({
     return { x, y, v, date: dates[i], delta: snapshots[i].deltaOverall };
   });
 
-  const polyline = points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+  const polyline = points
+    .map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`)
+    .join(" ");
 
   // Área bajo la curva
   const areaPoints =
@@ -129,8 +148,10 @@ export function SparklineCard({
     ` ${points[points.length - 1].x.toFixed(1)},${h}`;
 
   const trend = values[values.length - 1] - values[0];
-  const strokeColor = trend > 0.1 ? "#10b981" : trend < -0.1 ? "#ef4444" : "#6b7280";
-  const fillColor = trend > 0.1 ? "#10b98120" : trend < -0.1 ? "#ef444420" : "#6b728020";
+  const strokeColor =
+    trend > 0.1 ? "#10b981" : trend < -0.1 ? "#ef4444" : "#6b7280";
+  const fillColor =
+    trend > 0.1 ? "#10b98120" : trend < -0.1 ? "#ef444420" : "#6b728020";
 
   const fmtDate = (d: Date) =>
     d.toLocaleDateString("es-CR", { day: "numeric", month: "short" });
@@ -139,15 +160,20 @@ export function SparklineCard({
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-sm font-semibold text-zinc-400">{title}</h2>
-        <div className="flex items-center gap-3 text-xs text-gray-500">
-          <span>Mín <span className="text-white font-bold">{min.toFixed(1)}</span></span>
-          <span>Máx <span className="text-white font-bold">{max.toFixed(1)}</span></span>
+        <div className="flex items-center gap-3 text-xs text-zinc-400">
+          <span>
+            Mín <span className="text-white font-bold">{min.toFixed(1)}</span>
+          </span>
+          <span>
+            Máx <span className="text-white font-bold">{max.toFixed(1)}</span>
+          </span>
           <span>
             Cambio{" "}
             <span
               className={`font-bold ${trend > 0 ? "text-emerald-400" : trend < 0 ? "text-red-400" : "text-gray-400"}`}
             >
-              {trend > 0 ? "+" : ""}{trend.toFixed(1)}
+              {trend > 0 ? "+" : ""}
+              {trend.toFixed(1)}
             </span>
           </span>
         </div>
@@ -157,6 +183,7 @@ export function SparklineCard({
         viewBox={`0 0 ${w} ${h}`}
         className="w-full"
         style={{ height: "120px" }}
+        role="img"
         aria-label={`Evolución del score: ${values.map((v) => v.toFixed(1)).join(", ")}`}
       >
         {/* Líneas guía horizontales */}
@@ -166,10 +193,21 @@ export function SparklineCard({
           return (
             <g key={pct}>
               <line
-                x1={padX} y1={y} x2={w - padX} y2={y}
-                stroke="#374151" strokeWidth="0.5" strokeDasharray="4 4"
+                x1={padX}
+                y1={y}
+                x2={w - padX}
+                y2={y}
+                stroke="#374151"
+                strokeWidth="0.5"
+                strokeDasharray="4 4"
               />
-              <text x={padX - 4} y={y + 3} fontSize="8" fill="#6b7280" textAnchor="end">
+              <text
+                x={padX - 4}
+                y={y + 3}
+                fontSize="8"
+                fill="#a1a1aa"
+                textAnchor="end"
+              >
                 {val.toFixed(1)}
               </text>
             </g>
@@ -211,7 +249,7 @@ export function SparklineCard({
       </svg>
 
       {/* Eje de fechas */}
-      <div className="flex justify-between mt-1 text-xs text-gray-600">
+      <div className="flex justify-between mt-1 text-xs text-zinc-400">
         <span>{fmtDate(dates[0])}</span>
         {dates.length > 4 && (
           <span>{fmtDate(dates[Math.floor(dates.length / 2)])}</span>
@@ -220,27 +258,40 @@ export function SparklineCard({
       </div>
 
       {/* Lista de cambios recientes */}
-      {snapshots.filter((s) => s.deltaOverall !== null && Math.abs(s.deltaOverall) >= 0.1).length > 0 && (
+      {snapshots.filter(
+        (s) => s.deltaOverall !== null && Math.abs(s.deltaOverall) >= 0.1,
+      ).length > 0 && (
         <div className="mt-4 border-t border-gray-800 pt-4">
-          <p className="text-xs text-gray-500 mb-2">Cambios registrados</p>
+          <p className="text-xs text-zinc-400 mb-2">Cambios registrados</p>
           <div className="space-y-1 max-h-32 overflow-y-auto">
             {[...snapshots]
               .reverse()
-              .filter((s) => s.deltaOverall !== null && Math.abs(s.deltaOverall) >= 0.1)
+              .filter(
+                (s) =>
+                  s.deltaOverall !== null && Math.abs(s.deltaOverall) >= 0.1,
+              )
               .slice(0, 8)
               .map((s) => (
-                <div key={s.id} className="flex items-center justify-between text-xs">
-                  <span className="text-gray-500">
+                <div
+                  key={s.id}
+                  className="flex items-center justify-between text-xs"
+                >
+                  <span className="text-zinc-400">
                     {new Date(s.takenAt).toLocaleDateString("es-CR", {
-                      day: "numeric", month: "short", year: "numeric",
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
                     })}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-300 font-mono">{s.overall.toFixed(1)}</span>
+                    <span className="text-gray-300 font-mono">
+                      {s.overall.toFixed(1)}
+                    </span>
                     <span
                       className={`font-bold ${(s.deltaOverall ?? 0) > 0 ? "text-emerald-400" : "text-red-400"}`}
                     >
-                      {(s.deltaOverall ?? 0) > 0 ? "+" : ""}{(s.deltaOverall ?? 0).toFixed(1)}
+                      {(s.deltaOverall ?? 0) > 0 ? "+" : ""}
+                      {(s.deltaOverall ?? 0).toFixed(1)}
                     </span>
                   </div>
                 </div>
