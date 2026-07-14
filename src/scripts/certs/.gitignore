@@ -1,0 +1,3 @@
+# El .gitignore raíz ignora *.pem, pero esta cadena de CA de GlobalSign SÍ debe
+# versionarse: la ingesta la necesita para verificar el TLS de asamblea.go.cr.
+!globalsign-chain.pem

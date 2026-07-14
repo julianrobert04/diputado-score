@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# ingest artifacts
+.ingest-cache/
+data/real-data.json.tmp
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

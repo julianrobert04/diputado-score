@@ -7,24 +7,27 @@ interface Props {
 }
 
 const SCORE_FILL: Record<string, string> = {
-  gold:   "rgba(251,191,36,0.15)",
-  green:  "rgba(52,211,153,0.15)",
+  gold: "rgba(251,191,36,0.15)",
+  green: "rgba(52,211,153,0.15)",
   yellow: "rgba(250,204,21,0.15)",
   orange: "rgba(249,115,22,0.15)",
-  red:    "rgba(244,63,94,0.15)",
-  gray:   "rgba(113,113,122,0.10)",
+  red: "rgba(244,63,94,0.15)",
+  gray: "rgba(113,113,122,0.10)",
 };
 
 const SCORE_STROKE: Record<string, string> = {
-  gold:   "#fbbf24",
-  green:  "#34d399",
+  gold: "#fbbf24",
+  green: "#34d399",
   yellow: "#facc15",
   orange: "#f97316",
-  red:    "#f43f5e",
-  gray:   "#71717a",
+  red: "#f43f5e",
+  gray: "#71717a",
 };
 
-const DIMS = Object.entries(DIMENSION_META) as [keyof typeof DIMENSION_META, typeof DIMENSION_META[keyof typeof DIMENSION_META]][];
+const DIMS = Object.entries(DIMENSION_META) as [
+  keyof typeof DIMENSION_META,
+  (typeof DIMENSION_META)[keyof typeof DIMENSION_META],
+][];
 const N = DIMS.length; // 5
 
 function pentagon(cx: number, cy: number, r: number, rotation = -Math.PI / 2) {
@@ -62,12 +65,19 @@ export function RadarChart({ metrics, size = 260 }: Props) {
 
   const labelPoints = pentagon(cx, cy, labelR);
 
+  // Etiqueta accesible: enumera cada dimensión con su puntaje para lectores de
+  // pantalla, ya que el gráfico es puramente visual.
+  const ariaLabel = `Radar de desempeño por dimensión: ${DIMS.map(
+    ([, dim], i) => `${dim.label} ${dimScores[i].toFixed(1)} de 10`,
+  ).join(", ")}.`;
+
   return (
     <svg
       viewBox={`0 0 ${size} ${size}`}
       width={size}
       height={size}
-      aria-label="Radar de dimensiones"
+      role="img"
+      aria-label={ariaLabel}
     >
       {/* Grid levels */}
       {gridLevels.map((level) => {
@@ -107,13 +117,7 @@ export function RadarChart({ metrics, size = 260 }: Props) {
 
       {/* Data dots */}
       {dataPoints.map((pt, i) => (
-        <circle
-          key={i}
-          cx={pt.x}
-          cy={pt.y}
-          r="3"
-          fill={SCORE_STROKE[color]}
-        />
+        <circle key={i} cx={pt.x} cy={pt.y} r="3" fill={SCORE_STROKE[color]} />
       ))}
 
       {/* Labels — centrados y con clamp para que no se corten en los bordes */}
