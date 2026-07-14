@@ -52,28 +52,73 @@ const ASAMBLEA_CA = fs.readFileSync(
 );
 const ASAMBLEA_AGENT = new https.Agent({ ca: ASAMBLEA_CA, keepAlive: false });
 
+// Fallback: si la Asamblea cambia de CA (renovación con otro emisor) la cadena
+// fijada deja de validar, pero si el servidor nuevo envía la cadena completa,
+// el almacén de confianza por defecto de Node sí valida. Se intenta en orden
+// pinned → default, siempre con verificación TLS activa. Si ambos fallan por
+// TLS, corré `npm run cert:update` (regenera el PEM automáticamente).
+const DEFAULT_AGENT = new https.Agent({ keepAlive: false });
+const TLS_ERROR_CODES = new Set([
+  "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+  "UNABLE_TO_GET_ISSUER_CERT",
+  "UNABLE_TO_GET_ISSUER_CERT_LOCALLY",
+  "CERT_HAS_EXPIRED",
+  "CERT_NOT_YET_VALID",
+  "SELF_SIGNED_CERT_IN_CHAIN",
+  "DEPTH_ZERO_SELF_SIGNED_CERT",
+  "CERT_SIGNATURE_FAILURE",
+  "CERT_UNTRUSTED",
+  "ERR_TLS_CERT_ALTNAME_INVALID",
+]);
+let tlsFailureWarned = false;
+
 const BASE =
   "https://www.asamblea.go.cr/pa/datosabiertos/Documentos%20compartidos";
 const LEGISLATURE_START = { year: 2026, month: 5 };
 
 /** Descarga un xlsx de la Asamblea con TLS verificado, timeout y validación de
  *  bytes (magic bytes ZIP + rechazo de content-type HTML). Un fallo de
- *  validación = "mes no disponible", NUNCA "cero asistencia". */
-function fetchBuffer(url: string): Promise<Buffer | null> {
+ *  validación = "mes no disponible", NUNCA "cero asistencia".
+ *  Intenta primero con la cadena fijada y luego con el almacén por defecto;
+ *  ambos con verificación activa. */
+async function fetchBuffer(url: string): Promise<Buffer | null> {
+  let sawTlsError = false;
+  for (const agent of [ASAMBLEA_AGENT, DEFAULT_AGENT]) {
+    const result = await fetchBufferWith(url, agent);
+    if (result.buf) return result.buf;
+    if (!result.tlsError) return null; // 404/timeout/HTML: reintentar no ayuda
+    sawTlsError = true;
+  }
+  if (sawTlsError && !tlsFailureWarned) {
+    tlsFailureWarned = true;
+    console.log(
+      "\n⚠ TLS: el certificado de asamblea.go.cr ya no valida con la cadena fijada" +
+        "\n  (probablemente lo renovaron con otro emisor). Los datos existentes se" +
+        "\n  preservan. Para arreglarlo corré:  npm run cert:update" +
+        "\n  y commiteá el src/scripts/certs/globalsign-chain.pem regenerado.\n",
+    );
+  }
+  return null;
+}
+
+function fetchBufferWith(
+  url: string,
+  agent: https.Agent,
+): Promise<{ buf: Buffer | null; tlsError: boolean }> {
   return new Promise((resolve) => {
     const req = https.get(
       url,
-      { agent: ASAMBLEA_AGENT, timeout: REQUEST_TIMEOUT_MS },
+      { agent, timeout: REQUEST_TIMEOUT_MS },
       (res) => {
         if (res.statusCode !== 200) {
           res.resume();
-          resolve(null);
+          resolve({ buf: null, tlsError: false });
           return;
         }
         // Rechazar páginas de error HTML antes de intentar parsear el workbook.
         if (isHtmlContentType(res.headers["content-type"])) {
           res.resume();
-          resolve(null);
+          resolve({ buf: null, tlsError: false });
           return;
         }
         const chunks: Buffer[] = [];
@@ -82,17 +127,19 @@ function fetchBuffer(url: string): Promise<Buffer | null> {
           const buf = Buffer.concat(chunks);
           // Un .xlsx es un ZIP (50 4B 03 04). Si no lo es, no llega a XLSX.read.
           if (!isZipBuffer(buf)) {
-            resolve(null);
+            resolve({ buf: null, tlsError: false });
             return;
           }
-          resolve(buf);
+          resolve({ buf, tlsError: false });
         });
-        res.on("error", () => resolve(null));
+        res.on("error", () => resolve({ buf: null, tlsError: false }));
       },
     );
     req.setTimeout(REQUEST_TIMEOUT_MS, () => req.destroy());
     req.on("timeout", () => req.destroy());
-    req.on("error", () => resolve(null));
+    req.on("error", (err: NodeJS.ErrnoException) =>
+      resolve({ buf: null, tlsError: TLS_ERROR_CODES.has(err.code ?? "") }),
+    );
   });
 }
 

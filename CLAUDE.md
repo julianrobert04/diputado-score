@@ -55,6 +55,7 @@ src/
 │   ├── ingest-lib.ts             ← Funciones puras de la ingesta (matching, parseo, frenos) — testeable
 │   ├── validate-data.ts          ← Validador del JSON antes del commit (compuerta del workflow)
 │   └── certs/                    ← Cadena GlobalSign para verificar TLS de asamblea.go.cr
+│                                    (se regenera con `npm run cert:update`)
 └── types/index.ts                ← Tipos TypeScript + LegislativeBill
 ```
 

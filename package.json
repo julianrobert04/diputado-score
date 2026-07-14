@@ -9,7 +9,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test 'test/**/*.test.ts'",
-    "ingest:opendata": "tsx src/scripts/ingest-opendata.ts"
+    "ingest:opendata": "tsx src/scripts/ingest-opendata.ts",
+    "cert:update": "tsx src/scripts/update-asamblea-cert.ts"
   },
   "dependencies": {
     "next": "16.2.9",

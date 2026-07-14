@@ -33,51 +33,48 @@ const HAS_TRIPS = (realData.tripMonths as string[]).length > 0;
 
 const SAMPLE_ID = "dep-nogui-acosta";
 
-test("real-data.json → RawData mapea campo por campo (valores exactos conocidos)", () => {
-  // Fixture con valores no-nulos conocidos: se afirman los números EXACTOS de
-  // forma incondicional (nada de `if (typeof …)` que colapsa a "existe").
-  // Primero se ancla el fixture: si el JSON committeado cambiara estos valores,
-  // el test debe fallar aquí (no silenciarse).
+test("real-data.json → RawData mapea campo por campo contra el JSON", () => {
+  // OJO: nada de literales copiados del JSON — real-data.json cambia todas las
+  // semanas (el bot commitea datos nuevos) y anclar valores exactos rompería el
+  // CI en cada actualización legítima. Lo que se verifica es el MAPEO: cada
+  // campo de RawData debe ser función de los campos correspondientes del JSON.
   const r = DEPUTIES[SAMPLE_ID];
   assert.ok(r, "el diputado de muestra existe en real-data.json");
-  assert.equal(r.asisPL, 18);
-  assert.equal(r.ausPL, 0);
-  assert.equal(r.permPL, 0);
-  assert.equal(r.asisCom, 12);
-  assert.equal(r.ausCom, 0);
-  assert.equal(r.permCom, 0);
-  assert.equal(r.sesAsis, 37);
-  assert.equal(r.sesTotal, 37);
-  assert.equal(r.votAsis, 244);
-  assert.equal(r.votTotal, 248);
-  assert.equal(r.proyectos, 0);
-  assert.equal(r.aprobados, 0);
-  assert.deepEqual(r.med, { pos: 5, neg: 11, neu: 10, total: 26 });
+  // El fixture debe seguir teniendo datos en todas las fuentes que probamos;
+  // si alguna fuente desapareciera del JSON, fallar acá con mensaje claro.
+  assert.ok((r.sesTotal ?? 0) > 0, "fixture sin sesiones de Delfino");
+  assert.ok((r.votTotal ?? 0) > 0, "fixture sin votaciones de Delfino");
+  assert.ok(r.asisCom + r.ausCom + r.permCom > 0, "fixture sin comisiones");
+  assert.ok(typeof r.proyectos === "number", "fixture sin proyectos");
+  assert.ok(r.med !== null, "fixture sin clasificación de medios");
   assert.equal(HAS_TRIPS, false, "esta legislatura aún no publica viajes");
 
   const p = getMockPoliticianById(SAMPLE_ID);
   assert.ok(p, "getMockPoliticianById devuelve el diputado");
   const raw = p!.rawData;
 
+  const totalPL = r.asisPL + r.ausPL + r.permPL;
+  const totalCom = r.asisCom + r.ausCom + r.permCom;
+
   // ASI: Delfino (sesAsis/sesTotal) tiene prioridad sobre el xlsx del plenario.
-  assert.equal(raw.sesionesAsistidas, 37);
-  assert.equal(raw.sesionesTotales, 37);
+  assert.equal(raw.sesionesAsistidas, r.sesAsis);
+  assert.equal(raw.sesionesTotales, r.sesTotal);
   // Votaciones.
-  assert.equal(raw.votacionesAsistidas, 244);
-  assert.equal(raw.votacionesTotales, 248);
-  // Comisiones: totalCom = 12 + 0 + 0.
-  assert.equal(raw.comisionesAsistidas, 12);
-  assert.equal(raw.comisionesTotales, 12);
-  // Permisos: permisos = permPL + permCom = 0; totales = totalPL(18) + totalCom(12).
-  assert.equal(raw.permisos, 0);
-  assert.equal(raw.permisosTotales, 30);
+  assert.equal(raw.votacionesAsistidas, r.votAsis);
+  assert.equal(raw.votacionesTotales, r.votTotal);
+  // Comisiones.
+  assert.equal(raw.comisionesAsistidas, r.asisCom);
+  assert.equal(raw.comisionesTotales, totalCom);
+  // Permisos: permisos = permPL + permCom; totales = totalPL + totalCom.
+  assert.equal(raw.permisos, r.permPL + r.permCom);
+  assert.equal(raw.permisosTotales, totalPL + totalCom);
   // Proyectos / aprobados.
-  assert.equal(raw.proyectosPresentados, 0);
-  assert.equal(raw.proyectosAprobados, 0);
+  assert.equal(raw.proyectosPresentados, r.proyectos);
+  assert.equal(raw.proyectosAprobados, r.aprobados ?? 0);
   // Medios.
-  assert.equal(raw.medPos, 5);
-  assert.equal(raw.medNeg, 11);
-  assert.equal(raw.medNeu, 10);
+  assert.equal(raw.medPos, r.med!.pos);
+  assert.equal(raw.medNeg, r.med!.neg);
+  assert.equal(raw.medNeu, r.med!.neu);
   // Viajes: sin tripMonths publicados, VIA no se mapea.
   assert.equal(
     raw.viajesOficiales,

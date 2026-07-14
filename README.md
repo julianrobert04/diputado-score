@@ -90,10 +90,28 @@ En vez de bajar la seguridad con `rejectUnauthorized: false`, la ingesta usa un
 2020_ + raíz _GlobalSign Root CA - R3_), aplicada solo al host de la Asamblea. La
 verificación TLS queda **totalmente activa**.
 
-**Vencimiento de la hoja del servidor: 2026-07-28.** Si la Asamblea renueva el
-certificado y cambia la cadena, la ingesta empezará a fallar con
-`unable to verify the first certificate`. El arreglo es reemplazar el PEM con la
-nueva cadena (intermedio + raíz) que sirva el servidor renovado.
+**Vencimiento de la hoja del servidor: 2026-07-28.** El escenario de renovación
+ya está cubierto:
+
+1. Si renuevan con el mismo emisor de GlobalSign, la cadena fijada sigue
+   validando — no hay que hacer nada.
+2. Si cambian de CA y el servidor nuevo envía la cadena completa, la ingesta
+   cae automáticamente al almacén de confianza por defecto de Node (fallback
+   pinned → default, ambos con verificación activa).
+3. Si cambian de CA y vuelven a omitir el intermedio, la ingesta lo avisa en el
+   log y el arreglo es un comando:
+
+   ```bash
+   npm run cert:update   # regenera src/scripts/certs/globalsign-chain.pem
+   ```
+
+   El script lee la cadena del servidor, baja el intermedio vía AIA si falta,
+   toma la raíz del almacén local de Node (nunca de la red), verifica la cadena
+   candidata con un handshake real y recién entonces sobreescribe el PEM.
+   Después: commitear el PEM regenerado.
+
+Mientras tanto los datos existentes se preservan — un fallo TLS se trata como
+"mes no disponible", nunca como datos en cero.
 
 ## Riesgo residual del parser `xlsx`
 
