@@ -10,7 +10,7 @@ basados en asistencia, permisos, proyectos de ley y cobertura mediática —
 **todas las métricas usan datos reales**, sin simulación.
 
 **URL en producción:** pendiente de desplegar  
-**Stack:** Next.js 16 · Tailwind v4 · Prisma 7 · PostgreSQL (opcional)
+**Stack:** Next.js 16 · Tailwind v4
 
 ---
 
@@ -23,6 +23,7 @@ npm run dev          # → http://localhost:3000
 
 No necesita base de datos — los datos reales vienen versionados en `data/real-data.json`.
 Para regenerarlos:
+
 ```bash
 npm run ingest:opendata                        # asistencia + viajes + proyectos de ley
 ANTHROPIC_API_KEY=sk-... npm run ingest:opendata  # + clasificación de noticias (MED)
@@ -65,14 +66,14 @@ No se necesita base de datos; Prisma quedó opcional/inactivo.
 
 ### 7 métricas reales → suma ponderada → 1 score overall
 
-| Métrica | Peso | Qué mide |
-|---------|------|----------|
-| ASI | **30%** | Asistencia: promedio de sesiones del plenario y votaciones, **al día** (Delfino.cr) |
-| PRO | **30%** | Proyectos de ley presentados, primera firma (Delfino.cr) |
-| COM | 10% | Asistencia a comisiones (Asamblea Open Data, xlsx mensual) |
-| PER | 10% | Permisos vs promedio, menos = mejor (Asamblea Open Data) |
-| APR | 10% | Tasa de aprobación de sus proyectos, con umbral (Delfino.cr) |
-| MED | 10% | Cobertura mediática (Google News + Claude) |
+| Métrica | Peso    | Qué mide                                                                            |
+| ------- | ------- | ----------------------------------------------------------------------------------- |
+| ASI     | **30%** | Asistencia: promedio de sesiones del plenario y votaciones, **al día** (Delfino.cr) |
+| PRO     | **30%** | Proyectos de ley presentados, primera firma (Delfino.cr)                            |
+| COM     | 10%     | Asistencia a comisiones (Asamblea Open Data, xlsx mensual)                          |
+| PER     | 10%     | Permisos vs promedio, menos = mejor (Asamblea Open Data)                            |
+| APR     | 10%     | Tasa de aprobación de sus proyectos, con umbral (Delfino.cr)                        |
+| MED     | 10%     | Cobertura mediática (Google News + Claude)                                          |
 
 ASI promedia dos ratios de Delfino (`representativesMeetingAssistance` y
 `representativesVoteAssistance`, desde el inicio de la legislatura hasta hoy) —
@@ -106,7 +107,8 @@ con el mismo suavizado de confianza que PRO.
 en el promedio → 5.0, en cero → 10, al doble del promedio → 0.
 
 Scores van de 1.0 a 10.0. Color por score:
-- **gold** ≥ 9.0 · **green** ≥ 7.0 · **yellow** ≥ 5.5 · **orange** ≥ 4.0 · **red** < 4.0
+
+- **green** ≥ 7.0 · **yellow** ≥ 5.5 · **orange** ≥ 4.0 · **red** < 4.0 · **gray** = 0
 
 Ver `src/lib/scoreCalculator.ts` para las fórmulas exactas.
 
@@ -115,6 +117,7 @@ Ver `src/lib/scoreCalculator.ts` para las fórmulas exactas.
 ## Fotos de diputados
 
 Las fotos son públicas en el SharePoint de la Asamblea:
+
 ```
 https://www.asamblea.go.cr/Diputados/SiteAssets/2026-2030/{partido}_{ap1}_{ap2}.jpg
 ```
@@ -122,6 +125,7 @@ https://www.asamblea.go.cr/Diputados/SiteAssets/2026-2030/{partido}_{ap1}_{ap2}.
 **Prefijos confirmados:** `ps` (PPSO), `ln` (PLN), `fa` (FA), `cac` (CAC), `usc` (PUSC)
 
 **IMPORTANTE:** La Asamblea tiene typos en algunos nombres de archivo:
+
 - `cac_dobles_damargo.jpg` (no "camargo")
 - `fa_trejos_mazarieros.jpg` (no "mazariegos")
 - `ln_hidalgo_sols.jpg` (no "solís")
@@ -129,6 +133,7 @@ https://www.asamblea.go.cr/Diputados/SiteAssets/2026-2030/{partido}_{ap1}_{ap2}.
 El mapa exacto está en `PHOTO_OVERRIDES` dentro de `src/lib/mockData.ts`.
 
 5 diputados sin foto aún subida → muestran inicial como fallback:
+
 - José María Villalta Flórez-Estrada
 - Joselyn Sáenz Núñez
 - Yara Jiménez Fallas
@@ -144,14 +149,14 @@ El script de ingesta usa `https.Agent({ rejectUnauthorized: false })`.
 
 ### ✅ Lo que funciona hoy
 
-| Fuente | Qué trae | Estado |
-|--------|----------|--------|
-| `asamblea.go.cr/pa/datosabiertos` | **Asistencia real mensual (xlsx)** — PL + comisiones, 57 diputados desde 2026-05 | ✅ **Integrado** (`npm run ingest:opendata`) |
-| `asamblea.go.cr/pa/datosabiertos` GastosViajes | Viajes institucionales (xlsx mensual) | ✅ Parser listo — aún sin archivos de la legislatura nueva |
-| `api.delfino.cr/graphql` | **Proyectos de ley por diputado (PRO/APR)** — primera firma, por legislatura, con status | ✅ **Integrado** (mismo `ingest:opendata`) |
-| `asamblea.go.cr` SharePoint | Fotos de 52/57 diputados | ✅ Funcionando |
-| `cgrfiles.cgr.go.cr` | CSV aggregate de DJB (no por diputado) | ⚠ Aggregate only |
-| `cgr.go.cr/morosos` | Lista HTML de incumplidores DJB | ⚠ Necesita adaptar parser |
+| Fuente                                         | Qué trae                                                                                 | Estado                                                     |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| `asamblea.go.cr/pa/datosabiertos`              | **Asistencia real mensual (xlsx)** — PL + comisiones, 57 diputados desde 2026-05         | ✅ **Integrado** (`npm run ingest:opendata`)               |
+| `asamblea.go.cr/pa/datosabiertos` GastosViajes | Viajes institucionales (xlsx mensual)                                                    | ✅ Parser listo — aún sin archivos de la legislatura nueva |
+| `api.delfino.cr/graphql`                       | **Proyectos de ley por diputado (PRO/APR)** — primera firma, por legislatura, con status | ✅ **Integrado** (mismo `ingest:opendata`)                 |
+| `asamblea.go.cr` SharePoint                    | Fotos de 52/57 diputados                                                                 | ✅ Funcionando                                             |
+| `cgrfiles.cgr.go.cr`                           | CSV aggregate de DJB (no por diputado)                                                   | ⚠ Aggregate only                                           |
+| `cgr.go.cr/morosos`                            | Lista HTML de incumplidores DJB                                                          | ⚠ Necesita adaptar parser                                  |
 
 Los datos reales viven en `data/real-data.json` (versionado). `mockData.ts` los mezcla
 sobre las métricas simuladas vía `mergeRealData()` y expone `getRealMetrics(id)` +
@@ -167,11 +172,11 @@ Gerald Bogantes, Roberth Barrantes, Kattya Mora, Kattia Calvo, Joselyn Sáenz Bl
 
 ### ❌ Lo que NO funciona (y por qué)
 
-| Fuente | Problema |
-|--------|----------|
-| `sil.go.cr` / `sil.asamblea.go.cr` | No responde / página IIS por defecto |
-| `datosabiertos.asamblea.go.cr` | Responde 403/404 |
-| DJB por diputado (DEC) | Las declaraciones son confidenciales; CGR solo publica aggregate |
+| Fuente                             | Problema                                                         |
+| ---------------------------------- | ---------------------------------------------------------------- |
+| `sil.go.cr` / `sil.asamblea.go.cr` | No responde / página IIS por defecto                             |
+| `datosabiertos.asamblea.go.cr`     | Responde 403/404                                                 |
+| DJB por diputado (DEC)             | Las declaraciones son confidenciales; CGR solo publica aggregate |
 
 **Todas las 7 métricas son reales: ASI, COM, PER, PRO, APR, MED** (+ VIA que se
 activa solo cuando la Asamblea suba xlsx de viajes de la legislatura 2026-2030).
@@ -212,12 +217,14 @@ MOC, VOT, COH, DEC y GAS se eliminaron por falta de fuente pública machine-read
 ## Próximos pasos sugeridos
 
 ### Prioritarios
+
 1. **Búsqueda funcional** — el `SearchBar` existe pero falta filtrar el array en `page.tsx`
 2. **Despliegue** — Vercel + Neon (PostgreSQL serverless gratis), variables:
    - `DATABASE_URL` → Neon connection string
 3. **Datos reales de asistencia** — cuando la Asamblea publique CSVs 2026
 
 ### Deseables
+
 4. **Partido como filtro** — además de provincia ya hay soporte, falta UI
 5. **Comparar diputados** — selector múltiple + radar chart
 6. **SEO** — `generateMetadata` por diputado para compartir en redes

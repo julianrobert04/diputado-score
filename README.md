@@ -1,117 +1,133 @@
 # DiputadoScore 🏛️
 
-Transparencia política costarricense al estilo SofaScore.
+Transparencia política costarricense al estilo SofaScore. Muestra a los 57
+diputados de la Asamblea Legislativa 2026–2030 con un score del 1 al 10,
+calculado **solo con datos reales** (asistencia, permisos, proyectos de ley y
+cobertura mediática), sin simulación.
 
-## Setup rápido
+Es un **sitio estático de Next.js 16** alimentado por una ingesta semanal que
+corre en GitHub Actions y versiona el resultado en `data/real-data.json`.
+**No hay base de datos:** las páginas leen ese JSON en tiempo de build.
 
-### 1. Instalar dependencias
+## Setup
+
 ```bash
 npm install
+npm run dev          # → http://localhost:3000
 ```
 
-### 2. Configurar base de datos
+No hace falta configurar nada más: los datos reales ya vienen versionados en
+`data/real-data.json`.
+
+## El modelo de score
+
+7 métricas reales se combinan en una suma ponderada (`METRIC_WEIGHTS` en
+`src/lib/scoreCalculator.ts` es la fuente de verdad):
+
+| Métrica | Peso    | Qué mide                                                           | Fuente                                     |
+| ------- | ------- | ------------------------------------------------------------------ | ------------------------------------------ |
+| ASI     | **30%** | Asistencia: promedio de sesiones del plenario y votaciones, al día | Delfino.cr (respaldo: xlsx de la Asamblea) |
+| PRO     | **30%** | Proyectos de ley presentados (primera firma)                       | Delfino.cr                                 |
+| COM     | 10%     | Asistencia a comisiones                                            | Asamblea Open Data (xlsx mensual)          |
+| PER     | 10%     | Permisos vs promedio (menos = mejor)                               | Asamblea Open Data                         |
+| APR     | 10%     | Tasa de aprobación de sus proyectos, con umbral                    | Delfino.cr                                 |
+| MED     | 10%     | Cobertura mediática (positivas − negativas)                        | Google News + Claude                       |
+
+**VIA (viajes oficiales)** se activa solo cuando la Asamblea publique los xlsx de
+viajes de esta legislatura: entra con 15% y el resto de las métricas se escala
+×0.85 (`includeVIA` en `calcOverall`). Hoy no hay archivos, así que VIA está
+inactivo.
+
+**MED** acumula desde el inicio de la legislatura: cada corrida clasifica solo
+los titulares nuevos (dedupe por hash sha1) y los suma. La clasificación usa
+Claude (requiere el secret `ANTHROPIC_API_KEY`). **Una corrida sin la API key
+preserva el acumulado previo de MED — nunca lo resetea.**
+
+## Scripts
+
 ```bash
-cp .env.local .env.local
-# Editar DATABASE_URL con tu PostgreSQL
+npm run dev              # servidor de desarrollo
+npm run build            # build de producción
+npm run lint             # ESLint
+npm run ingest:opendata  # regenera data/real-data.json
 ```
 
-**Opciones para PostgreSQL:**
-- **Railway** (recomendado para deploy): https://railway.app → New Project → PostgreSQL
-- **Local**: `createdb diputadoscore`
-- **Render**: https://render.com → New → PostgreSQL
+> `test` y `typecheck` se agregan en este mismo PR (suite con `node:test` + `tsx`
+> y `tsc --noEmit`), junto con el gate de CI que corre lint/typecheck/test/build.
 
-### 3. Crear tablas
+Para regenerar los datos, incluyendo la clasificación mediática:
+
 ```bash
-npm run db:push
+ANTHROPIC_API_KEY=sk-... npm run ingest:opendata
 ```
 
-### 4. Cargar datos iniciales
-```bash
-npm run ingest
-```
+## Flujo de actualización de datos
 
-### 5. Correr en desarrollo
-```bash
-npm run dev
-```
-Abrí http://localhost:3000
+`.github/workflows/update-data.yml` corre **cada lunes**:
 
----
+1. **Ingesta** (`ingest:opendata`) con **freno de regresión**: el script se
+   siembra con el roster completo de 57 diputados, mezcla las métricas nuevas de
+   forma aditiva y **se niega a escribir** (sale con código 1) si el resultado
+   regresa — menos diputados con datos que el mínimo esperado, o asistencia
+   acumulada que baja respecto al archivo previo. La escritura es atómica
+   (archivo temporal en `data/` + rename).
+2. **Validación** independiente del archivo generado (conteo mínimo de diputados,
+   ids contra el roster, tipos de los campos). Si falla, el job queda en rojo y
+   **no commitea**.
+3. **Commit** solo si la validación pasa y el diff es real (se enmascara
+   `updatedAt` antes de comparar, porque cambia en cada corrida).
+4. **Redeploy** del sitio en el hosting a partir del commit.
 
-## Estructura del proyecto
+## TLS: `src/scripts/certs/globalsign-chain.pem`
+
+El servidor de la Asamblea (`www.asamblea.go.cr`) sirve solo su certificado hoja
+y **omite el intermedio** en el handshake TLS. Node no hace AIA chasing, así que
+la verificación falla con `unable to verify the first certificate`.
+
+En vez de bajar la seguridad con `rejectUnauthorized: false`, la ingesta usa un
+`https.Agent` con la cadena de GlobalSign versionada en
+`src/scripts/certs/globalsign-chain.pem` (intermedio _GlobalSign GCC R3 DV TLS CA
+2020_ + raíz _GlobalSign Root CA - R3_), aplicada solo al host de la Asamblea. La
+verificación TLS queda **totalmente activa**.
+
+**Vencimiento de la hoja del servidor: 2026-07-28.** Si la Asamblea renueva el
+certificado y cambia la cadena, la ingesta empezará a fallar con
+`unable to verify the first certificate`. El arreglo es reemplazar el PEM con la
+nueva cadena (intermedio + raíz) que sirva el servidor renovado.
+
+## Riesgo residual del parser `xlsx`
+
+`xlsx@0.18.5` (fijado exacto) tiene CVEs sin parche en npm (contaminación de
+prototipos, ReDoS); las versiones corregidas solo se publican en el registro
+propio de SheetJS. La mitigación en este PR es por **capas**, y hay que ser
+honesto sobre lo que hace cada una:
+
+- **TLS verificado** cierra la vía de entrega por MITM.
+- **Verificación de bytes mágicos** (`50 4B 03 04`) + rechazo de content-types
+  HTML antes de `XLSX.read`: **detiene páginas de error HTML** que de otro modo se
+  parsearían como datos basura. **NO detiene un workbook malicioso**, que es en sí
+  un ZIP válido.
+
+Tras el arreglo de TLS, el **riesgo residual** es una fuente comprometida (la
+propia Asamblea) sirviendo un workbook hostil a un job de CI que tiene
+`ANTHROPIC_API_KEY` y un token de escritura. El **reemplazo del parser** por uno
+mantenido queda como **trabajo futuro**.
+
+## Arquitectura
 
 ```
 src/
-├── app/
-│   ├── page.tsx                  # Página principal — grid de tarjetas
-│   ├── rankings/page.tsx         # Rankings de mejor a peor
-│   ├── diputados/[id]/page.tsx   # Perfil completo del diputado
-│   └── api/
-│       ├── diputados/route.ts    # GET /api/diputados
-│       ├── diputados/[id]/route.ts  # GET /api/diputados/:id
-│       └── rankings/route.ts     # GET /api/rankings
-├── components/
-│   ├── PoliticianCard.tsx        # Tarjeta estilo SofaScore
-│   ├── ScoreBadge.tsx            # Badge de score con colores
-│   ├── SearchBar.tsx             # Búsqueda por nombre
-│   └── FilterBar.tsx             # Filtros de provincia y orden
+├── app/                          ← páginas (home, rankings, métricas, perfil)
+├── components/                   ← cards, sparkline, radar, avatares
 ├── lib/
-│   ├── prisma.ts                 # Cliente de Prisma
-│   └── scoreCalculator.ts        # Cálculo de las 11 métricas
-├── types/index.ts                # Tipos TypeScript + metadata de métricas
-└── scripts/
-    └── ingest.ts                 # Ingesta desde Asamblea Open Data CSV
+│   ├── mockData.ts               ← 57 diputados + merge de data/real-data.json
+│   └── scoreCalculator.ts        ← fórmulas de scoring (METRIC_WEIGHTS)
+├── scripts/
+│   ├── ingest-opendata.ts        ← ingesta semanal (entry point)
+│   ├── ingest-lib.ts             ← funciones puras de matching/parsing (testeable)
+│   └── certs/globalsign-chain.pem ← cadena TLS de la Asamblea
+└── types/index.ts                ← tipos + metadata de métricas
 ```
 
-## Las 11 métricas
-
-| Código | Nombre | Fuente |
-|--------|--------|--------|
-| ASI | Asistencia plenario | Asamblea Open Data |
-| VOT | Participación votaciones | Asamblea Open Data |
-| PRO | Proyectos presentados | Asamblea Open Data |
-| APR | Proyectos aprobados | Asamblea Open Data |
-| MOC | Mociones | Asamblea Open Data |
-| COM | Asistencia comisiones | Asamblea Open Data |
-| DEC | Declaración de bienes | CGR |
-| GAS | Gasto representación | Asamblea Open Data |
-| VIA | Viajes oficiales | Asamblea Open Data |
-| ASE | Asesores parlamentarios | Asamblea Open Data |
-| COH | Coherencia de voto | Delfino.cr |
-
-## Pesos por dimensión
-
-- **Presencia** (ASI + COM): 15%
-- **Productividad** (PRO + APR + MOC): 25%
-- **Transparencia** (DEC): 20%
-- **Gasto** (GAS + VIA + ASE): 15%
-- **Consistencia** (VOT + COH): 15%
-- **Ciudadanía**: 10% (Fase 2)
-
-## Cargar CSVs reales de la Asamblea
-
-1. Descargá los CSVs desde https://www.asamblea.go.cr/opendata
-2. Colocálos en `/data/`:
-   - `asistencia.csv`
-   - `votaciones.csv`
-   - `proyectos.csv`
-   - `viajes.csv`
-   - `asesores.csv`
-3. Implementá el parser en `src/scripts/ingest.ts` (hay un TODO marcado)
-4. Corré `npm run ingest`
-
-## Deploy
-
-### Vercel + Railway
-
-1. Push a GitHub
-2. Conectar repo en Vercel
-3. Crear DB en Railway → copiar `DATABASE_URL` → agregar en Vercel Environment Variables
-4. `vercel deploy`
-
-## Fases
-
-- **Fase 1** ✅ MVP: Diputados 2026–2030, tarjetas, rankings, búsqueda
-- **Fase 2** 🔜: Histórico 2022–2026 (Delfino.cr + Asamblea)
-- **Fase 3** 🔜: Alcaldes (CGR + Munis.cr)
-- **Fase 4** 🔜: Poder Ejecutivo
+Las páginas leen `data/real-data.json` (versionado en git) a través de
+`mockData.ts`. La UI marca qué métricas son reales vs estimadas.
