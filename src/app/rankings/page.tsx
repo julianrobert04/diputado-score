@@ -167,7 +167,7 @@ export default async function RankingsPage() {
           <h1 className="text-3xl font-black tracking-tight mb-2">
             Rankings <span className="text-emerald-400">2026–2030</span>
           </h1>
-          <p className="text-zinc-500 text-sm">La tabla de posiciones de la Asamblea — de mejor a peor score</p>
+          <p className="text-zinc-500 text-sm">Diputados ordenados de mejor a peor score general</p>
         </div>
 
         {/* Podio top 3 */}

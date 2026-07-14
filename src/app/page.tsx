@@ -210,13 +210,13 @@ export default async function Home({ searchParams }: HomeProps) {
         {/* Stats strip */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
           <div className={STAT_TILE}>
-            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Rating promedio</p>
+            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Score promedio</p>
             <p className={`text-xl font-black ${SCORE_TEXT[getScoreColor(avgScore)]}`}>
               {avgScore.toFixed(1)}
             </p>
           </div>
           <div className={STAT_TILE}>
-            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">MVP de la jornada</p>
+            <p className="text-zinc-600 text-[0.65rem] font-semibold uppercase tracking-widest mb-1">Mejor diputado</p>
             {best ? (
               <>
                 <p className="text-white text-sm font-bold leading-tight truncate">{shortName(best.card.fullName)}</p>
