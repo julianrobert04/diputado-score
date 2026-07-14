@@ -30,9 +30,11 @@ import {
   matchDeputyResult,
   normalize,
   parseAttendance,
+  preserveOnPartialOutage,
   searchName,
   seedTotals,
   shouldRollover,
+  MIN_DIPUTADOS,
 } from "./ingest-lib";
 
 // ─── TLS verificado para asamblea.go.cr ──────────────────────────────────────
@@ -142,32 +144,54 @@ async function fetchAttendanceMonth(key: string): Promise<Buffer | null> {
   return null;
 }
 
-async function fetchTrips(key: string): Promise<Map<string, number> | null> {
+/** Resultado del fetch de viajes de un mes:
+ *  • `no-disponible`: el archivo no existe / no descargó (404 normal — la
+ *    Asamblea aún no publica viajes de esta legislatura). NO degrada la corrida.
+ *  • `corrupto`: el archivo se sirvió pero no es un workbook parseable. Igual que
+ *    la asistencia (MonthUnavailableError), se omite el mes y se DEGRADA la
+ *    corrida (allSourcesHealthy=false), nunca se aborta.
+ *  • `ok`: mapa nombre→cantidad de viajes del mes. */
+type TripsResult =
+  | { status: "ok"; trips: Map<string, number> }
+  | { status: "no-disponible" }
+  | { status: "corrupto"; message: string };
+
+async function fetchTrips(key: string): Promise<TripsResult> {
   const buf = await fetchBuffer(
     `${BASE}/GastosViajes/${key}-Viajes_Institucionales.xlsx`,
   );
-  if (!buf) return null;
-  const XLSX = await import("xlsx");
-  const wb = XLSX.read(buf, { type: "buffer" });
-  const ws = wb.Sheets[wb.SheetNames[0]];
-  const rows = XLSX.utils.sheet_to_json<(string | number | null)[]>(ws, {
-    header: 1,
-  });
-  const header = (rows[0] ?? []).map((h) =>
-    String(h ?? "")
-      .trim()
-      .toLowerCase(),
-  );
-  const nameIdx = header.findIndex((h) => h.startsWith("nombre"));
-  const condIdx = header.findIndex((h) => h.startsWith("condici"));
-  const out = new Map<string, number>();
-  for (const row of rows.slice(1)) {
-    const name = String(row[nameIdx] ?? "").trim();
-    const cond = String(row[condIdx] ?? "").toLowerCase();
-    if (!name || !cond.includes("diputad")) continue;
-    out.set(name, (out.get(name) ?? 0) + 1);
+  if (!buf) return { status: "no-disponible" };
+  // Guarda del parseo (igual patrón que parseAttendance): un ZIP servido pero
+  // corrupto / que no es un workbook hacía throw sin capturar y abortaba TODA la
+  // corrida. Lo tratamos como mes de viajes no disponible + corrida degradada.
+  try {
+    const XLSX = await import("xlsx");
+    const wb = XLSX.read(buf, { type: "buffer" });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json<(string | number | null)[]>(ws, {
+      header: 1,
+    });
+    const header = (rows[0] ?? []).map((h) =>
+      String(h ?? "")
+        .trim()
+        .toLowerCase(),
+    );
+    const nameIdx = header.findIndex((h) => h.startsWith("nombre"));
+    const condIdx = header.findIndex((h) => h.startsWith("condici"));
+    const out = new Map<string, number>();
+    for (const row of rows.slice(1)) {
+      const name = String(row[nameIdx] ?? "").trim();
+      const cond = String(row[condIdx] ?? "").toLowerCase();
+      if (!name || !cond.includes("diputad")) continue;
+      out.set(name, (out.get(name) ?? 0) + 1);
+    }
+    return { status: "ok", trips: out };
+  } catch (e) {
+    return {
+      status: "corrupto",
+      message: e instanceof Error ? e.message : String(e),
+    };
   }
-  return out;
 }
 
 // ─── Proyectos de ley (API GraphQL de Delfino.cr) ────────────────────────────
@@ -222,10 +246,15 @@ export interface ProjectData {
   aprobados: number;
 }
 
-/** Proyectos por primera firma de cada diputado, legislatura actual */
-async function fetchProjects(
-  deputies: Deputy[],
-): Promise<{ byId: Map<string, ProjectData>; term: string } | null> {
+/** Proyectos por primera firma de cada diputado, legislatura actual.
+ *  `healthy` es false si el fetch de proyectos de ALGÚN rep falló de forma
+ *  transitoria: esos reps quedan FUERA de `byId` (no se escribe 0 sobre datos
+ *  buenos) para que el backfill `?? existing` restaure su conteo previo. */
+async function fetchProjects(deputies: Deputy[]): Promise<{
+  byId: Map<string, ProjectData>;
+  term: string;
+  healthy: boolean;
+} | null> {
   const termData = await gql<{ currentTerm: { id: number; name: string } }>(
     "{ currentTerm { id name } }",
   );
@@ -238,6 +267,7 @@ async function fetchProjects(
   if (!repsData?.representatives?.length) return null;
 
   const byId = new Map<string, ProjectData>();
+  let healthy = true;
   for (const rep of repsData.representatives) {
     const match = matchDeputyResult(rep.name, deputies);
     if (match.id === null) {
@@ -248,14 +278,24 @@ async function fetchProjects(
       "query($r: Int, $t: Int) { projects(representativeId: $r, termId: $t, limit: 500) { status } }",
       { r: rep.id, t: termId },
     );
-    const projects = projData?.projects ?? [];
+    if (projData === null) {
+      // Fallo transitorio del fetch para este rep: NO escribir proyectos:0 sobre
+      // datos buenos. Se deja fuera de byId (queda como null) para que el
+      // backfill `?? existing` restaure el conteo previo, y se degrada la corrida.
+      console.log(
+        `   proyectos: fetch falló para "${rep.name}" — se preserva el conteo previo`,
+      );
+      healthy = false;
+      continue;
+    }
+    const projects = projData.projects ?? [];
     byId.set(match.id, {
       proyectos: projects.length,
       aprobados: projects.filter((p) => isApproved(p.status)).length,
     });
     await new Promise((r) => setTimeout(r, 150));
   }
-  return { byId, term: termName };
+  return { byId, term: termName, healthy };
 }
 
 export interface AssistanceData {
@@ -518,11 +558,22 @@ async function main() {
   }
 
   for (const { key } of months) {
-    const trips = await fetchTrips(key);
-    if (!trips) {
+    const tripsRes = await fetchTrips(key);
+    if (tripsRes.status === "corrupto") {
+      // Archivo servido pero inválido: se omite el mes de viajes y se degrada la
+      // corrida (nunca abortar). A diferencia del 404 normal, un archivo corrupto
+      // SÍ es una anomalía de fuente.
+      console.log(
+        `   viajes     ${key}: archivo inválido — ${tripsRes.message} — se omite el mes`,
+      );
+      allSourcesHealthy = false;
+      continue;
+    }
+    if (tripsRes.status === "no-disponible") {
       console.log(`   viajes     ${key}: no disponible aún`);
       continue;
     }
+    const trips = tripsRes.trips;
     tripMonths.push(key);
     console.log(`   viajes     ${key}: ✓ ${trips.size} diputados con viajes`);
     for (const [xlsxName, count] of trips) {
@@ -551,6 +602,9 @@ async function main() {
   let newTerm: string | null = null;
   const projRes = await fetchProjects(deputies);
   if (projRes) {
+    // Si algún rep falló su fetch de proyectos, la corrida queda degradada (sus
+    // conteos se preservan vía el backfill de abajo, nunca se pisan con 0).
+    if (!projRes.healthy) allSourcesHealthy = false;
     projectsTerm = projRes.term;
     newTerm = projRes.term;
     for (const [id, data] of projRes.byId) {
@@ -685,9 +739,21 @@ async function main() {
     }
   }
 
-  if (unmatched.length) {
-    console.log(`\n⚠ Nombres sin match / backfill (${unmatched.length}):`);
-    unmatched.forEach((n) => console.log(`   • ${n}`));
+  // Preservación por outage parcial de fuentes (raíz del bug del freno atascado):
+  // la asistencia se re-acumula desde cero cada corrida, así que un mes histórico
+  // faltante deja a cada diputado por debajo del acumulado previo y frenaría TODAS
+  // las semanas. Si la corrida está degradada (allSourcesHealthy=false),
+  // preservamos la asistencia de esos diputados desde `existing` (último-bueno) en
+  // vez de frenar. Con todo sano, un descenso SÍ llega al freno.
+  const preserved = preserveOnPartialOutage(
+    totals,
+    existing,
+    allSourcesHealthy,
+  );
+  if (preserved.length) {
+    console.log(
+      `\n♻ Outage parcial de fuentes — asistencia preservada desde existing para ${preserved.length} diputado(s): ${preserved.join(", ")}`,
+    );
   }
 
   const avg = (nums: number[]) =>
@@ -743,7 +809,19 @@ async function main() {
   } else {
     // Freno de regresión: el script se niega a escribir datos peores que los que
     // ya conocía. Sale con código 1 y deja data/real-data.json intacto.
-    const brake = checkRegression(totals, existing);
+    //
+    // Escape hatch del operador: si la Asamblea publica una corrección legítima a
+    // la baja (todas las fuentes sanas), el freno se dispara y RE-dispara cada
+    // corrida, congelando el dato viejo. Correr con INGEST_FORCE=1 omite SOLO el
+    // chequeo de descenso para esa corrida y acepta la corrección; el piso de
+    // datos (MIN_DIPUTADOS) se sigue aplicando (un borrado total nunca es forzable).
+    const forceIngest = process.env.INGEST_FORCE === "1";
+    if (forceIngest) {
+      console.log(
+        "\n⚠ INGEST_FORCE activo: se omite el freno de regresión (descenso) para esta corrida",
+      );
+    }
+    const brake = checkRegression(totals, existing, MIN_DIPUTADOS, forceIngest);
     if (!brake.ok) {
       console.error(
         `\n⛔ Freno de regresión ACTIVADO — no se escribe data/real-data.json`,
@@ -753,6 +831,9 @@ async function main() {
         `   Diputados con datos de asistencia: ${brake.dataBearing}`,
       );
       console.error(`   El archivo existente queda intacto.`);
+      console.error(
+        `   Si es una corrección legítima a la baja (no un borrado), re-correr con INGEST_FORCE=1 para aceptarla.`,
+      );
       process.exit(1);
     }
     console.log(

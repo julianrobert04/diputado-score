@@ -365,9 +365,15 @@ export function isDataBearing(
  *
  * La asistencia está sembrada en cero, y `0 ?? x === 0`, así que el patrón de
  * null-backfill NUNCA puede restaurarla. Guarda especial: si un diputado del
- * roster tiene CERO asistencia fetcheada esta corrida (asisPL+ausPL === 0) pero
- * `existing` tiene asistencia acumulada no-cero, restauramos su asistencia
- * desde `existing` y lo reportamos como no-matcheado por asistencia.
+ * roster tiene CERO asistencia de PLENARIO fetcheada esta corrida
+ * (asisPL+ausPL === 0) pero `existing` tiene asistencia acumulada no-cero,
+ * restauramos su asistencia desde `existing` y lo reportamos como no-matcheado
+ * por asistencia.
+ *
+ * Restaura SOLO los campos que quedaron en cero esta corrida, no los seis: si el
+ * plenario no matcheó pero SÍ se fetchearon comisiones (asisCom/permCom > 0),
+ * esos datos frescos se conservan y únicamente se rellenan los campos vacíos
+ * desde `existing`.
  *
  * También restaura `nombreXlsx` desde `existing` cuando quedó vacío (el nombre
  * xlsx alimenta la búsqueda de noticias/MED).
@@ -393,13 +399,63 @@ export function backfillAttendance(
     const fetchedNonZero = (entry.asisPL || 0) + (entry.ausPL || 0) > 0;
     const existingNonZero = (ex.asisPL || 0) + (ex.ausPL || 0) > 0;
     if (!fetchedNonZero && existingNonZero) {
+      // Restaurar solo los campos en cero esta corrida: preserva comisiones u
+      // otros campos frescos que sí se hayan fetcheado (no los pisa con existing).
       for (const k of ATT_FIELDS) {
-        entry[k] = Number(ex[k]) || 0;
+        if ((Number(entry[k]) || 0) === 0) {
+          entry[k] = Number(ex[k]) || 0;
+        }
       }
       backfilled.push(id);
     }
   }
   return backfilled;
+}
+
+/**
+ * Preservación por outage parcial de fuentes (raíz del bug del freno atascado).
+ *
+ * La asistencia se re-acumula desde cero TODOS los meses en cada corrida. Si UN
+ * mes histórico no está disponible esta corrida (evento rutinario), el total
+ * re-sumado de cada diputado queda no-cero pero POR DEBAJO del acumulado previo
+ * → el freno de regresión se dispararía y saldría con código 1 TODAS las semanas
+ * para siempre. El backfill solo rescata el caso "todo en cero", no el descenso
+ * parcial.
+ *
+ * Principio: un descenso solo es una anomalía que amerita frenar cuando TODAS
+ * las fuentes respondieron sanas esta corrida. Cuando `allSourcesHealthy` es
+ * FALSE (hueco conocido de fuente), para cada diputado cuya asistencia recién
+ * acumulada quedó por debajo de `existing`, restauramos su asistencia desde
+ * `existing` (conserva el último-bueno) en vez de disparar el freno. La corrida
+ * procede y commitea datos preservados en lugar de atascarse.
+ *
+ * Cuando `allSourcesHealthy` es TRUE no hace nada: un descenso con todo sano SÍ
+ * es una anomalía real y debe llegar al freno.
+ *
+ * Muta `totals` y devuelve la lista de ids con asistencia preservada.
+ */
+export function preserveOnPartialOutage(
+  totals: Map<string, DeputyTotals>,
+  existing:
+    | { deputies?: Record<string, Partial<DeputyTotals>> }
+    | null
+    | undefined,
+  allSourcesHealthy: boolean,
+): string[] {
+  const preserved: string[] = [];
+  if (allSourcesHealthy) return preserved;
+  const exDeputies = existing?.deputies ?? {};
+  for (const [id, entry] of totals) {
+    const ex = exDeputies[id];
+    if (!ex) continue;
+    if (attendanceSum(entry) < attendanceSum(ex)) {
+      for (const k of ATT_FIELDS) {
+        entry[k] = Number(ex[k]) || 0;
+      }
+      preserved.push(id);
+    }
+  }
+  return preserved;
 }
 
 /** Resultado del freno de regresión. */
@@ -419,6 +475,17 @@ export interface RegressionResult {
  *      (una columna renombrada da un ZIP válido lleno de ceros con la lista de
  *      meses intacta).
  *
+ * El descenso parcial por hueco de fuente ya se resolvió antes vía
+ * `preserveOnPartialOutage`; lo que llegue aquí como descenso con todo sano ES
+ * una anomalía real.
+ *
+ * Escape hatch para el operador (`force`): cuando el flag está activo (env
+ * INGEST_FORCE=1 en el llamador) se omite ÚNICAMENTE el chequeo de descenso
+ * (b) para esa corrida — así un mantenedor puede aceptar una corrección
+ * legítima a la baja de la Asamblea (p.ej. Asis PL 20→18) que si no congelaría
+ * el dato viejo para siempre. El piso de datos (a, MIN_DIPUTADOS) se sigue
+ * aplicando SIEMPRE: un borrado total nunca es forzable.
+ *
  * Es puro: recibe (totals, existing) y no hace I/O.
  */
 export function checkRegression(
@@ -428,6 +495,7 @@ export function checkRegression(
     | null
     | undefined,
   minDiputados: number = MIN_DIPUTADOS,
+  force: boolean = false,
 ): RegressionResult {
   let dataBearing = 0;
   for (const entry of totals.values()) {
@@ -450,7 +518,7 @@ export function checkRegression(
       decreased,
     };
   }
-  if (decreased.length) {
+  if (decreased.length && !force) {
     return {
       ok: false,
       reason: `asistencia acumulada disminuyó para ${decreased.length} diputado(s): ${decreased.join(", ")}`,

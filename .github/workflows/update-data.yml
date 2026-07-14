@@ -41,15 +41,20 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Diff normalizado: enmascarar updatedAt a una constante en AMBAS copias
-          # (la versión en HEAD y la recién generada) para que un cambio de
-          # timestamp por sí solo NO cuente como cambio real. git diff no puede
-          # excluir un campo, así que comparamos copias enmascaradas.
-          MASK='s/"updatedAt": *"[^"]*"/"updatedAt":"__MASKED__"/'
+          # Diff normalizado: enmascarar TODO campo de timestamp ("...UpdatedAt")
+          # a una constante en AMBAS copias (la versión en HEAD y la recién
+          # generada) para que un cambio de timestamp por sí solo NO cuente como
+          # cambio real. git diff no puede excluir un campo, así que comparamos
+          # copias enmascaradas. El regex captura cualquier "...UpdatedAt" (p.ej.
+          # `updatedAt` Y `medUpdatedAt`, este último se reescribe con new Date()
+          # en toda corrida con ANTHROPIC_API_KEY): si solo se mascara `updatedAt`,
+          # `medUpdatedAt` deja el diff siempre distinto y el corto-circuito nunca
+          # dispara en producción.
+          MASK='s/"\([A-Za-z]*[Uu]pdatedAt\)": *"[^"]*"/"\1":"__MASKED__"/g'
           git show HEAD:data/real-data.json | sed "$MASK" > /tmp/old-data.json
           sed "$MASK" data/real-data.json > /tmp/new-data.json
           if diff -q /tmp/old-data.json /tmp/new-data.json >/dev/null; then
-            echo "Sin datos nuevos esta semana (solo cambió updatedAt)"
+            echo "Sin datos nuevos esta semana (solo cambiaron los timestamps updatedAt/medUpdatedAt)"
             exit 0
           fi
           git add data/real-data.json

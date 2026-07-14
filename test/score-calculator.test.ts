@@ -91,6 +91,32 @@ test("fórmula MED: clamp(5.5 + 4.5·(pos−neg)/max(total,5), 1, 10)", () => {
   assert.equal(med(0, 0, 0), 5.5);
 });
 
+test("inverseRelativeScore (rama avg>0) vía VIA: clamp(10 − (value/avg)·5)", () => {
+  const via = (viajesOficiales: number, avgViajes: number): number =>
+    calcMetrics({ viajesOficiales }, { ...ZERO_AVGS, avgViajes }).VIA;
+  // avg 2 (>0): en cero → 10, a la mitad → 7.5, en el promedio → 5, al doble → 0.
+  assert.equal(via(0, 2), 10); // 10 − 0·5
+  assert.equal(via(1, 2), 7.5); // 10 − 0.5·5
+  assert.equal(via(2, 2), 5); // 10 − 1·5
+  assert.equal(via(4, 2), 0); // 10 − 2·5 = 0 (recortado en el piso)
+});
+
+test("inverseRelativeScore (rama avg>0) vía PER: permRatio relativo al promedio", () => {
+  const per = (
+    permisos: number,
+    permisosTotales: number,
+    avgPermRatio: number,
+  ): number =>
+    calcMetrics({ permisos, permisosTotales }, { ...ZERO_AVGS, avgPermRatio })
+      .PER;
+  // permRatio 0.05 vs avg 0.1 → ratio 0.5 → 10 − 2.5 = 7.5
+  assert.equal(per(1, 20, 0.1), 7.5);
+  // permRatio 0.1 vs avg 0.1 → ratio 1 → 5
+  assert.equal(per(1, 10, 0.1), 5);
+  // permRatio 0.2 vs avg 0.1 → ratio 2 → 0 (recortado)
+  assert.equal(per(2, 10, 0.1), 0);
+});
+
 test("calcOverall: los pesos suman 1.0 (métrica uniforme v → overall v)", () => {
   // Si los pesos no sumaran 1, el overall base no igualaría el valor uniforme.
   assert.equal(calcOverall(uniform(6)), 6.0);

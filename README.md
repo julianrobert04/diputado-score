@@ -125,6 +125,7 @@ src/
 ├── scripts/
 │   ├── ingest-opendata.ts        ← ingesta semanal (entry point)
 │   ├── ingest-lib.ts             ← funciones puras de matching/parsing (testeable)
+│   ├── validate-data.ts          ← valida el JSON antes del commit (compuerta del workflow)
 │   └── certs/globalsign-chain.pem ← cadena TLS de la Asamblea
 └── types/index.ts                ← tipos + metadata de métricas
 ```

@@ -49,16 +49,18 @@ src/
 │   └── FilterBar.tsx / SearchBar.tsx
 ├── lib/
 │   ├── mockData.ts               ← 57 diputados reales con fotos + datos de data/real-data.json
-│   ├── scoreCalculator.ts        ← Fórmulas de scoring (7 métricas → 3 dimensiones)
-│   └── prisma.ts                 ← Cliente Prisma con adapter-pg (no usado por las páginas)
+│   └── scoreCalculator.ts        ← Fórmulas de scoring (7 métricas → 3 dimensiones)
 ├── scripts/
-│   └── ingest-opendata.ts        ← Ingesta semanal (Asamblea Open Data + Google News + Claude)
+│   ├── ingest-opendata.ts        ← Ingesta semanal (Asamblea Open Data + Google News + Claude)
+│   ├── ingest-lib.ts             ← Funciones puras de la ingesta (matching, parseo, frenos) — testeable
+│   ├── validate-data.ts          ← Validador del JSON antes del commit (compuerta del workflow)
+│   └── certs/                    ← Cadena GlobalSign para verificar TLS de asamblea.go.cr
 └── types/index.ts                ← Tipos TypeScript + LegislativeBill
 ```
 
 **Patrón de datos:** Las páginas leen directamente de `src/lib/mockData.ts`, que a su vez
 importa `data/real-data.json` (versionado en git, regenerado semanalmente por GitHub Actions).
-No se necesita base de datos; Prisma quedó opcional/inactivo.
+No hay base de datos: el sitio es completamente estático y se alimenta del JSON versionado.
 
 ---
 
@@ -219,8 +221,8 @@ MOC, VOT, COH, DEC y GAS se eliminaron por falta de fuente pública machine-read
 ### Prioritarios
 
 1. **Búsqueda funcional** — el `SearchBar` existe pero falta filtrar el array en `page.tsx`
-2. **Despliegue** — Vercel + Neon (PostgreSQL serverless gratis), variables:
-   - `DATABASE_URL` → Neon connection string
+2. **Despliegue** — Vercel (sitio estático, sin base de datos). El redeploy debe dispararse
+   con el commit semanal de datos para que las actualizaciones lleguen a los usuarios.
 3. **Datos reales de asistencia** — cuando la Asamblea publique CSVs 2026
 
 ### Deseables
@@ -235,10 +237,11 @@ MOC, VOT, COH, DEC y GAS se eliminaron por falta de fuente pública machine-read
 ## Variables de entorno
 
 ```env
-DATABASE_URL=postgresql://user:pass@host:5432/diputadoscore
+ANTHROPIC_API_KEY=sk-ant-...   # solo la ingesta la usa para clasificar titulares (métrica MED)
 ```
 
-Sin `DATABASE_URL` el sitio funciona igual con mock data.
+No hay base de datos ni `DATABASE_URL`. Sin `ANTHROPIC_API_KEY` la ingesta corre igual y
+**preserva** los conteos MED previos (nunca los reinicia); el sitio funciona sin la clave.
 
 ---
 
