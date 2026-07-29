@@ -1,0 +1,15 @@
+{
+  "_comment": "Licencias legislativas verificadas con fuente pública. Un diputado en licencia NO recibe score: su ausencia está justificada y calificarla sería injusto. Se muestra 'En licencia' y queda fuera del ranking y de los promedios. 'hasta' puede ser null si la fuente no precisa la fecha de retorno; en ese caso la licencia sigue vigente hasta que se actualice este archivo.",
+  "licencias": [
+    {
+      "deputyId": "dep-kristel-ward",
+      "tipo": "maternidad",
+      "etiqueta": "Licencia de maternidad",
+      "desde": "2026-05-13",
+      "hasta": "2026-09-13",
+      "detalle": "Licencia de maternidad de cuatro meses (un mes antes del parto y tres después), anunciada el 13 de mayo de 2026.",
+      "fuente": "https://www.nacion.com/politica/diputada-de-pueblo-soberano-se-acoge-a-licencia-de/4GA5SGAENRFG3CDRXQVKZYXISU/story/",
+      "fuenteNombre": "La Nación"
+    }
+  ]
+}

@@ -13,6 +13,8 @@ interface Props {
   rank?: number;
   snapshots?: ScoreSnapshot[];
   latestDelta?: number | null;
+  /** Etiqueta de licencia vigente: si viene, la card no muestra score */
+  licencia?: string | null;
 }
 
 const CARD_METRICS: Array<{
@@ -76,8 +78,10 @@ export function PoliticianCard({
   rank,
   snapshots = [],
   latestDelta = null,
+  licencia = null,
 }: Props) {
-  const color = getScoreColor(politician.overall);
+  // En licencia: sin score. La ausencia está justificada, calificarla sería injusto.
+  const color = licencia ? "gray" : getScoreColor(politician.overall);
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -95,7 +99,7 @@ export function PoliticianCard({
         <div
           className={`relative h-[3.75rem] bg-gradient-to-b ${HERO_GRADIENT[color]}`}
         >
-          {rank && (
+          {rank && !licencia && (
             <span className="absolute top-2.5 left-3 text-[0.6rem] font-bold text-white/25 tabular-nums">
               #{rank}
             </span>
@@ -140,7 +144,8 @@ export function PoliticianCard({
               )}
             </div>
 
-            {/* Rating chip — cuadrado redondeado estilo SofaScore, top-left */}
+            {/* Rating chip — cuadrado redondeado estilo SofaScore, top-left.
+                En licencia se muestra un guion: no hay score que reportar. */}
             <div
               className={`
                 absolute -top-2 -left-2.5
@@ -152,9 +157,9 @@ export function PoliticianCard({
               `}
             >
               <span className="text-[0.75rem] font-black tabular-nums leading-none text-white">
-                {politician.overall.toFixed(1)}
+                {licencia ? "—" : politician.overall.toFixed(1)}
               </span>
-              {latestDelta !== null && Math.abs(latestDelta) >= 0.05 && (
+              {!licencia && latestDelta !== null && Math.abs(latestDelta) >= 0.05 && (
                 <TrendBadge delta={latestDelta} size="xs" showValue={false} />
               )}
             </div>
@@ -192,27 +197,48 @@ export function PoliticianCard({
         <div className="mx-3 h-px bg-white/[0.04]" />
 
         {/* ── Métricas 2×2 ── */}
-        <div className="px-3.5 py-2.5 grid grid-cols-2 gap-x-2 gap-y-1.5">
-          {CARD_METRICS.map(({ key, label }) => {
-            const val = politician.metrics?.[key] ?? 0;
-            const mColor = getScoreColor(val);
-            return (
-              <div
-                key={key}
-                className="flex items-center justify-between gap-1"
-              >
-                <span className="text-zinc-400 text-[0.58rem] uppercase tracking-wider truncate">
-                  {label}
-                </span>
-                <span
-                  className={`${SCORE_TEXT[mColor]} text-[0.78rem] font-black tabular-nums leading-none`}
+        {licencia ? (
+          <div className="px-3.5 py-3 flex items-center justify-center gap-1.5">
+            <svg
+              className="w-3 h-3 text-zinc-500 flex-shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.8}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+              />
+            </svg>
+            <span className="text-zinc-400 text-[0.62rem] font-semibold uppercase tracking-wide text-center leading-tight">
+              {licencia}
+            </span>
+          </div>
+        ) : (
+          <div className="px-3.5 py-2.5 grid grid-cols-2 gap-x-2 gap-y-1.5">
+            {CARD_METRICS.map(({ key, label }) => {
+              const val = politician.metrics?.[key] ?? 0;
+              const mColor = getScoreColor(val);
+              return (
+                <div
+                  key={key}
+                  className="flex items-center justify-between gap-1"
                 >
-                  {val.toFixed(1)}
-                </span>
-              </div>
-            );
-          })}
-        </div>
+                  <span className="text-zinc-400 text-[0.58rem] uppercase tracking-wider truncate">
+                    {label}
+                  </span>
+                  <span
+                    className={`${SCORE_TEXT[mColor]} text-[0.78rem] font-black tabular-nums leading-none`}
+                  >
+                    {val.toFixed(1)}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </Link>
   );

@@ -6,7 +6,11 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { getMockPoliticianById, getRealMetrics } from "../src/lib/mockData";
+import {
+  getMockPoliticianById,
+  getRealMetrics,
+  VIA_ACTIVA,
+} from "../src/lib/mockData";
 import realData from "../data/real-data.json";
 
 const DEPUTIES = realData.deputies as Record<
@@ -29,7 +33,9 @@ const DEPUTIES = realData.deputies as Record<
     nombreXlsx: string;
   }
 >;
-const HAS_TRIPS = (realData.tripMonths as string[]).length > 0;
+// La regla de activación de VIA vive en mockData (umbral de meses); el test la
+// consume en vez de duplicarla, para que no se desincronicen.
+const HAS_TRIPS = VIA_ACTIVA;
 
 const SAMPLE_ID = "dep-nogui-acosta";
 
@@ -47,7 +53,11 @@ test("real-data.json → RawData mapea campo por campo contra el JSON", () => {
   assert.ok(r.asisCom + r.ausCom + r.permCom > 0, "fixture sin comisiones");
   assert.ok(typeof r.proyectos === "number", "fixture sin proyectos");
   assert.ok(r.med !== null, "fixture sin clasificación de medios");
-  assert.equal(HAS_TRIPS, false, "esta legislatura aún no publica viajes");
+  assert.equal(
+    HAS_TRIPS,
+    false,
+    "aún no hay suficientes meses de viajes publicados para activar VIA",
+  );
 
   const p = getMockPoliticianById(SAMPLE_ID);
   assert.ok(p, "getMockPoliticianById devuelve el diputado");

@@ -159,6 +159,13 @@ export default function MetricasPage() {
             </li>
             <li className="flex gap-2.5">
               <span className="text-emerald-400 flex-shrink-0">•</span>
+              Quien esté en licencia (maternidad, enfermedad o permiso) no recibe score:
+              su ausencia está justificada y calificarla sería injusto. Aparece marcado
+              como &ldquo;en licencia&rdquo;, con la fuente de la noticia, y queda fuera
+              de rankings y promedios mientras dure.
+            </li>
+            <li className="flex gap-2.5">
+              <span className="text-emerald-400 flex-shrink-0">•</span>
               Los datos se actualizan automáticamente cada semana desde el portal de datos abiertos de la
               Asamblea Legislativa, la API de Delfino.cr y Google News.
             </li>

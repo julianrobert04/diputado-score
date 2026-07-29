@@ -72,6 +72,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const mock = getMockPoliticianById(id);
     if (mock) {
+      if (mock.licencia) {
+        return {
+          title: `${mock.row.nombre} — ${mock.licencia.etiqueta} · DiputadoScore`,
+          description: `Perfil de ${mock.row.nombre} (${mock.row.partido}), provincia ${mock.row.provincia}. Sin score: ${mock.licencia.etiqueta.toLowerCase()} vigente.`,
+        };
+      }
       return {
         title: `${mock.row.nombre} — ${mock.overall.toFixed(1)}/10 · DiputadoScore`,
         description: `Perfil de ${mock.row.nombre} (${mock.row.partido}), provincia ${mock.row.provincia}. Score general: ${mock.overall.toFixed(1)} de 10.`,
@@ -115,15 +121,27 @@ export default async function DiputadoPage({ params }: Props) {
     score: { overall: number } | null;
   }[] = [];
 
-  const color = getScoreColor(overall);
+  // En licencia: ausencia justificada, no se califica ni se rankea.
+  const licencia = mock.licencia;
+  const color = licencia ? "gray" : getScoreColor(overall);
   const latestSnapshot = snapshots[snapshots.length - 1] ?? null;
 
-  // Ranking entre los 57 diputados
-  const allPoliticians = getMockPoliticians("", "", "overall_desc");
-  const rankIndex = allPoliticians.findIndex((p) => p.card.id === id);
-  const realMetrics = getRealMetrics(id);
+  // Ranking solo entre los diputados con score activo
+  const scoredPoliticians = getMockPoliticians("", "", "overall_desc").filter(
+    (p) => !p.licencia,
+  );
+  const rankIndex = licencia
+    ? -1
+    : scoredPoliticians.findIndex((p) => p.card.id === id);
+  const realMetrics = licencia ? [] : getRealMetrics(id);
   const rankPosition = rankIndex >= 0 ? rankIndex + 1 : null;
-  const totalDiputados = allPoliticians.length;
+  const totalDiputados = scoredPoliticians.length;
+  const fmtFecha = (iso: string) =>
+    new Date(iso).toLocaleDateString("es-CR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
 
   return (
     <div className="min-h-screen bg-[#0c0c0e] text-white">
@@ -172,8 +190,11 @@ export default async function DiputadoPage({ params }: Props) {
             <div className="flex flex-col sm:flex-row items-start gap-8">
               {/* Left: photo + party */}
               <div className="flex items-center gap-5 sm:flex-col sm:items-center sm:gap-3 sm:w-36">
+                {/* `relative`: <Image fill> se posiciona contra el ancestro
+                    posicionado más cercano; sin esto la foto se desbordaba
+                    ocupando todo el hero. */}
                 <div
-                  className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden ring-2 ${RING_COLOR[color]} bg-zinc-800 flex-shrink-0 shadow-2xl shadow-black/50`}
+                  className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden ring-2 ${RING_COLOR[color]} bg-zinc-800 flex-shrink-0 shadow-2xl shadow-black/50`}
                 >
                   {politicianPhoto ? (
                     // `unoptimized`: las fotos vienen de www.asamblea.go.cr, cuyo
@@ -248,8 +269,64 @@ export default async function DiputadoPage({ params }: Props) {
                   </div>
                 )}
 
+                {/* Licencia vigente — explica por qué no hay score, con fuente */}
+                {licencia && (
+                  <div className="mt-4 bg-zinc-800/60 rounded-xl px-4 py-3 ring-1 ring-white/[0.06] max-w-md">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <svg
+                        className="w-3.5 h-3.5 text-zinc-400 flex-shrink-0"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.8}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
+                        />
+                      </svg>
+                      <span className="text-white text-sm font-bold">
+                        {licencia.etiqueta}
+                      </span>
+                    </div>
+                    <p className="text-zinc-400 text-xs leading-relaxed">
+                      {licencia.detalle} Del {fmtFecha(licencia.desde)}
+                      {licencia.hasta ? ` al ${fmtFecha(licencia.hasta)}` : ""}.
+                    </p>
+                    <p className="text-zinc-500 text-xs leading-relaxed mt-2">
+                      Su ausencia está justificada, así que{" "}
+                      <strong className="text-zinc-400 font-semibold">
+                        no se le calcula score
+                      </strong>{" "}
+                      ni entra en rankings ni promedios mientras dure la licencia.
+                    </p>
+                    <a
+                      href={licencia.fuente}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[0.7rem] text-emerald-400/80 hover:text-emerald-400 mt-2 transition-colors"
+                    >
+                      Fuente: {licencia.fuenteNombre}
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.8}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                )}
+
                 {/* Dimension pills */}
-                {metrics && (
+                {!licencia && metrics && (
                   <div className="flex flex-wrap gap-2 mt-4">
                     {Object.entries(DIMENSION_META).map(([key, dim]) => {
                       const dimScore =
@@ -280,13 +357,24 @@ export default async function DiputadoPage({ params }: Props) {
 
               {/* Right: BIG score */}
               <div className="sm:flex-shrink-0 flex sm:flex-col items-center gap-3 sm:gap-1 sm:items-end">
-                <div
-                  className={`${SCORE_TEXT[color]} text-[4.5rem] sm:text-[5.5rem] font-black tabular-nums leading-none tracking-tight`}
-                >
-                  {overall.toFixed(1)}
-                </div>
+                {licencia ? (
+                  <div className="flex flex-col items-center sm:items-end">
+                    <span className="text-zinc-500 text-[3rem] sm:text-[3.5rem] font-black leading-none tracking-tight">
+                      —
+                    </span>
+                    <span className="text-zinc-400 text-[0.7rem] font-semibold uppercase tracking-widest mt-1.5 whitespace-nowrap">
+                      Sin score
+                    </span>
+                  </div>
+                ) : (
+                  <div
+                    className={`${SCORE_TEXT[color]} text-[4.5rem] sm:text-[5.5rem] font-black tabular-nums leading-none tracking-tight`}
+                  >
+                    {overall.toFixed(1)}
+                  </div>
+                )}
                 <div className="flex items-center gap-2 sm:flex-col sm:items-end sm:gap-1">
-                  {latestSnapshot?.deltaOverall !== undefined && (
+                  {!licencia && latestSnapshot?.deltaOverall !== undefined && (
                     <TrendBadge delta={latestSnapshot.deltaOverall} size="md" />
                   )}
                   {latestSnapshot && (
@@ -303,7 +391,8 @@ export default async function DiputadoPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Radar + Sparkline row */}
+        {/* Radar + Sparkline row — se ocultan en licencia: no hay score que graficar */}
+        {!licencia && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
           {metrics && (
             <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 flex flex-col items-center justify-center">
@@ -323,9 +412,10 @@ export default async function DiputadoPage({ params }: Props) {
             />
           </div>
         </div>
+        )}
 
         {/* 11 metrics — animated progress bars */}
-        {metrics && (
+        {!licencia && metrics && (
           <div className="bg-zinc-900 rounded-2xl ring-1 ring-white/[0.06] p-6 mb-5">
             <h2 className="text-base font-bold mb-6 text-white">
               Las 7 métricas

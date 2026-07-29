@@ -2,7 +2,7 @@ import Link from "next/link";
 import { RankingAvatar } from "@/components/RankingAvatar";
 import { OnceIdeal } from "@/components/OnceIdeal";
 import { getScoreColor } from "@/lib/scoreCalculator";
-import { getMockPoliticians } from "@/lib/mockData";
+import { getMockPoliticians, getScoredPoliticians } from "@/lib/mockData";
 
 interface RankingRow {
   id: string;
@@ -16,8 +16,9 @@ interface RankingRow {
   photoUrl: string;
 }
 
+// Solo diputados con score: los que están en licencia no se rankean.
 async function getRankings(): Promise<RankingRow[]> {
-  return getMockPoliticians().map(({ card }) => ({
+  return getScoredPoliticians().map(({ card }) => ({
     id: card.id,
     fullName: card.fullName,
     party: card.party,
@@ -139,6 +140,7 @@ function PodiumCard({ rank, row }: PodiumCardProps) {
 export default async function RankingsPage() {
   const scores = await getRankings();
   const partyStats = computePartyStats(scores);
+  const enLicencia = getMockPoliticians().filter((p) => p.licencia);
 
   const [first, second, third, ...rest] = scores;
 
@@ -343,6 +345,49 @@ export default async function RankingsPage() {
             );
           })}
         </div>
+
+        {/* En licencia — fuera del ranking, con su justificación y fuente */}
+        {enLicencia.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-[0.7rem] font-semibold text-zinc-400 uppercase tracking-widest mb-3">
+              Sin score · en licencia
+            </h2>
+            <div className="space-y-1.5">
+              {enLicencia.map(({ card, licencia }) => (
+                <Link
+                  key={card.id}
+                  href={`/diputados/${card.id}`}
+                  className="flex items-center gap-3 bg-zinc-900/60 rounded-xl px-4 py-3 ring-1 ring-white/[0.04] hover:ring-white/[0.10] transition-all group"
+                >
+                  <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 bg-zinc-800/60 text-zinc-500">
+                    —
+                  </span>
+                  <RankingAvatar
+                    photoUrl={card.photoUrl ?? ""}
+                    fullName={card.fullName}
+                    size={28}
+                    ringClass="ring-1 ring-white/10"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-white text-sm group-hover:text-emerald-400 transition-colors truncate">
+                      {card.fullName}
+                    </p>
+                    <p className="text-[0.7rem] text-zinc-300 truncate mt-0.5">
+                      {card.party} · {card.province}
+                    </p>
+                  </div>
+                  <span className="text-[0.65rem] font-semibold text-zinc-300 bg-zinc-800/80 px-2.5 py-1 rounded-lg flex-shrink-0">
+                    {licencia!.etiqueta}
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <p className="text-zinc-500 text-[0.7rem] mt-3 leading-relaxed">
+              Una licencia es una ausencia justificada: mientras esté vigente no se
+              calcula score ni entra en los promedios.
+            </p>
+          </div>
+        )}
       </main>
 
       <footer className="mt-20 border-t border-white/[0.04] py-8">

@@ -8,6 +8,36 @@
 import { PoliticianCard, ScoreSnapshot, ScoreMetrics, LegislativeBill, RawData } from "@/types";
 import { calcMetrics, calcOverall } from "./scoreCalculator";
 import realData from "../../data/real-data.json";
+import licenciasData from "../../data/licencias.json";
+
+// ── Licencias legislativas ───────────────────────────────────────────────
+// Un diputado en licencia (maternidad, enfermedad, permiso) no recibe score:
+// su ausencia está justificada y calificarla sería injusto. Ver data/licencias.json.
+
+export interface Licencia {
+  deputyId: string;
+  tipo: string;
+  etiqueta: string;
+  desde: string;
+  hasta: string | null;
+  detalle: string;
+  fuente: string;
+  fuenteNombre: string;
+}
+
+const LICENCIAS = licenciasData.licencias as Licencia[];
+
+/** Licencia vigente de un diputado en la fecha dada (hoy por defecto) */
+export function getLicencia(id: string, at: Date = new Date()): Licencia | null {
+  const t = at.getTime();
+  return (
+    LICENCIAS.find((l) => {
+      if (l.deputyId !== id) return false;
+      if (t < new Date(l.desde).getTime()) return false;
+      return l.hasta === null || t <= new Date(l.hasta).getTime();
+    }) ?? null
+  );
+}
 
 const BASE_PHOTO = "https://www.asamblea.go.cr/Diputados/SiteAssets/2026-2030";
 
@@ -123,7 +153,15 @@ export const REAL_DATA_INFO = {
   deputiesCount: Object.keys(REAL_DEPUTIES).length,
 };
 
-const HAS_TRIPS = REAL_DATA_INFO.tripMonths.length > 0;
+// VIA solo entra al score cuando hay suficiente historial de viajes. Con un solo
+// mes publicado el promedio es casi cero y quien haya hecho UN viaje oficial
+// caería a 0.0 en una métrica del 15% — un castigo absurdo por hacer su trabajo.
+// Con un trimestre de datos la comparación contra el promedio ya es significativa.
+export const MIN_TRIP_MONTHS = 3;
+/** VIA entra al score solo con suficientes meses de viajes publicados */
+export const VIA_ACTIVA =
+  REAL_DATA_INFO.tripMonths.length >= MIN_TRIP_MONTHS;
+const HAS_TRIPS = VIA_ACTIVA;
 
 const AVGS = {
   avgPermRatio: (realData.avgPermRatio as number | null) ?? 0,
@@ -309,6 +347,8 @@ export interface PoliticianWithTrend {
   card: PoliticianCard;
   snapshots: ScoreSnapshot[];
   latestDelta: number | null;
+  /** Licencia vigente: si existe, el diputado no recibe score */
+  licencia: Licencia | null;
 }
 
 export function getMockPoliticians(q = "", provincia = "", sort = "overall_desc"): PoliticianWithTrend[] {
@@ -319,6 +359,7 @@ export function getMockPoliticians(q = "", provincia = "", sort = "overall_desc"
     .filter((r) => !q || r.nombre.toLowerCase().includes(q.toLowerCase()))
     .filter((r) => !provincia || r.provincia.toLowerCase().includes(provincia.toLowerCase()))
     .map((r) => {
+      const licencia  = getLicencia(r.id);
       const metrics   = calcMetrics(r.raw, AVGS);
       const overall   = calcOverall(metrics, { includeVIA: HAS_TRIPS });
       const snapshots = makeSnapshots(overall, metrics, r.id);
@@ -335,15 +376,23 @@ export function getMockPoliticians(q = "", provincia = "", sort = "overall_desc"
         metrics,
         period: { startDate: periodStart, endDate: periodEnd },
       };
-      return { card, snapshots, latestDelta: null };
+      return { card, snapshots, latestDelta: null, licencia };
     });
 
+  // Los diputados en licencia van al final sin importar el orden pedido:
+  // no tienen score que comparar.
   return results.sort((a, b) => {
+    if (!!a.licencia !== !!b.licencia) return a.licencia ? 1 : -1;
     if (sort === "overall_asc")  return a.card.overall - b.card.overall;
     if (sort === "name_asc")     return a.card.fullName.localeCompare(b.card.fullName);
     if (sort === "name_desc")    return b.card.fullName.localeCompare(a.card.fullName);
     return b.card.overall - a.card.overall;
   });
+}
+
+/** Solo los diputados con score activo — para rankings, promedios y once ideal */
+export function getScoredPoliticians(q = "", provincia = "", sort = "overall_desc"): PoliticianWithTrend[] {
+  return getMockPoliticians(q, provincia, sort).filter((p) => !p.licencia);
 }
 
 export function getMockPoliticianById(id: string) {
@@ -352,7 +401,8 @@ export function getMockPoliticianById(id: string) {
   const metrics = calcMetrics(row.raw, AVGS);
   const overall = calcOverall(metrics, { includeVIA: HAS_TRIPS });
   const snapshots = makeSnapshots(overall, metrics, row.id);
-  return { row, metrics, overall, snapshots, rawData: row.raw, bills: [] as LegislativeBill[] };
+  const licencia = getLicencia(id);
+  return { row, metrics, overall, snapshots, rawData: row.raw, licencia, bills: [] as LegislativeBill[] };
 }
 
 export function getMockBillsById(_id: string): LegislativeBill[] {

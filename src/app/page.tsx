@@ -68,37 +68,38 @@ export default async function Home({ searchParams }: HomeProps) {
     ? allPoliticians.filter((p) => p.card.party === partido)
     : allPoliticians;
 
-  const avgScore = politicians.length
-    ? politicians.reduce((sum, p) => sum + p.card.overall, 0) /
-      politicians.length
+  // Los diputados en licencia no tienen score: quedan fuera de promedios y podios.
+  const scored = politicians.filter((p) => !p.licencia);
+  const enLicencia = politicians.filter((p) => p.licencia).length;
+
+  const avgScore = scored.length
+    ? scored.reduce((sum, p) => sum + p.card.overall, 0) / scored.length
     : 0;
-  const best = politicians.reduce<PoliticianWithTrend | null>(
+  const best = scored.reduce<PoliticianWithTrend | null>(
     (top, p) => (!top || p.card.overall > top.card.overall ? p : top),
     null,
   );
   const partyAvgs = Object.entries(
-    politicians.reduce<Record<string, { sum: number; count: number }>>(
-      (acc, p) => {
-        const party = p.card.party ?? "";
-        if (!acc[party]) acc[party] = { sum: 0, count: 0 };
-        acc[party].sum += p.card.overall;
-        acc[party].count += 1;
-        return acc;
-      },
-      {},
-    ),
+    scored.reduce<Record<string, { sum: number; count: number }>>((acc, p) => {
+      const party = p.card.party ?? "";
+      if (!acc[party]) acc[party] = { sum: 0, count: 0 };
+      acc[party].sum += p.card.overall;
+      acc[party].count += 1;
+      return acc;
+    }, {}),
   ).map(([name, { sum, count }]) => ({ name, avg: sum / count }));
   const bestParty = partyAvgs.reduce<{ name: string; avg: number } | null>(
     (top, p) => (!top || p.avg > top.avg ? p : top),
     null,
   );
-  const asistenciaPerfecta = politicians.filter(
+  const asistenciaPerfecta = scored.filter(
     (p) => p.card.metrics.ASI >= 9.95,
   ).length;
-  const asistenciaPct = politicians.length
-    ? Math.round((asistenciaPerfecta / politicians.length) * 100)
+  const asistenciaPct = scored.length
+    ? Math.round((asistenciaPerfecta / scored.length) * 100)
     : 0;
-  const top3 = [...allPoliticians]
+  const top3 = allPoliticians
+    .filter((p) => !p.licencia)
     .sort((a, b) => b.card.overall - a.card.overall)
     .slice(0, 3);
   const MEDAL = ["text-amber-400", "text-zinc-400", "text-orange-400"];
@@ -345,6 +346,11 @@ export default async function Home({ searchParams }: HomeProps) {
                 · {PARTIDO_SHORT[partido] ?? partido}
               </span>
             )}
+            {enLicencia > 0 && (
+              <span className="text-zinc-500 normal-case ml-1.5">
+                · {enLicencia} en licencia, sin score
+              </span>
+            )}
           </p>
           {politicians.some((p) => p.latestDelta !== null) && (
             <div className="flex items-center gap-3 text-[0.68rem] text-zinc-300">
@@ -373,7 +379,7 @@ export default async function Home({ searchParams }: HomeProps) {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-            {politicians.map(({ card, snapshots, latestDelta }, i) => (
+            {politicians.map(({ card, snapshots, latestDelta, licencia }, i) => (
               <div
                 key={card.id}
                 style={{
@@ -386,6 +392,7 @@ export default async function Home({ searchParams }: HomeProps) {
                   rank={sort.startsWith("overall") ? i + 1 : undefined}
                   snapshots={snapshots}
                   latestDelta={latestDelta}
+                  licencia={licencia?.etiqueta ?? null}
                 />
               </div>
             ))}
