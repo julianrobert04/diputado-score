@@ -405,6 +405,7 @@ export function getMockPoliticianById(id: string) {
   return { row, metrics, overall, snapshots, rawData: row.raw, licencia, bills: [] as LegislativeBill[] };
 }
 
-export function getMockBillsById(_id: string): LegislativeBill[] {
+/** Sin fuente pública machine-readable de expedientes por diputado todavía */
+export function getMockBillsById(): LegislativeBill[] {
   return [];
 }

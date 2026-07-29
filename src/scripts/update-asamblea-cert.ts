@@ -137,7 +137,7 @@ async function main() {
     const url = caIssuersUrl(leaf);
     if (!url) throw new Error("el server no presentó intermedios y el cert no trae AIA");
     console.log(`   Server sin intermedios — bajando emisor vía AIA: ${url}`);
-    let der = await downloadIssuer(url);
+    const der = await downloadIssuer(url);
     // Algunos CA sirven PEM en vez de DER
     const asText = der.toString("utf8");
     intermediates.push(

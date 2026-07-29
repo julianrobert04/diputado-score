@@ -57,7 +57,7 @@ export function RadarChart({ metrics, size = 260 }: Props) {
 
   const gridLevels = [2, 4, 6, 8, 10];
 
-  const dataPoints = DIMS.map(([, dim], i) => {
+  const dataPoints = DIMS.map((_, i) => {
     const r = (dimScores[i] / 10) * maxR;
     const angle = -Math.PI / 2 + (2 * Math.PI * i) / N;
     return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
