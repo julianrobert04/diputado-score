@@ -85,8 +85,17 @@ xlsx mensual de la Asamblea. `METRIC_WEIGHTS` en `scoreCalculator.ts` es la
 fuente de verdad. `DIMENSION_META` agrupa las métricas solo para la UI
 (Presencia 50 / Productividad 40 / Imagen 10).
 
-\* VIA (viajes) entra con 15% y el resto se escala ×0.85 cuando la Asamblea publique
-xlsx de viajes de la legislatura 2026-2030 — se activa solo (`includeVIA` en `calcOverall`).
+\* VIA (viajes) entra con 15% y el resto se escala ×0.85, pero **solo cuando haya
+≥3 meses** de xlsx de viajes publicados (`MIN_TRIP_MONTHS` en `mockData.ts`). Con un
+solo mes el promedio es casi cero y un único viaje oficial hundiría al diputado a 0.0
+en una métrica del 15% — castigo absurdo por hacer su trabajo.
+
+**Licencias (`data/licencias.json`):** un diputado con licencia vigente (maternidad,
+enfermedad, permiso) **no recibe score**: su ausencia está justificada. La UI muestra
+"en licencia" con fechas y fuente pública, y queda fuera de rankings, promedios, top 3
+y once ideal. `getLicencia(id, fecha)` respeta la ventana `desde`/`hasta`; al vencer,
+el diputado vuelve al ranking automáticamente sin tocar código. Actualizar el JSON
+cuando cambie una licencia (siempre con URL de fuente verificable).
 
 **MED:** noticia positiva suma, negativa resta, sin noticias = 5.5 neutro.
 Fórmula: `clamp(5.5 + 4.5·(pos−neg)/max(total,5), 1, 10)` sobre los totales

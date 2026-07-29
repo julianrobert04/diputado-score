@@ -21,7 +21,7 @@ No hace falta configurar nada más: los datos reales ya vienen versionados en
 
 ## El modelo de score
 
-7 métricas reales se combinan en una suma ponderada (`METRIC_WEIGHTS` en
+Las 7 métricas reales se combinan en una suma ponderada (`METRIC_WEIGHTS` en
 `src/lib/scoreCalculator.ts` es la fuente de verdad):
 
 | Métrica | Peso    | Qué mide                                                           | Fuente                                     |
@@ -33,10 +33,20 @@ No hace falta configurar nada más: los datos reales ya vienen versionados en
 | APR     | 10%     | Tasa de aprobación de sus proyectos, con umbral                    | Delfino.cr                                 |
 | MED     | 10%     | Cobertura mediática (positivas − negativas)                        | Google News + Claude                       |
 
-**VIA (viajes oficiales)** se activa solo cuando la Asamblea publique los xlsx de
-viajes de esta legislatura: entra con 15% y el resto de las métricas se escala
-×0.85 (`includeVIA` en `calcOverall`). Hoy no hay archivos, así que VIA está
-inactivo.
+**VIA (viajes oficiales)** entra con 15% (y el resto se escala ×0.85) solo cuando
+haya al menos **3 meses** de xlsx de viajes publicados — `MIN_TRIP_MONTHS` en
+`src/lib/mockData.ts`. El umbral no es capricho: con un solo mes el promedio de
+viajes ronda 0.03 y un único viaje oficial mandaría a ese diputado a 0.0 en una
+métrica del 15%, castigándolo por hacer su trabajo. Hoy hay 1 mes publicado
+(2026-06), así que VIA sigue inactivo.
+
+**Licencias (`data/licencias.json`)**: un diputado con licencia vigente —
+maternidad, enfermedad o permiso— **no recibe score**. Su ausencia está
+justificada y calificarla sería injusto: la ficha muestra "en licencia" con las
+fechas y el enlace a la fuente, y queda fuera de rankings, promedios, top 3 y
+once ideal. `getLicencia(id, fecha)` respeta la ventana `desde`/`hasta`, así que
+al vencer la licencia el diputado vuelve al ranking sin tocar código. Para
+registrar una licencia nueva, agregá una entrada al JSON con su URL de fuente.
 
 **MED** acumula desde el inicio de la legislatura: cada corrida clasifica solo
 los titulares nuevos (dedupe por hash sha1) y los suma. La clasificación usa
@@ -50,10 +60,12 @@ npm run dev              # servidor de desarrollo
 npm run build            # build de producción
 npm run lint             # ESLint
 npm run ingest:opendata  # regenera data/real-data.json
+npm run cert:update      # regenera la cadena TLS de la Asamblea
+npm test                 # suite con node:test + tsx
+npm run typecheck        # tsc --noEmit
 ```
 
-> `test` y `typecheck` se agregan en este mismo PR (suite con `node:test` + `tsx`
-> y `tsc --noEmit`), junto con el gate de CI que corre lint/typecheck/test/build.
+CI (`.github/workflows/ci.yml`) corre lint/typecheck/test/build en cada push.
 
 Para regenerar los datos, incluyendo la clasificación mediática:
 
