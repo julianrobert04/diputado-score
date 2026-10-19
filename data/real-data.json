@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-10-12T20:56:22.094Z",
+  "updatedAt": "2026-10-19T18:21:36.433Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [],
   "tripMonths": [],
-  "medUpdatedAt": "2026-10-12T20:56:22.094Z",
+  "medUpdatedAt": "2026-10-19T18:21:36.432Z",
   "projectsTerm": "2026-2030",
   "avgViajes": null,
   "avgPermRatio": 0,
-  "avgProyectos": 3.491228070175439,
+  "avgProyectos": 3.6842105263157894,
   "deputies": {
     "dep-nogui-acosta": {
       "asisPL": 18,
@@ -17,17 +17,17 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
-      "proyectos": 9,
+      "proyectos": 10,
       "aprobados": 1,
-      "sesAsis": 109,
-      "sesTotal": 111,
-      "votAsis": 2078,
-      "votTotal": 2113,
+      "sesAsis": 114,
+      "sesTotal": 116,
+      "votAsis": 2092,
+      "votTotal": 2129,
       "med": {
         "pos": 31,
-        "neg": 50,
-        "neu": 80,
-        "total": 161
+        "neg": 53,
+        "neu": 89,
+        "total": 173
       },
       "medSeen": [
         "15047fa54463",
@@ -190,7 +190,19 @@
         "c53d301b0f12",
         "248156e9489d",
         "f7c9904323b0",
-        "df666be66e70"
+        "df666be66e70",
+        "6db22e63a259",
+        "bf3dbc6acfa3",
+        "531499a060e0",
+        "31ebec1d46f4",
+        "9e5b386e39a0",
+        "f2ba8133f9ff",
+        "caa774f341e5",
+        "4c298c0d5486",
+        "ab242a50fc63",
+        "9ac4207a2fdb",
+        "e606d85ffd5c",
+        "c636a9dd5348"
       ],
       "nombreXlsx": "Acosta Jaén Nogui"
     },
@@ -204,15 +216,15 @@
       "viajes": 0,
       "proyectos": 9,
       "aprobados": 0,
-      "sesAsis": 101,
-      "sesTotal": 111,
-      "votAsis": 1840,
-      "votTotal": 2113,
+      "sesAsis": 106,
+      "sesTotal": 116,
+      "votAsis": 1856,
+      "votTotal": 2129,
       "med": {
         "pos": 6,
         "neg": 3,
-        "neu": 23,
-        "total": 32
+        "neu": 29,
+        "total": 38
       },
       "medSeen": [
         "5b5fe36e9573",
@@ -247,7 +259,13 @@
         "072ef21b0390",
         "ada249fbaecc",
         "420e5f471e00",
-        "bd8e8266c138"
+        "bd8e8266c138",
+        "e8af0d4bd424",
+        "ba1fb11ef180",
+        "2b54a850af13",
+        "50417e33dd0d",
+        "ee8cee2c53b5",
+        "6fa3cb015732"
       ],
       "nombreXlsx": "Mora Montoya Kattya"
     },
@@ -261,15 +279,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 110,
-      "sesTotal": 111,
-      "votAsis": 2092,
-      "votTotal": 2113,
+      "sesAsis": 115,
+      "sesTotal": 116,
+      "votAsis": 2108,
+      "votTotal": 2129,
       "med": {
-        "pos": 1,
+        "pos": 2,
         "neg": 7,
-        "neu": 53,
-        "total": 61
+        "neu": 55,
+        "total": 64
       },
       "medSeen": [
         "ea41467b5e4e",
@@ -332,7 +350,10 @@
         "d96abb359a46",
         "f22fed5e83d1",
         "3344dcd03fef",
-        "be96c71c594b"
+        "be96c71c594b",
+        "83bf45549f04",
+        "dbf99407ff4e",
+        "0ea7dff2cabb"
       ],
       "nombreXlsx": "Brunner Neibig Stephan"
     },
@@ -346,15 +367,15 @@
       "viajes": 0,
       "proyectos": 4,
       "aprobados": 0,
-      "sesAsis": 104,
-      "sesTotal": 111,
-      "votAsis": 1954,
-      "votTotal": 2113,
+      "sesAsis": 108,
+      "sesTotal": 116,
+      "votAsis": 1961,
+      "votTotal": 2129,
       "med": {
-        "pos": 12,
-        "neg": 12,
-        "neu": 53,
-        "total": 77
+        "pos": 17,
+        "neg": 13,
+        "neu": 54,
+        "total": 84
       },
       "medSeen": [
         "9a0ee3bde85e",
@@ -433,7 +454,14 @@
         "bd1235d86d8e",
         "0077461247fa",
         "a5287c547eda",
-        "4f5a7b6ec2bf"
+        "4f5a7b6ec2bf",
+        "f5d8bf4e0787",
+        "dad10645ffb9",
+        "188de377bcfa",
+        "22905eb62f0a",
+        "8c0c54999ac9",
+        "75151303fc43",
+        "2e8f36635f7f"
       ],
       "nombreXlsx": "Ortega Guzmán Mayuli"
     },
@@ -447,15 +475,15 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
-      "sesAsis": 99,
-      "sesTotal": 111,
-      "votAsis": 1612,
-      "votTotal": 2113,
+      "sesAsis": 102,
+      "sesTotal": 116,
+      "votAsis": 1623,
+      "votTotal": 2129,
       "med": {
-        "pos": 11,
+        "pos": 12,
         "neg": 7,
-        "neu": 94,
-        "total": 112
+        "neu": 98,
+        "total": 117
       },
       "medSeen": [
         "834b1f0ccde5",
@@ -569,7 +597,12 @@
         "caafe170766b",
         "f18bd516b4d8",
         "217613ab7f5f",
-        "bcefd98bc957"
+        "bcefd98bc957",
+        "2e006ba40be3",
+        "53f8d8bccaad",
+        "8622a71f7ab0",
+        "71823d29c996",
+        "a9a8734cbe78"
       ],
       "nombreXlsx": "Ramírez Zamora Gonzalo"
     },
@@ -583,15 +616,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 109,
-      "sesTotal": 111,
-      "votAsis": 2101,
-      "votTotal": 2113,
+      "sesAsis": 114,
+      "sesTotal": 116,
+      "votAsis": 2116,
+      "votTotal": 2129,
       "med": {
         "pos": 8,
         "neg": 3,
-        "neu": 31,
-        "total": 42
+        "neu": 35,
+        "total": 46
       },
       "medSeen": [
         "ea41467b5e4e",
@@ -634,7 +667,11 @@
         "476afaba4b73",
         "6a7d4950029d",
         "dd71666214f1",
-        "eaadf0d7693b"
+        "eaadf0d7693b",
+        "a625b030df63",
+        "83bf45549f04",
+        "ede80b6cea23",
+        "6464136d41ba"
       ],
       "nombreXlsx": "Müller Castro Anna Katharina"
     },
@@ -648,15 +685,15 @@
       "viajes": 0,
       "proyectos": 1,
       "aprobados": 0,
-      "sesAsis": 111,
-      "sesTotal": 111,
-      "votAsis": 2088,
-      "votTotal": 2113,
+      "sesAsis": 116,
+      "sesTotal": 116,
+      "votAsis": 2103,
+      "votTotal": 2129,
       "med": {
-        "pos": 19,
-        "neg": 4,
+        "pos": 22,
+        "neg": 5,
         "neu": 39,
-        "total": 62
+        "total": 66
       },
       "medSeen": [
         "dea43931af5b",
@@ -720,7 +757,11 @@
         "d7c11d7c0b42",
         "4111ea169801",
         "405d0541bac2",
-        "9a39da7ec6c2"
+        "9a39da7ec6c2",
+        "761b3dd85080",
+        "d89f7b116527",
+        "fbe805b52532",
+        "40ec328359ed"
       ],
       "nombreXlsx": "Barzuna Thompson Antonio"
     },
@@ -734,15 +775,15 @@
       "viajes": 0,
       "proyectos": 4,
       "aprobados": 0,
-      "sesAsis": 109,
-      "sesTotal": 111,
-      "votAsis": 2108,
-      "votTotal": 2113,
+      "sesAsis": 114,
+      "sesTotal": 116,
+      "votAsis": 2124,
+      "votTotal": 2129,
       "med": {
         "pos": 5,
         "neg": 6,
-        "neu": 46,
-        "total": 57
+        "neu": 48,
+        "total": 59
       },
       "medSeen": [
         "1a98036adcad",
@@ -801,7 +842,9 @@
         "626e94032ec6",
         "8a082ff15d2c",
         "bca6ca5d7a73",
-        "e3506de7b716"
+        "e3506de7b716",
+        "d02fb9fb9962",
+        "c77d69d7cf9d"
       ],
       "nombreXlsx": "Britton González Esmeralda"
     },
@@ -815,15 +858,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 109,
-      "sesTotal": 111,
-      "votAsis": 1980,
-      "votTotal": 2113,
+      "sesAsis": 113,
+      "sesTotal": 116,
+      "votAsis": 1987,
+      "votTotal": 2129,
       "med": {
-        "pos": 30,
-        "neg": 85,
-        "neu": 30,
-        "total": 145
+        "pos": 33,
+        "neg": 91,
+        "neu": 33,
+        "total": 157
       },
       "medSeen": [
         "c7d9afd35b61",
@@ -970,7 +1013,19 @@
         "e6652d7b3a08",
         "51636c21416d",
         "1afe73a18428",
-        "f65048dc2faf"
+        "f65048dc2faf",
+        "9fc23357522d",
+        "6946df409706",
+        "11523bb4e6da",
+        "305511b6fff6",
+        "a53853d78dcf",
+        "abfe42ef11ad",
+        "e4e44dfbfcfd",
+        "2bacf4034295",
+        "776fcaab70bb",
+        "94b9cd3eb66d",
+        "856a36e48a5a",
+        "7e0d038376f6"
       ],
       "nombreXlsx": "Villalobos Umaña José Miguel"
     },
@@ -984,15 +1039,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 107,
-      "sesTotal": 111,
-      "votAsis": 1679,
-      "votTotal": 2113,
+      "sesAsis": 112,
+      "sesTotal": 116,
+      "votAsis": 1695,
+      "votTotal": 2129,
       "med": {
         "pos": 4,
         "neg": 5,
-        "neu": 43,
-        "total": 52
+        "neu": 46,
+        "total": 55
       },
       "medSeen": [
         "2a80f4b8164d",
@@ -1046,7 +1101,10 @@
         "09967388c623",
         "d089291864ed",
         "476afaba4b73",
-        "e052952bae1d"
+        "e052952bae1d",
+        "83bf45549f04",
+        "3c39576babac",
+        "6793746356fd"
       ],
       "nombreXlsx": "Murillo Marín Zaira"
     },
@@ -1058,17 +1116,17 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
-      "proyectos": 1,
+      "proyectos": 3,
       "aprobados": 0,
-      "sesAsis": 103,
-      "sesTotal": 111,
-      "votAsis": 1962,
-      "votTotal": 2113,
+      "sesAsis": 108,
+      "sesTotal": 116,
+      "votAsis": 1974,
+      "votTotal": 2129,
       "med": {
         "pos": 1,
         "neg": 3,
-        "neu": 56,
-        "total": 60
+        "neu": 62,
+        "total": 66
       },
       "medSeen": [
         "e8cac6cee8cf",
@@ -1130,7 +1188,13 @@
         "d7c11d7c0b42",
         "03a50271253d",
         "ffd738ab11fa",
-        "930c1c67f43c"
+        "930c1c67f43c",
+        "14266b03821d",
+        "8ad2eca908fc",
+        "7af590f643f8",
+        "2056f76fa6e8",
+        "c222c824d800",
+        "16e1e250a74a"
       ],
       "nombreXlsx": "Bogantes Rivera Gerald"
     },
@@ -1144,10 +1208,10 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
-      "sesAsis": 108,
-      "sesTotal": 111,
-      "votAsis": 1779,
-      "votTotal": 2113,
+      "sesAsis": 113,
+      "sesTotal": 116,
+      "votAsis": 1795,
+      "votTotal": 2129,
       "med": {
         "pos": 1,
         "neg": 0,
@@ -1169,10 +1233,10 @@
       "viajes": 0,
       "proyectos": 4,
       "aprobados": 0,
-      "sesAsis": 104,
-      "sesTotal": 111,
-      "votAsis": 1766,
-      "votTotal": 2113,
+      "sesAsis": 109,
+      "sesTotal": 116,
+      "votAsis": 1777,
+      "votTotal": 2129,
       "med": {
         "pos": 0,
         "neg": 0,
@@ -1192,17 +1256,17 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
-      "proyectos": 2,
+      "proyectos": 3,
       "aprobados": 0,
-      "sesAsis": 101,
-      "sesTotal": 111,
-      "votAsis": 1875,
-      "votTotal": 2113,
+      "sesAsis": 106,
+      "sesTotal": 116,
+      "votAsis": 1891,
+      "votTotal": 2129,
       "med": {
-        "pos": 4,
-        "neg": 0,
-        "neu": 17,
-        "total": 21
+        "pos": 7,
+        "neg": 1,
+        "neu": 19,
+        "total": 27
       },
       "medSeen": [
         "ea41467b5e4e",
@@ -1225,7 +1289,13 @@
         "c4fe141ae4ff",
         "6a7d4950029d",
         "85335f62cb6f",
-        "dd71666214f1"
+        "dd71666214f1",
+        "6793746356fd",
+        "86db208f75f9",
+        "9ac4207a2fdb",
+        "caa774f341e5",
+        "83bf45549f04",
+        "539efe3064e6"
       ],
       "nombreXlsx": "Ulate Alvarado Kattia María"
     },
@@ -1239,15 +1309,15 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
-      "sesAsis": 111,
-      "sesTotal": 111,
-      "votAsis": 2102,
-      "votTotal": 2113,
+      "sesAsis": 116,
+      "sesTotal": 116,
+      "votAsis": 2117,
+      "votTotal": 2129,
       "med": {
         "pos": 1,
-        "neg": 48,
-        "neu": 44,
-        "total": 93
+        "neg": 54,
+        "neu": 46,
+        "total": 101
       },
       "medSeen": [
         "ea41467b5e4e",
@@ -1345,7 +1415,15 @@
         "76834965ec8a",
         "521b78d9c989",
         "ccf822366dc6",
-        "7a2ac95dea82"
+        "7a2ac95dea82",
+        "fff9de92687f",
+        "58f909ac7603",
+        "9335a044529b",
+        "785ce9a3132a",
+        "4c0aaf6bf2d8",
+        "f1e394a4422d",
+        "4eb0aeaddd88",
+        "c16af0966385"
       ],
       "nombreXlsx": "Obaldía Álvarez Fernando"
     },
@@ -1359,10 +1437,10 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
-      "sesAsis": 107,
-      "sesTotal": 111,
-      "votAsis": 2109,
-      "votTotal": 2113,
+      "sesAsis": 112,
+      "sesTotal": 116,
+      "votAsis": 2124,
+      "votTotal": 2129,
       "med": {
         "pos": 0,
         "neg": 0,
@@ -1383,12 +1461,12 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
-      "proyectos": 7,
+      "proyectos": 9,
       "aprobados": 0,
-      "sesAsis": 108,
-      "sesTotal": 111,
-      "votAsis": 2102,
-      "votTotal": 2113,
+      "sesAsis": 113,
+      "sesTotal": 116,
+      "votAsis": 2118,
+      "votTotal": 2129,
       "med": {
         "pos": 0,
         "neg": 2,
@@ -1416,15 +1494,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 104,
-      "sesTotal": 111,
-      "votAsis": 2078,
-      "votTotal": 2113,
+      "sesAsis": 109,
+      "sesTotal": 116,
+      "votAsis": 2093,
+      "votTotal": 2129,
       "med": {
-        "pos": 44,
+        "pos": 46,
         "neg": 40,
-        "neu": 52,
-        "total": 136
+        "neu": 54,
+        "total": 140
       },
       "medSeen": [
         "442e4afb112a",
@@ -1562,7 +1640,11 @@
         "6b14a6ea9d31",
         "240d8d02c09b",
         "bf2736e47f6b",
-        "51636c21416d"
+        "51636c21416d",
+        "c16af0966385",
+        "31dd7e7f388f",
+        "e052952bae1d",
+        "4c9c990fb9c3"
       ],
       "nombreXlsx": "Jiménez Fallas Yara"
     },
@@ -1576,15 +1658,15 @@
       "viajes": 0,
       "proyectos": 12,
       "aprobados": 0,
-      "sesAsis": 111,
-      "sesTotal": 111,
-      "votAsis": 2112,
-      "votTotal": 2113,
+      "sesAsis": 116,
+      "sesTotal": 116,
+      "votAsis": 2128,
+      "votTotal": 2129,
       "med": {
         "pos": 7,
         "neg": 9,
-        "neu": 39,
-        "total": 55
+        "neu": 40,
+        "total": 56
       },
       "medSeen": [
         "cb72f396de11",
@@ -1641,7 +1723,8 @@
         "f33f97795999",
         "834bba2a4a20",
         "d15ed2d33b87",
-        "2bacf4034295"
+        "2bacf4034295",
+        "83bf45549f04"
       ],
       "nombreXlsx": "Esquivel Rodríguez Marta Eugenia"
     },
@@ -1655,15 +1738,15 @@
       "viajes": 0,
       "proyectos": 4,
       "aprobados": 0,
-      "sesAsis": 108,
-      "sesTotal": 111,
-      "votAsis": 1994,
-      "votTotal": 2113,
+      "sesAsis": 113,
+      "sesTotal": 116,
+      "votAsis": 2010,
+      "votTotal": 2129,
       "med": {
         "pos": 8,
         "neg": 3,
-        "neu": 56,
-        "total": 67
+        "neu": 62,
+        "total": 73
       },
       "medSeen": [
         "81d78a7b8e48",
@@ -1732,7 +1815,13 @@
         "2998eb5130ef",
         "6b4bb459208d",
         "f6c75d1ed2fd",
-        "39c002f403e3"
+        "39c002f403e3",
+        "ab242a50fc63",
+        "fec01c5633dc",
+        "33dae07b2541",
+        "b7b526dc606a",
+        "9e5b386e39a0",
+        "ebcc1f7853ba"
       ],
       "nombreXlsx": "Quesada Espinoza Juan Manuel"
     },
@@ -1744,17 +1833,17 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
-      "proyectos": 8,
+      "proyectos": 9,
       "aprobados": 0,
-      "sesAsis": 109,
-      "sesTotal": 111,
-      "votAsis": 2098,
-      "votTotal": 2113,
+      "sesAsis": 114,
+      "sesTotal": 116,
+      "votAsis": 2114,
+      "votTotal": 2129,
       "med": {
-        "pos": 21,
+        "pos": 22,
         "neg": 22,
-        "neu": 53,
-        "total": 96
+        "neu": 54,
+        "total": 98
       },
       "medSeen": [
         "7915090eae1e",
@@ -1852,7 +1941,9 @@
         "4f85923feebf",
         "be96c71c594b",
         "1bda6e99767a",
-        "3763f71cdfd1"
+        "3763f71cdfd1",
+        "233ee5942ba7",
+        "7a08b4f70a1b"
       ],
       "nombreXlsx": "Guadamuz Rosales Nayuribe"
     },
@@ -1866,15 +1957,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 108,
-      "sesTotal": 111,
-      "votAsis": 1898,
-      "votTotal": 2113,
+      "sesAsis": 113,
+      "sesTotal": 116,
+      "votAsis": 1914,
+      "votTotal": 2129,
       "med": {
-        "pos": 3,
-        "neg": 1,
-        "neu": 35,
-        "total": 39
+        "pos": 4,
+        "neg": 2,
+        "neu": 36,
+        "total": 42
       },
       "medSeen": [
         "cce72f1124e4",
@@ -1915,7 +2006,10 @@
         "cfe51ea2ded7",
         "5849cffd1eca",
         "a1a217ad34a9",
-        "3763f71cdfd1"
+        "3763f71cdfd1",
+        "dc553baf3d47",
+        "2056f76fa6e8",
+        "caa774f341e5"
       ],
       "nombreXlsx": "Siézar Cárdenas Daniel"
     },
@@ -1929,15 +2023,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 110,
-      "sesTotal": 111,
-      "votAsis": 2106,
-      "votTotal": 2113,
+      "sesAsis": 115,
+      "sesTotal": 116,
+      "votAsis": 2122,
+      "votTotal": 2129,
       "med": {
         "pos": 2,
-        "neg": 46,
-        "neu": 36,
-        "total": 84
+        "neg": 50,
+        "neu": 39,
+        "total": 91
       },
       "medSeen": [
         "7b5bef7b27d0",
@@ -2024,7 +2118,14 @@
         "5849cffd1eca",
         "b6c01c4ac894",
         "ebf3abd0ce61",
-        "a17e2e652a89"
+        "a17e2e652a89",
+        "2dfb93294063",
+        "71af93c0661f",
+        "18d386d6fd31",
+        "e215e873deaf",
+        "9bcbbf6caf65",
+        "a690e8b94751",
+        "e0afe703c5ad"
       ],
       "nombreXlsx": "Murillo Artavia Cindy"
     },
@@ -2038,10 +2139,10 @@
       "viajes": 0,
       "proyectos": 3,
       "aprobados": 0,
-      "sesAsis": 106,
-      "sesTotal": 111,
-      "votAsis": 2073,
-      "votTotal": 2113,
+      "sesAsis": 110,
+      "sesTotal": 116,
+      "votAsis": 2086,
+      "votTotal": 2129,
       "med": {
         "pos": 0,
         "neg": 0,
@@ -2061,15 +2162,15 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
-      "sesAsis": 111,
-      "sesTotal": 111,
-      "votAsis": 2080,
-      "votTotal": 2113,
+      "sesAsis": 116,
+      "sesTotal": 116,
+      "votAsis": 2096,
+      "votTotal": 2129,
       "med": {
         "pos": 3,
-        "neg": 6,
-        "neu": 46,
-        "total": 55
+        "neg": 7,
+        "neu": 47,
+        "total": 57
       },
       "medSeen": [
         "c4d435b24584",
@@ -2126,7 +2227,9 @@
         "705f08685cff",
         "2eee07b4272e",
         "305511b6fff6",
-        "36ec2082c5ab"
+        "36ec2082c5ab",
+        "87a6605bf661",
+        "f082e81e8732"
       ],
       "nombreXlsx": "Camareno Camareno María Isabel"
     },
@@ -2138,17 +2241,17 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
-      "proyectos": 6,
+      "proyectos": 7,
       "aprobados": 0,
-      "sesAsis": 111,
-      "sesTotal": 111,
-      "votAsis": 2064,
-      "votTotal": 2113,
+      "sesAsis": 116,
+      "sesTotal": 116,
+      "votAsis": 2080,
+      "votTotal": 2129,
       "med": {
         "pos": 11,
-        "neg": 27,
-        "neu": 43,
-        "total": 81
+        "neg": 31,
+        "neu": 45,
+        "total": 87
       },
       "medSeen": [
         "982253844a2f",
@@ -2232,7 +2335,13 @@
         "e010ecfc2d9e",
         "858f2215fb29",
         "0deefcc296ff",
-        "37ea23d46723"
+        "37ea23d46723",
+        "b95591456442",
+        "2d9b28a3220d",
+        "54ea930ea085",
+        "68b78bcde482",
+        "9d3687c85c46",
+        "9914d940ade1"
       ],
       "nombreXlsx": "Mora Fallas Ariel"
     },
@@ -2246,15 +2355,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 109,
-      "sesTotal": 111,
-      "votAsis": 2061,
-      "votTotal": 2113,
+      "sesAsis": 114,
+      "sesTotal": 116,
+      "votAsis": 2075,
+      "votTotal": 2129,
       "med": {
-        "pos": 3,
+        "pos": 4,
         "neg": 10,
-        "neu": 37,
-        "total": 50
+        "neu": 38,
+        "total": 52
       },
       "medSeen": [
         "16daabab6057",
@@ -2306,7 +2415,9 @@
         "305511b6fff6",
         "87a6605bf661",
         "fd987126f0bd",
-        "f3c081f590ac"
+        "f3c081f590ac",
+        "0161643192d7",
+        "61acd224b433"
       ],
       "nombreXlsx": "Esquivel Medrano Ana Ruth"
     },
@@ -2320,15 +2431,15 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 1,
-      "sesAsis": 99,
-      "sesTotal": 111,
-      "votAsis": 1707,
-      "votTotal": 2113,
+      "sesAsis": 103,
+      "sesTotal": 116,
+      "votAsis": 1720,
+      "votTotal": 2129,
       "med": {
         "pos": 2,
-        "neg": 0,
-        "neu": 52,
-        "total": 54
+        "neg": 1,
+        "neu": 53,
+        "total": 56
       },
       "medSeen": [
         "8b60d728eeae",
@@ -2383,7 +2494,9 @@
         "bcee1f17abca",
         "562a6bc0fb7f",
         "5c9216231544",
-        "53486d44f4b7"
+        "53486d44f4b7",
+        "d57fa2d1060a",
+        "83bf45549f04"
       ],
       "nombreXlsx": "Artavia Carballo Osvaldo"
     },
@@ -2397,15 +2510,15 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
-      "sesAsis": 31,
-      "sesTotal": 111,
-      "votAsis": 66,
-      "votTotal": 2113,
+      "sesAsis": 36,
+      "sesTotal": 116,
+      "votAsis": 82,
+      "votTotal": 2129,
       "med": {
         "pos": 5,
         "neg": 3,
-        "neu": 42,
-        "total": 50
+        "neu": 44,
+        "total": 52
       },
       "medSeen": [
         "848a22476ad9",
@@ -2457,7 +2570,9 @@
         "83efa1a6a683",
         "b9390a81ee5b",
         "626e94032ec6",
-        "360553e86d6c"
+        "360553e86d6c",
+        "3216addd490e",
+        "2b54a850af13"
       ],
       "nombreXlsx": "Ward Hudson Kristel"
     },
@@ -2471,15 +2586,15 @@
       "viajes": 0,
       "proyectos": 4,
       "aprobados": 0,
-      "sesAsis": 108,
-      "sesTotal": 111,
-      "votAsis": 2061,
-      "votTotal": 2113,
+      "sesAsis": 113,
+      "sesTotal": 116,
+      "votAsis": 2076,
+      "votTotal": 2129,
       "med": {
         "pos": 14,
-        "neg": 23,
-        "neu": 38,
-        "total": 75
+        "neg": 24,
+        "neu": 41,
+        "total": 79
       },
       "medSeen": [
         "96c2e287ebf7",
@@ -2556,7 +2671,11 @@
         "8a187b3f9c66",
         "50304d143678",
         "1f2e511bbf83",
-        "dc49efc40dc5"
+        "dc49efc40dc5",
+        "afa656b04996",
+        "75fd89e25174",
+        "6236d78b5ba5",
+        "d95827ae5990"
       ],
       "nombreXlsx": "Calvo Cruz Kattia"
     },
@@ -2570,15 +2689,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 103,
-      "sesTotal": 111,
-      "votAsis": 2024,
-      "votTotal": 2113,
+      "sesAsis": 108,
+      "sesTotal": 116,
+      "votAsis": 2040,
+      "votTotal": 2129,
       "med": {
         "pos": 0,
         "neg": 0,
-        "neu": 47,
-        "total": 47
+        "neu": 48,
+        "total": 48
       },
       "medSeen": [
         "b93a012e861b",
@@ -2627,7 +2746,8 @@
         "1bda6e99767a",
         "705f08685cff",
         "deefa9d84db6",
-        "360553e86d6c"
+        "360553e86d6c",
+        "ef6c5bbb11e7"
       ],
       "nombreXlsx": "Arias Mora Reynaldo"
     },
@@ -2641,15 +2761,15 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
-      "sesAsis": 111,
-      "sesTotal": 111,
-      "votAsis": 1970,
-      "votTotal": 2113,
+      "sesAsis": 116,
+      "sesTotal": 116,
+      "votAsis": 1986,
+      "votTotal": 2129,
       "med": {
         "pos": 17,
         "neg": 8,
-        "neu": 154,
-        "total": 179
+        "neu": 163,
+        "total": 188
       },
       "medSeen": [
         "3d69f18593b5",
@@ -2829,7 +2949,16 @@
         "3eaf1974f97c",
         "f37af595d612",
         "746dbabdff37",
-        "b175945471e8"
+        "b175945471e8",
+        "4bd1f5bf015b",
+        "d02fb9fb9962",
+        "71db1467341b",
+        "8d6afe4ad6c2",
+        "c800d5fd1967",
+        "e08df52c6bfc",
+        "8b4fa12187b2",
+        "8a9fa0f54238",
+        "bbf19b91d99b"
       ],
       "nombreXlsx": "Ramírez Bogantes Álvaro"
     },
@@ -2843,15 +2972,15 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
-      "sesAsis": 96,
-      "sesTotal": 111,
-      "votAsis": 1878,
-      "votTotal": 2113,
+      "sesAsis": 100,
+      "sesTotal": 116,
+      "votAsis": 1892,
+      "votTotal": 2129,
       "med": {
         "pos": 14,
         "neg": 4,
-        "neu": 57,
-        "total": 75
+        "neu": 59,
+        "total": 77
       },
       "medSeen": [
         "26528e3d718d",
@@ -2928,7 +3057,9 @@
         "f2b7e2c0d8d0",
         "64d102c8b7d5",
         "e1f68dc7f743",
-        "867726a43bc3"
+        "867726a43bc3",
+        "00f1a35c3b64",
+        "33dae07b2541"
       ],
       "nombreXlsx": "Alfaro Guerrero Iztarú"
     },
@@ -2942,15 +3073,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 109,
-      "sesTotal": 111,
-      "votAsis": 1818,
-      "votTotal": 2113,
+      "sesAsis": 114,
+      "sesTotal": 116,
+      "votAsis": 1833,
+      "votTotal": 2129,
       "med": {
         "pos": 3,
         "neg": 1,
-        "neu": 65,
-        "total": 69
+        "neu": 71,
+        "total": 75
       },
       "medSeen": [
         "8346f2eaf5d8",
@@ -3022,7 +3153,13 @@
         "1157cd166f65",
         "c72dde3bbb60",
         "92c83d2b0834",
-        "a09873f41f61"
+        "a09873f41f61",
+        "5080ac807c5c",
+        "159c8aa31daf",
+        "33dae07b2541",
+        "8db76bb25329",
+        "6fb86093bfca",
+        "3c45723a9fd6"
       ],
       "nombreXlsx": "Vargas Brenes Rafael"
     },
@@ -3036,15 +3173,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 105,
-      "sesTotal": 111,
-      "votAsis": 1326,
-      "votTotal": 2113,
+      "sesAsis": 110,
+      "sesTotal": 116,
+      "votAsis": 1342,
+      "votTotal": 2129,
       "med": {
         "pos": 1,
         "neg": 0,
-        "neu": 60,
-        "total": 61
+        "neu": 64,
+        "total": 65
       },
       "medSeen": [
         "a3b01178f3a6",
@@ -3107,7 +3244,11 @@
         "5f2ff4f18c88",
         "be96c71c594b",
         "1bda6e99767a",
-        "0991c1b21f74"
+        "0991c1b21f74",
+        "dfc216cfb272",
+        "33dae07b2541",
+        "a961d07a73f3",
+        "74e191b14ba3"
       ],
       "nombreXlsx": "Valverde Palavicini Andrea"
     },
@@ -3119,12 +3260,12 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
-      "proyectos": 0,
+      "proyectos": 1,
       "aprobados": 0,
-      "sesAsis": 105,
-      "sesTotal": 111,
-      "votAsis": 1803,
-      "votTotal": 2113,
+      "sesAsis": 110,
+      "sesTotal": 116,
+      "votAsis": 1819,
+      "votTotal": 2129,
       "med": {
         "pos": 1,
         "neg": 2,
@@ -3202,15 +3343,15 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
-      "sesAsis": 99,
-      "sesTotal": 111,
-      "votAsis": 1862,
-      "votTotal": 2113,
+      "sesAsis": 104,
+      "sesTotal": 116,
+      "votAsis": 1878,
+      "votTotal": 2129,
       "med": {
         "pos": 3,
-        "neg": 0,
-        "neu": 56,
-        "total": 59
+        "neg": 1,
+        "neu": 58,
+        "total": 62
       },
       "medSeen": [
         "b1260053c515",
@@ -3271,7 +3412,10 @@
         "d41e464b6f6a",
         "066bbe46f16a",
         "e3792914cf8e",
-        "a7283b2e32a7"
+        "a7283b2e32a7",
+        "2adb20a8dbf4",
+        "33dae07b2541",
+        "74e191b14ba3"
       ],
       "nombreXlsx": "Alfaro Jiménez Karen"
     },
@@ -3285,15 +3429,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 103,
-      "sesTotal": 111,
-      "votAsis": 1857,
-      "votTotal": 2113,
+      "sesAsis": 108,
+      "sesTotal": 116,
+      "votAsis": 1873,
+      "votTotal": 2129,
       "med": {
-        "pos": 23,
+        "pos": 24,
         "neg": 5,
-        "neu": 39,
-        "total": 67
+        "neu": 44,
+        "total": 73
       },
       "medSeen": [
         "e07a8db3836a",
@@ -3362,7 +3506,13 @@
         "5daf5fb1789f",
         "cdcdecd00f3c",
         "420be98f88ff",
-        "dd44ccba123b"
+        "dd44ccba123b",
+        "00f1a35c3b64",
+        "26c64851b703",
+        "aacf839b831f",
+        "2f7fc64df79e",
+        "82d8772d0615",
+        "e215e873deaf"
       ],
       "nombreXlsx": "Murillo Murillo Diana"
     },
@@ -3376,15 +3526,15 @@
       "viajes": 0,
       "proyectos": 3,
       "aprobados": 0,
-      "sesAsis": 98,
-      "sesTotal": 111,
-      "votAsis": 1658,
-      "votTotal": 2113,
+      "sesAsis": 102,
+      "sesTotal": 116,
+      "votAsis": 1672,
+      "votTotal": 2129,
       "med": {
-        "pos": 13,
+        "pos": 15,
         "neg": 8,
-        "neu": 91,
-        "total": 112
+        "neu": 92,
+        "total": 115
       },
       "medSeen": [
         "d5e7ebef9f57",
@@ -3498,7 +3648,10 @@
         "2f2f0319aece",
         "d404e2160a4a",
         "a39726031d95",
-        "1dbef7a95409"
+        "1dbef7a95409",
+        "b0730f24a5fc",
+        "74e191b14ba3",
+        "ffb07b0f5c56"
       ],
       "nombreXlsx": "Hernández Ulloa Eder"
     },
@@ -3512,15 +3665,15 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
-      "sesAsis": 109,
-      "sesTotal": 111,
-      "votAsis": 2112,
-      "votTotal": 2113,
+      "sesAsis": 114,
+      "sesTotal": 116,
+      "votAsis": 2128,
+      "votTotal": 2129,
       "med": {
-        "pos": 8,
+        "pos": 10,
         "neg": 8,
-        "neu": 46,
-        "total": 62
+        "neu": 49,
+        "total": 67
       },
       "medSeen": [
         "3a3920fa97a8",
@@ -3584,7 +3737,12 @@
         "30502852d005",
         "be96c71c594b",
         "1bda6e99767a",
-        "66914726aa83"
+        "66914726aa83",
+        "bc906f6339ae",
+        "00f1a35c3b64",
+        "ebebe39b0dee",
+        "f4b1042c2dda",
+        "0e04a3984fe5"
       ],
       "nombreXlsx": "Sandí Morales Janice"
     },
@@ -3596,17 +3754,17 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
-      "proyectos": 8,
+      "proyectos": 9,
       "aprobados": 0,
-      "sesAsis": 98,
-      "sesTotal": 111,
-      "votAsis": 1159,
-      "votTotal": 2113,
+      "sesAsis": 103,
+      "sesTotal": 116,
+      "votAsis": 1168,
+      "votTotal": 2129,
       "med": {
         "pos": 15,
         "neg": 8,
-        "neu": 50,
-        "total": 73
+        "neu": 56,
+        "total": 79
       },
       "medSeen": [
         "6fbfe8530466",
@@ -3682,7 +3840,13 @@
         "581a96084f5a",
         "b850a093185a",
         "3727ae0c8014",
-        "263170d1eea8"
+        "263170d1eea8",
+        "2e8a21491f15",
+        "e622ed8d02f4",
+        "047435fa44da",
+        "16e1e250a74a",
+        "6f2cfb25afbf",
+        "5a8d1b985749"
       ],
       "nombreXlsx": "Padilla Villanueva Salvador"
     },
@@ -3696,15 +3860,15 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
-      "sesAsis": 98,
-      "sesTotal": 111,
-      "votAsis": 1676,
-      "votTotal": 2113,
+      "sesAsis": 103,
+      "sesTotal": 116,
+      "votAsis": 1688,
+      "votTotal": 2129,
       "med": {
         "pos": 7,
         "neg": 0,
-        "neu": 52,
-        "total": 59
+        "neu": 54,
+        "total": 61
       },
       "medSeen": [
         "7dd496037997",
@@ -3765,7 +3929,9 @@
         "bdc7da9b29e5",
         "be565a914764",
         "70d312c29577",
-        "1a5a4d9a441a"
+        "1a5a4d9a441a",
+        "e0d7c8575e9f",
+        "69892d660da4"
       ],
       "nombreXlsx": "Hidalgo Solís Víctor"
     },
@@ -3779,15 +3945,15 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
-      "sesAsis": 111,
-      "sesTotal": 111,
-      "votAsis": 2099,
-      "votTotal": 2113,
+      "sesAsis": 116,
+      "sesTotal": 116,
+      "votAsis": 2114,
+      "votTotal": 2129,
       "med": {
-        "pos": 11,
-        "neg": 14,
-        "neu": 140,
-        "total": 165
+        "pos": 13,
+        "neg": 15,
+        "neu": 146,
+        "total": 174
       },
       "medSeen": [
         "8b8207561ce9",
@@ -3954,7 +4120,16 @@
         "e63cbb71d28f",
         "1ac3ab2ff8eb",
         "a191306292d2",
-        "acc106f6e3b8"
+        "acc106f6e3b8",
+        "7f83c6871324",
+        "462d38729657",
+        "a52892b6fda3",
+        "a319d346c6f8",
+        "3586221a4932",
+        "4ddf7c2677fc",
+        "d6943c6f9d6a",
+        "433b734427e4",
+        "f7c980ab5e7c"
       ],
       "nombreXlsx": "Aguilar Vargas Ángela"
     },
@@ -3968,15 +4143,15 @@
       "viajes": 0,
       "proyectos": 0,
       "aprobados": 0,
-      "sesAsis": 106,
-      "sesTotal": 111,
-      "votAsis": 1766,
-      "votTotal": 2113,
+      "sesAsis": 111,
+      "sesTotal": 116,
+      "votAsis": 1782,
+      "votTotal": 2129,
       "med": {
         "pos": 3,
         "neg": 8,
-        "neu": 42,
-        "total": 53
+        "neu": 48,
+        "total": 59
       },
       "medSeen": [
         "fc2cf66ceab8",
@@ -4031,7 +4206,13 @@
         "7d7be62777ee",
         "d41e464b6f6a",
         "562a6bc0fb7f",
-        "8302ad45a8e1"
+        "8302ad45a8e1",
+        "0b3910d9128b",
+        "f1da8f2b41eb",
+        "ebebe39b0dee",
+        "e2b5f147c950",
+        "d42fefce3f9e",
+        "6df1cce5a14c"
       ],
       "nombreXlsx": "Campos Villegas Ronald"
     },
@@ -4045,10 +4226,10 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
-      "sesAsis": 108,
-      "sesTotal": 111,
-      "votAsis": 2050,
-      "votTotal": 2113,
+      "sesAsis": 113,
+      "sesTotal": 116,
+      "votAsis": 2066,
+      "votTotal": 2129,
       "med": {
         "pos": 0,
         "neg": 0,
@@ -4070,20 +4251,21 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
-      "sesAsis": 98,
-      "sesTotal": 111,
-      "votAsis": 1905,
-      "votTotal": 2113,
+      "sesAsis": 103,
+      "sesTotal": 116,
+      "votAsis": 1916,
+      "votTotal": 2129,
       "med": {
         "pos": 0,
         "neg": 0,
-        "neu": 3,
-        "total": 3
+        "neu": 4,
+        "total": 4
       },
       "medSeen": [
         "b5f74cf9ef9c",
         "a31dc5658eff",
-        "f53845316077"
+        "f53845316077",
+        "f36d4463892e"
       ],
       "nombreXlsx": "Lobo Vargas Norjelens María"
     },
@@ -4098,14 +4280,14 @@
       "proyectos": 2,
       "aprobados": 0,
       "sesAsis": 80,
-      "sesTotal": 111,
+      "sesTotal": 116,
       "votAsis": 1344,
-      "votTotal": 2113,
+      "votTotal": 2129,
       "med": {
         "pos": 0,
         "neg": 5,
-        "neu": 63,
-        "total": 68
+        "neu": 66,
+        "total": 71
       },
       "medSeen": [
         "8f2575f81b4b",
@@ -4176,7 +4358,10 @@
         "d41e464b6f6a",
         "ec99207ab981",
         "6353f92f149b",
-        "efd34832b0c5"
+        "efd34832b0c5",
+        "553166d7ba0e",
+        "0b4c99f7c424",
+        "dc46b19895bf"
       ],
       "nombreXlsx": "Calderón Calderón Jesús"
     },
@@ -4190,10 +4375,10 @@
       "viajes": 0,
       "proyectos": 3,
       "aprobados": 0,
-      "sesAsis": 103,
-      "sesTotal": 111,
+      "sesAsis": 104,
+      "sesTotal": 116,
       "votAsis": 1840,
-      "votTotal": 2113,
+      "votTotal": 2129,
       "med": {
         "pos": 0,
         "neg": 0,
@@ -4213,15 +4398,15 @@
       "viajes": 0,
       "proyectos": 14,
       "aprobados": 0,
-      "sesAsis": 110,
-      "sesTotal": 111,
-      "votAsis": 1819,
-      "votTotal": 2113,
+      "sesAsis": 115,
+      "sesTotal": 116,
+      "votAsis": 1835,
+      "votTotal": 2129,
       "med": {
-        "pos": 40,
+        "pos": 45,
         "neg": 9,
-        "neu": 71,
-        "total": 120
+        "neu": 74,
+        "total": 128
       },
       "medSeen": [
         "e0770a1054b6",
@@ -4343,7 +4528,15 @@
         "30640dc30b3d",
         "19d1c7d49dc4",
         "c82ab7fbbacb",
-        "c71279babd77"
+        "c71279babd77",
+        "b32b979005d9",
+        "cc656ffc305c",
+        "d42fefce3f9e",
+        "e1914a91ac54",
+        "c2f5ae52ccb3",
+        "8ba85bfaadde",
+        "b1fb31d721e6",
+        "ddbee63fa74e"
       ],
       "nombreXlsx": "Villalta Flórez-Estrada José María"
     },
@@ -4355,17 +4548,17 @@
       "ausCom": 0,
       "permCom": 0,
       "viajes": 0,
-      "proyectos": 3,
+      "proyectos": 4,
       "aprobados": 0,
-      "sesAsis": 102,
-      "sesTotal": 111,
-      "votAsis": 1831,
-      "votTotal": 2113,
+      "sesAsis": 107,
+      "sesTotal": 116,
+      "votAsis": 1845,
+      "votTotal": 2129,
       "med": {
-        "pos": 8,
+        "pos": 9,
         "neg": 7,
-        "neu": 46,
-        "total": 61
+        "neu": 49,
+        "total": 65
       },
       "medSeen": [
         "e07a8db3836a",
@@ -4432,7 +4625,11 @@
         "d71be6216e7f",
         "a53853d78dcf",
         "a17e2e652a89",
-        "9e8d21b8ffb2"
+        "9e8d21b8ffb2",
+        "d62593294326",
+        "4508c17366b5",
+        "d42fefce3f9e",
+        "83bf45549f04"
       ],
       "nombreXlsx": "Mora Vega Vianey"
     },
@@ -4446,15 +4643,15 @@
       "viajes": 0,
       "proyectos": 8,
       "aprobados": 0,
-      "sesAsis": 110,
-      "sesTotal": 111,
-      "votAsis": 1646,
-      "votTotal": 2113,
+      "sesAsis": 115,
+      "sesTotal": 116,
+      "votAsis": 1662,
+      "votTotal": 2129,
       "med": {
         "pos": 16,
         "neg": 0,
-        "neu": 57,
-        "total": 73
+        "neu": 63,
+        "total": 79
       },
       "medSeen": [
         "cddb16fdc62b",
@@ -4528,7 +4725,13 @@
         "8998fdef9c47",
         "f32b13dbf3f1",
         "6ba89114eb85",
-        "dcef9d47cbc1"
+        "dcef9d47cbc1",
+        "cc33343a8ceb",
+        "eca8c09b5c98",
+        "6cdfc6c536cb",
+        "111208cfaa8d",
+        "857b785ebd33",
+        "34627e133b33"
       ],
       "nombreXlsx": "Trejos Mazariegos Antonio"
     },
@@ -4542,15 +4745,15 @@
       "viajes": 0,
       "proyectos": 2,
       "aprobados": 0,
-      "sesAsis": 100,
-      "sesTotal": 111,
-      "votAsis": 1655,
-      "votTotal": 2113,
+      "sesAsis": 105,
+      "sesTotal": 116,
+      "votAsis": 1671,
+      "votTotal": 2129,
       "med": {
-        "pos": 19,
-        "neg": 36,
-        "neu": 54,
-        "total": 109
+        "pos": 21,
+        "neg": 37,
+        "neu": 58,
+        "total": 116
       },
       "medSeen": [
         "b9438f1f463a",
@@ -4662,7 +4865,14 @@
         "e0adff95180f",
         "2f778d7a516d",
         "861ce5dfd689",
-        "3febb02ccf72"
+        "3febb02ccf72",
+        "e58f8108c724",
+        "929b15d2acdc",
+        "3c39576babac",
+        "3260a8d2ea4c",
+        "5e376b919474",
+        "cc9db02c8eb3",
+        "5e2c7d55545b"
       ],
       "nombreXlsx": "Araya Sibaja Edgardo"
     },
@@ -4676,15 +4886,15 @@
       "viajes": 0,
       "proyectos": 3,
       "aprobados": 0,
-      "sesAsis": 108,
-      "sesTotal": 111,
-      "votAsis": 1635,
-      "votTotal": 2113,
+      "sesAsis": 113,
+      "sesTotal": 116,
+      "votAsis": 1650,
+      "votTotal": 2129,
       "med": {
         "pos": 16,
-        "neg": 6,
-        "neu": 43,
-        "total": 65
+        "neg": 12,
+        "neu": 45,
+        "total": 73
       },
       "medSeen": [
         "1739a2ecf1e9",
@@ -4751,7 +4961,15 @@
         "a1a217ad34a9",
         "4ca1ad326076",
         "e28f5187e7c6",
-        "c9d03341a76d"
+        "c9d03341a76d",
+        "1df670f4972c",
+        "466df0a48e3d",
+        "2e41d6585bd1",
+        "6abc9a0904bd",
+        "912d5e20b44c",
+        "3c20b58c7bf8",
+        "5d01ab4a602e",
+        "e9c9eb76007c"
       ],
       "nombreXlsx": "Segura Artavia Sigrid"
     },
@@ -4765,15 +4983,15 @@
       "viajes": 0,
       "proyectos": 3,
       "aprobados": 0,
-      "sesAsis": 105,
-      "sesTotal": 111,
-      "votAsis": 1409,
-      "votTotal": 2113,
+      "sesAsis": 109,
+      "sesTotal": 116,
+      "votAsis": 1416,
+      "votTotal": 2129,
       "med": {
-        "pos": 25,
+        "pos": 28,
         "neg": 4,
-        "neu": 39,
-        "total": 68
+        "neu": 41,
+        "total": 73
       },
       "medSeen": [
         "0b9ae10d6b46",
@@ -4843,7 +5061,12 @@
         "bb5f0ad16d2f",
         "b20300193563",
         "1534af36188a",
-        "77ec99a38c70"
+        "77ec99a38c70",
+        "277157fbfa70",
+        "3d543b61ae2c",
+        "135ee19fa173",
+        "4508c17366b5",
+        "504772859a8f"
       ],
       "nombreXlsx": "Sáenz Blanco Joselyn"
     },
@@ -4857,15 +5080,15 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
-      "sesAsis": 106,
-      "sesTotal": 111,
-      "votAsis": 2038,
-      "votTotal": 2113,
+      "sesAsis": 111,
+      "sesTotal": 116,
+      "votAsis": 2053,
+      "votTotal": 2129,
       "med": {
-        "pos": 3,
-        "neg": 3,
+        "pos": 4,
+        "neg": 4,
         "neu": 62,
-        "total": 68
+        "total": 70
       },
       "medSeen": [
         "608332cb8c46",
@@ -4937,7 +5160,9 @@
         "a17e2e652a89",
         "2c24fef0f248",
         "a53853d78dcf",
-        "03a50271253d"
+        "03a50271253d",
+        "9bcbbf6caf65",
+        "a690e8b94751"
       ],
       "nombreXlsx": "Román Mora María Eugenia"
     },
@@ -4951,15 +5176,15 @@
       "viajes": 0,
       "proyectos": 5,
       "aprobados": 0,
-      "sesAsis": 107,
-      "sesTotal": 111,
-      "votAsis": 1155,
-      "votTotal": 2113,
+      "sesAsis": 111,
+      "sesTotal": 116,
+      "votAsis": 1168,
+      "votTotal": 2129,
       "med": {
-        "pos": 76,
-        "neg": 32,
-        "neu": 53,
-        "total": 161
+        "pos": 78,
+        "neg": 35,
+        "neu": 55,
+        "total": 168
       },
       "medSeen": [
         "c0d19e4ec312",
@@ -5122,7 +5347,14 @@
         "daa266c273aa",
         "b251b855e121",
         "9edf65a77f47",
-        "066912cc0f64"
+        "066912cc0f64",
+        "35208a8c60e2",
+        "813ae7b7414b",
+        "1c51e76a55ea",
+        "d02fb9fb9962",
+        "04c2c9c1d590",
+        "9276d80f0cb3",
+        "91712829de55"
       ],
       "nombreXlsx": "Dobles Camargo Claudia"
     },
@@ -5136,15 +5368,15 @@
       "viajes": 0,
       "proyectos": 8,
       "aprobados": 0,
-      "sesAsis": 107,
-      "sesTotal": 111,
-      "votAsis": 1401,
-      "votTotal": 2113,
+      "sesAsis": 112,
+      "sesTotal": 116,
+      "votAsis": 1416,
+      "votTotal": 2129,
       "med": {
-        "pos": 56,
+        "pos": 58,
         "neg": 18,
-        "neu": 89,
-        "total": 163
+        "neu": 98,
+        "total": 174
       },
       "medSeen": [
         "6ff8d054ed4e",
@@ -5309,7 +5541,18 @@
         "6a576450e391",
         "445d9cedb88a",
         "a102d0934c4f",
-        "b71de2d7ef92"
+        "b71de2d7ef92",
+        "8302233e1dfa",
+        "fa3f319c0ac7",
+        "eec72ec9b69e",
+        "ae3f61a8d4e3",
+        "dd72bfeaa33b",
+        "a53853d78dcf",
+        "a17e2e652a89",
+        "30640dc30b3d",
+        "a1a217ad34a9",
+        "03a50271253d",
+        "50417e33dd0d"
       ],
       "nombreXlsx": "Gordienko López Abril"
     }
