@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-11-09T22:02:39.406Z",
+  "updatedAt": "2026-11-16T21:42:47.190Z",
   "source": "https://www.asamblea.go.cr/pa/datosabiertos/",
   "attendanceMonths": [],
   "tripMonths": [],
-  "medUpdatedAt": "2026-11-09T22:02:39.406Z",
+  "medUpdatedAt": "2026-11-16T21:42:47.189Z",
   "projectsTerm": "2026-2030",
   "avgViajes": null,
   "avgPermRatio": 0,
@@ -246,10 +246,10 @@
       "votAsis": 1890,
       "votTotal": 2169,
       "med": {
-        "pos": 8,
+        "pos": 9,
         "neg": 4,
-        "neu": 33,
-        "total": 45
+        "neu": 38,
+        "total": 51
       },
       "medSeen": [
         "5b5fe36e9573",
@@ -297,7 +297,13 @@
         "33b6f99d934c",
         "0c29523176b5",
         "64b51ddd0f64",
-        "0c972bdf18bd"
+        "0c972bdf18bd",
+        "2afa1576c245",
+        "493988f6cd85",
+        "efabb1df3604",
+        "b6af62f10392",
+        "93e2937ce71c",
+        "d40f1e9fe8e8"
       ],
       "nombreXlsx": "Mora Montoya Kattya"
     },
@@ -417,9 +423,9 @@
       "votTotal": 2169,
       "med": {
         "pos": 19,
-        "neg": 27,
-        "neu": 58,
-        "total": 104
+        "neg": 35,
+        "neu": 59,
+        "total": 113
       },
       "medSeen": [
         "9a0ee3bde85e",
@@ -525,7 +531,16 @@
         "a0c1cc650b19",
         "fd59bfe958af",
         "327bcd1c2eb1",
-        "75ca9ee18dba"
+        "75ca9ee18dba",
+        "c1ba63db96c7",
+        "c47a758b0a33",
+        "7e59c1092816",
+        "1aff3c1f9080",
+        "78a5fd425c78",
+        "0a986cc91cce",
+        "eec8c3d9f485",
+        "d423f8ee8d61",
+        "c7786bf7a473"
       ],
       "nombreXlsx": "Ortega Guzmán Mayuli"
     },
@@ -787,10 +802,10 @@
       "votAsis": 2142,
       "votTotal": 2169,
       "med": {
-        "pos": 27,
+        "pos": 29,
         "neg": 9,
         "neu": 41,
-        "total": 77
+        "total": 79
       },
       "medSeen": [
         "dea43931af5b",
@@ -869,7 +884,9 @@
         "6bc36aaa2c19",
         "9282926c5af0",
         "c22e8da0e12d",
-        "71d9b9adb31d"
+        "71d9b9adb31d",
+        "24797d07051e",
+        "7fe0f388369e"
       ],
       "nombreXlsx": "Barzuna Thompson Antonio"
     },
@@ -890,8 +907,8 @@
       "med": {
         "pos": 5,
         "neg": 6,
-        "neu": 59,
-        "total": 70
+        "neu": 62,
+        "total": 73
       },
       "medSeen": [
         "1a98036adcad",
@@ -963,7 +980,10 @@
         "da3dd2a50b43",
         "cfa5c9743286",
         "eb2c54b1bc49",
-        "94e146710407"
+        "94e146710407",
+        "77a58ab57d99",
+        "8d8b092be1b3",
+        "59d1eae2a5bd"
       ],
       "nombreXlsx": "Britton González Esmeralda"
     },
@@ -983,9 +1003,9 @@
       "votTotal": 2169,
       "med": {
         "pos": 40,
-        "neg": 97,
+        "neg": 100,
         "neu": 45,
-        "total": 182
+        "total": 185
       },
       "medSeen": [
         "c7d9afd35b61",
@@ -1169,7 +1189,10 @@
         "4bae4f56e8e5",
         "e0d349c4ea9a",
         "604949f9dfc6",
-        "3d24dc757e7b"
+        "3d24dc757e7b",
+        "e0461035311c",
+        "0d2906f34c2d",
+        "1ef87d58c0b1"
       ],
       "nombreXlsx": "Villalobos Umaña José Miguel"
     },
@@ -1484,9 +1507,9 @@
       "votTotal": 2169,
       "med": {
         "pos": 1,
-        "neg": 59,
-        "neu": 58,
-        "total": 118
+        "neg": 64,
+        "neu": 61,
+        "total": 126
       },
       "medSeen": [
         "ea41467b5e4e",
@@ -1609,7 +1632,15 @@
         "c3be9b900c61",
         "185711d40dc9",
         "d065087fb6db",
-        "3b1a33751ffe"
+        "3b1a33751ffe",
+        "faf160e9b679",
+        "32654da4857c",
+        "4d43b02dfa1a",
+        "371249135b77",
+        "22371c938808",
+        "5a991873cdf7",
+        "8f9f49f9a446",
+        "cf92ea678ffe"
       ],
       "nombreXlsx": "Obaldía Álvarez Fernando"
     },
@@ -1973,8 +2004,8 @@
       "med": {
         "pos": 9,
         "neg": 5,
-        "neu": 75,
-        "total": 89
+        "neu": 77,
+        "total": 91
       },
       "medSeen": [
         "81d78a7b8e48",
@@ -2065,7 +2096,9 @@
         "6c804092e02c",
         "9c1b8ccaebb6",
         "fef219e70689",
-        "c92c5de2186a"
+        "c92c5de2186a",
+        "9e4367504d62",
+        "f226077e5753"
       ],
       "nombreXlsx": "Quesada Espinoza Juan Manuel"
     },
@@ -2217,9 +2250,9 @@
       "votTotal": 2169,
       "med": {
         "pos": 5,
-        "neg": 5,
-        "neu": 43,
-        "total": 53
+        "neg": 6,
+        "neu": 44,
+        "total": 55
       },
       "medSeen": [
         "cce72f1124e4",
@@ -2274,7 +2307,9 @@
         "ad94dfe42dba",
         "185711d40dc9",
         "3b1a33751ffe",
-        "3d3263cc2c65"
+        "3d3263cc2c65",
+        "8b5665b97d4d",
+        "82e444ccbc7d"
       ],
       "nombreXlsx": "Siézar Cárdenas Daniel"
     },
@@ -2294,9 +2329,9 @@
       "votTotal": 2169,
       "med": {
         "pos": 2,
-        "neg": 56,
-        "neu": 42,
-        "total": 100
+        "neg": 58,
+        "neu": 46,
+        "total": 106
       },
       "medSeen": [
         "7b5bef7b27d0",
@@ -2399,7 +2434,13 @@
         "7c1f0fa488f8",
         "8ee417f650a9",
         "b1fb31d721e6",
-        "6406119188e7"
+        "6406119188e7",
+        "48d5e5c9edad",
+        "089b8e7cfb13",
+        "482c4d5e820f",
+        "b44c5adc7a4e",
+        "ad94dfe42dba",
+        "29eadda1cddf"
       ],
       "nombreXlsx": "Murillo Artavia Cindy"
     },
@@ -2530,8 +2571,8 @@
       "med": {
         "pos": 13,
         "neg": 34,
-        "neu": 55,
-        "total": 102
+        "neu": 58,
+        "total": 105
       },
       "medSeen": [
         "982253844a2f",
@@ -2636,7 +2677,10 @@
         "070ba14ac7b9",
         "05b8e81cca07",
         "ae648f2df1d7",
-        "81ea3a4b06e3"
+        "81ea3a4b06e3",
+        "5596f85af8ba",
+        "2ed7c3553a6f",
+        "eb2c54b1bc49"
       ],
       "nombreXlsx": "Mora Fallas Ariel"
     },
@@ -2745,8 +2789,8 @@
       "med": {
         "pos": 2,
         "neg": 1,
-        "neu": 63,
-        "total": 66
+        "neu": 66,
+        "total": 69
       },
       "medSeen": [
         "8b60d728eeae",
@@ -2813,7 +2857,10 @@
         "a93a63a05e1b",
         "185711d40dc9",
         "a44ba9437f2e",
-        "7f595ebe6d1b"
+        "7f595ebe6d1b",
+        "1b1be6f364f4",
+        "ed4b16cf937c",
+        "d9ae6527eddc"
       ],
       "nombreXlsx": "Artavia Carballo Osvaldo"
     },
@@ -2834,8 +2881,8 @@
       "med": {
         "pos": 9,
         "neg": 3,
-        "neu": 52,
-        "total": 64
+        "neu": 54,
+        "total": 66
       },
       "medSeen": [
         "848a22476ad9",
@@ -2901,7 +2948,9 @@
         "03b6ca0c37d3",
         "3c937a581a85",
         "4b04eb1cc010",
-        "a5269c8c627f"
+        "a5269c8c627f",
+        "f56a6fecb6d4",
+        "19b79e4ec102"
       ],
       "nombreXlsx": "Ward Hudson Kristel"
     },
@@ -2920,10 +2969,10 @@
       "votAsis": 2112,
       "votTotal": 2169,
       "med": {
-        "pos": 21,
+        "pos": 22,
         "neg": 34,
-        "neu": 52,
-        "total": 107
+        "neu": 56,
+        "total": 112
       },
       "medSeen": [
         "96c2e287ebf7",
@@ -3032,7 +3081,12 @@
         "7f7662660460",
         "67533f4aa94e",
         "5cffec3bd308",
-        "73239e0c2812"
+        "73239e0c2812",
+        "62f1f55f1e95",
+        "a256e11b17e8",
+        "f34863ebad06",
+        "4ec8f35cdc0e",
+        "be9239f6d636"
       ],
       "nombreXlsx": "Calvo Cruz Kattia"
     },
@@ -3360,10 +3414,10 @@
       "votAsis": 1908,
       "votTotal": 2169,
       "med": {
-        "pos": 14,
+        "pos": 17,
         "neg": 4,
-        "neu": 72,
-        "total": 90
+        "neu": 74,
+        "total": 95
       },
       "medSeen": [
         "26528e3d718d",
@@ -3455,7 +3509,12 @@
         "8532b1b35895",
         "4ac57d3b81dd",
         "1c9d6883880e",
-        "f02e74f95334"
+        "f02e74f95334",
+        "119480d651ec",
+        "7a2ec88c8417",
+        "5170bfcc439b",
+        "54dc58e336da",
+        "70ea922bd534"
       ],
       "nombreXlsx": "Alfaro Guerrero Iztarú"
     },
@@ -3475,9 +3534,9 @@
       "votTotal": 2169,
       "med": {
         "pos": 6,
-        "neg": 1,
-        "neu": 79,
-        "total": 86
+        "neg": 2,
+        "neu": 81,
+        "total": 89
       },
       "medSeen": [
         "8346f2eaf5d8",
@@ -3566,7 +3625,10 @@
         "68e2f24c34b3",
         "4c506b3dfc64",
         "d94720923f0b",
-        "b2fba882e429"
+        "b2fba882e429",
+        "6e17b5a70818",
+        "6d53c1acb590",
+        "ecdf9c39a903"
       ],
       "nombreXlsx": "Vargas Brenes Rafael"
     },
@@ -3686,8 +3748,8 @@
       "med": {
         "pos": 2,
         "neg": 2,
-        "neu": 67,
-        "total": 71
+        "neu": 72,
+        "total": 76
       },
       "medSeen": [
         "00b1f53a8ef7",
@@ -3760,7 +3822,12 @@
         "2b0327b4907d",
         "16e67bf36f33",
         "acd586f2055b",
-        "b0a6f091bcda"
+        "b0a6f091bcda",
+        "facbbd2f0f8c",
+        "3ff2b6112d8a",
+        "8f9f49f9a446",
+        "b943cde6e365",
+        "ff9fbf0de1c1"
       ],
       "nombreXlsx": "Badilla Chavaría Marco"
     },
@@ -3984,8 +4051,8 @@
       "med": {
         "pos": 19,
         "neg": 8,
-        "neu": 97,
-        "total": 124
+        "neu": 101,
+        "total": 128
       },
       "medSeen": [
         "d5e7ebef9f57",
@@ -4111,7 +4178,11 @@
         "1d966f3b2c3e",
         "b0a6f091bcda",
         "33dae07b2541",
-        "ac9ee2908328"
+        "ac9ee2908328",
+        "a2a4d0e2c974",
+        "ee2182dc25e9",
+        "753683b6f5ac",
+        "b6c9cd50ec66"
       ],
       "nombreXlsx": "Hernández Ulloa Eder"
     },
@@ -4132,8 +4203,8 @@
       "med": {
         "pos": 13,
         "neg": 9,
-        "neu": 50,
-        "total": 72
+        "neu": 55,
+        "total": 77
       },
       "medSeen": [
         "3a3920fa97a8",
@@ -4207,7 +4278,12 @@
         "c261e4f67f1e",
         "0502e703ec76",
         "2f37077089b1",
-        "11e5ad5ae935"
+        "11e5ad5ae935",
+        "739be71605e9",
+        "49ecee08e269",
+        "1f0c8eab238d",
+        "a62cb99d7a72",
+        "eef4446afc3b"
       ],
       "nombreXlsx": "Sandí Morales Janice"
     },
@@ -4228,8 +4304,8 @@
       "med": {
         "pos": 21,
         "neg": 8,
-        "neu": 70,
-        "total": 99
+        "neu": 71,
+        "total": 100
       },
       "medSeen": [
         "6fbfe8530466",
@@ -4331,7 +4407,8 @@
         "aa4531ca6889",
         "deebfa9a011d",
         "7202f0b3d77c",
-        "41eff9258ba8"
+        "41eff9258ba8",
+        "bc7572c553b6"
       ],
       "nombreXlsx": "Padilla Villanueva Salvador"
     },
@@ -4352,8 +4429,8 @@
       "med": {
         "pos": 7,
         "neg": 0,
-        "neu": 62,
-        "total": 69
+        "neu": 65,
+        "total": 72
       },
       "medSeen": [
         "7dd496037997",
@@ -4424,7 +4501,10 @@
         "a7e7a016a0c4",
         "9be7aec32722",
         "2f2d9fdd0c49",
-        "73d33f6e2ff3"
+        "73d33f6e2ff3",
+        "b9daf832f671",
+        "4d43b02dfa1a",
+        "8f9f49f9a446"
       ],
       "nombreXlsx": "Hidalgo Solís Víctor"
     },
@@ -4445,8 +4525,8 @@
       "med": {
         "pos": 15,
         "neg": 20,
-        "neu": 167,
-        "total": 202
+        "neu": 184,
+        "total": 219
       },
       "medSeen": [
         "8b8207561ce9",
@@ -4650,7 +4730,24 @@
         "be47d125aefa",
         "1e427c271c02",
         "43072fd28a1a",
-        "41bd71a284fd"
+        "41bd71a284fd",
+        "55dca08ea907",
+        "754c88e76b33",
+        "a8e04454e709",
+        "bd98fda53452",
+        "50457914f925",
+        "a6234a9c0cd4",
+        "602cc64a1b55",
+        "2d0991c99b90",
+        "9c66533b195e",
+        "7c8bbed894ac",
+        "9485f24125bd",
+        "cb395193f090",
+        "f1f3ff05e5c6",
+        "c2660e13477c",
+        "a985bad8ed88",
+        "51a9552248d2",
+        "0560de43d13d"
       ],
       "nombreXlsx": "Aguilar Vargas Ángela"
     },
@@ -4671,8 +4768,8 @@
       "med": {
         "pos": 4,
         "neg": 8,
-        "neu": 56,
-        "total": 68
+        "neu": 60,
+        "total": 72
       },
       "medSeen": [
         "fc2cf66ceab8",
@@ -4742,7 +4839,11 @@
         "52b898575911",
         "4d35661176f0",
         "b0a6f091bcda",
-        "dfb80b1829a0"
+        "dfb80b1829a0",
+        "d07f08969674",
+        "b6af62f10392",
+        "493988f6cd85",
+        "aa6c2f7ab304"
       ],
       "nombreXlsx": "Campos Villegas Ronald"
     },
@@ -4815,10 +4916,10 @@
       "votAsis": 1364,
       "votTotal": 2169,
       "med": {
-        "pos": 0,
+        "pos": 1,
         "neg": 5,
-        "neu": 79,
-        "total": 84
+        "neu": 81,
+        "total": 87
       },
       "medSeen": [
         "8f2575f81b4b",
@@ -4905,7 +5006,10 @@
         "cf3edbc83ba2",
         "6f13b57bc84d",
         "9c770f07db4f",
-        "ea179577c55f"
+        "ea179577c55f",
+        "bcea16eb8aa6",
+        "8d7c0d4e8138",
+        "45a3b09c8efc"
       ],
       "nombreXlsx": "Calderón Calderón Jesús"
     },
@@ -4947,10 +5051,10 @@
       "votAsis": 1872,
       "votTotal": 2169,
       "med": {
-        "pos": 55,
-        "neg": 18,
-        "neu": 78,
-        "total": 151
+        "pos": 56,
+        "neg": 20,
+        "neu": 80,
+        "total": 156
       },
       "medSeen": [
         "e0770a1054b6",
@@ -5103,7 +5207,12 @@
         "a4c99e8f5a03",
         "666d0909a857",
         "fef8236727c8",
-        "cb8cdea3abf3"
+        "cb8cdea3abf3",
+        "59d1eae2a5bd",
+        "fe0722d5b66d",
+        "8c69ecff61b1",
+        "bcea16eb8aa6",
+        "344559990a31"
       ],
       "nombreXlsx": "Villalta Flórez-Estrada José María"
     },
@@ -5354,10 +5463,10 @@
       "votAsis": 1708,
       "votTotal": 2169,
       "med": {
-        "pos": 25,
+        "pos": 29,
         "neg": 41,
         "neu": 64,
-        "total": 130
+        "total": 134
       },
       "medSeen": [
         "b9438f1f463a",
@@ -5490,7 +5599,11 @@
         "3ada42b8564f",
         "18de0e8d2e12",
         "2b14ebbb318e",
-        "4a16a0823269"
+        "4a16a0823269",
+        "abd494cd68a5",
+        "5db843a7e734",
+        "d56190238cfb",
+        "56188e05632b"
       ],
       "nombreXlsx": "Araya Sibaja Edgardo"
     },
@@ -5509,10 +5622,10 @@
       "votAsis": 1686,
       "votTotal": 2169,
       "med": {
-        "pos": 20,
-        "neg": 15,
-        "neu": 47,
-        "total": 82
+        "pos": 21,
+        "neg": 16,
+        "neu": 48,
+        "total": 85
       },
       "medSeen": [
         "1739a2ecf1e9",
@@ -5596,7 +5709,10 @@
         "b481e076b571",
         "cc56c084ec3e",
         "d8aa8a05e08c",
-        "cf04ed79cc10"
+        "cf04ed79cc10",
+        "c021035a2393",
+        "6efcfec2adfe",
+        "891554f4f3c4"
       ],
       "nombreXlsx": "Segura Artavia Sigrid"
     },
@@ -5615,10 +5731,10 @@
       "votAsis": 1452,
       "votTotal": 2169,
       "med": {
-        "pos": 29,
+        "pos": 30,
         "neg": 4,
-        "neu": 46,
-        "total": 79
+        "neu": 52,
+        "total": 86
       },
       "medSeen": [
         "0b9ae10d6b46",
@@ -5699,7 +5815,14 @@
         "e52e3ae36990",
         "d42fefce3f9e",
         "81ea3a4b06e3",
-        "02ebe3e64463"
+        "02ebe3e64463",
+        "2244ddd7cc8b",
+        "bb1926b263ce",
+        "47067673167d",
+        "c133963cfb41",
+        "7588d6640084",
+        "49ecee08e269",
+        "e0e66a6bf7e3"
       ],
       "nombreXlsx": "Sáenz Blanco Joselyn"
     },
@@ -5719,9 +5842,9 @@
       "votTotal": 2169,
       "med": {
         "pos": 4,
-        "neg": 10,
-        "neu": 67,
-        "total": 81
+        "neg": 12,
+        "neu": 68,
+        "total": 84
       },
       "medSeen": [
         "608332cb8c46",
@@ -5806,7 +5929,10 @@
         "482c4d5e820f",
         "a98748f00222",
         "81ea3a4b06e3",
-        "3b1a33751ffe"
+        "3b1a33751ffe",
+        "b13c5b9456f0",
+        "da3dd2a50b43",
+        "8c3bfcbd96f6"
       ],
       "nombreXlsx": "Román Mora María Eugenia"
     },
